@@ -15,8 +15,8 @@ On peut utiliser la commande hexdump fichier pour lire au format binaire, le ré
 
 Exemple: hexdump -C tests/firmware.elf | head :
 adr     data
-0000000 457f 464c 0101 0001 0000 0000 0000 0000
-0000010 0002 0028 0001 0000 0bd5 0800 0034 0000
+0000000 457f 464c 0101 0001 0000 0000 0000 0000 Magic Number
+0000010 0002 0028 0001 0000 0bd5 0800 0034 0000 ObjectType, MachineType, 
 0000020 d058 0003 0200 0500 0034 0020 0002 0028
 .....
 
@@ -27,7 +27,7 @@ Le header commence par le magic number composé de 16 octets:
 	On l'affiche simplement pas besoin de le décoder
 	
 Ensuite on dispose du type de fichier objet, ce que l'on doit décoder:
-Tiré de elf.h
+Tiré de elf.h :
 </* Legal values for e_type (object file type).  */>
 <#define ET_NONE	0		/* No file type */>
 <#define ET_REL		1		/* Relocatable file */>
@@ -35,8 +35,4 @@ Tiré de elf.h
 <#define ET_DYN		3		/* Shared object file */>
 <#define ET_CORE	4		/* Core file */>
 <#define ET_NUM		5		/* Number of defined types */>
-<#define ET_LOOS	0xfe00		/* OS-specific range start */>
-<#define ET_HIOS	0xfeff		/* OS-specific range end */>
-<#define ET_LOPROC	0xff00		/* Processor-specific range start */>
-<#define ET_HIPROC	0xffff		/* Processor-specific range end */>
 

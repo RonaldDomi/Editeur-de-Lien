@@ -19,7 +19,6 @@
 #ifndef _ELF_H
 #define	_ELF_H 1
 
-#include <features.h>
 
 __BEGIN_DECLS
 
@@ -1156,7 +1155,7 @@ typedef struct
     } a_un;
 } Elf64_auxv_t;
 
-#include <bits/auxv.h>
+
 /* Note section contents.  Each entry in the note section begins with
    a header of a fixed form.  */
 
