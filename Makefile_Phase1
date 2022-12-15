@@ -1,0 +1,16 @@
+CFLAGS= -g -Wall -Werror
+CC=clang
+
+all: read_elf_header
+
+read_elf_header.o : read_elf_header.c dependencies/freadoctet.h
+		$(CC) -c $(CFLAGS) read_elf_header.c dependencies/freadoctet.h
+
+read_elf_header : read_elf_header.o dependencies/freadoctet.o
+		$(CC) $(CFLAGS) $^ -o $@  -lm
+
+dependencies/freadoctet.o: dependencies/freadoctet.c dependencies/freadoctet.h
+
+.PHONY: clean
+clean:
+		rm -f read_elf_header
