@@ -4,10 +4,10 @@
 void printOctet(void * buffer, int length, char reverse){
 	if (reverse){
 		for(int i = length - 1; i>=0; i--)
-			printf("%02x ", ((char *)buffer)[i]); // prints a series of bytes
+			printf("%02x ", ((unsigned char *)buffer)[i]); // prints a series of bytes
 	}else{
 		for(int i = 0; i<length; i++){
-			printf("%02x ", ((char *)buffer)[i]); // prints a series of bytes
+			printf("%02x ", ((unsigned char *)buffer)[i]); // prints a series of bytes
 		}
 	}
 }

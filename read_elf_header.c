@@ -1,7 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "modules/freadoctet.h"
 #include "modules/CustomElf.h"
+
+
+int checkELF(FILE *file){
+	char buffer[4];
+	fread(buffer, 4, 1, file);
+
+	if (feof(file)){
+		printf("FAIL FEOF\n");
+		return 0;
+	}
+	if (buffer[0] != 0x7F){
+		return 0;
+	}
+	if (buffer[1] != 0x45){
+		return 0;
+	}
+	if (buffer[2] != 0x4C){
+		return 0;
+	}
+	if (buffer[3] != 0x46){
+		return 0;
+	}
+	return 1;
+}
+
 
 void magicNumber(FILE *file, Elf32_Ehdr* Header){
 	printf("Magic number : ");
@@ -33,7 +59,7 @@ void objectType(FILE *file, Elf32_Ehdr* Header){
 			printf(" Core file");
 			break;
 		default:
-			printf("===WARNING: Unable to determine object type !===");
+			printf(" ===WARNING: Unable to determine object type !===");
 			break;
 	}
 	printf("\n");
@@ -65,13 +91,13 @@ void version(FILE *file, Elf32_Ehdr* Header){
 	printOctet(&Header->e_version, 4, 1);
 	switch(Header->e_version){
 		case(EV_NONE):
-			printf("Invalid ELF Version");
+			printf(" Invalid ELF Version");
 			break;
 		case(EV_CURRENT):
-			printf("Current ELF Version");
+			printf(" Current ELF Version");
 			break;
 		default:
-			printf("===WARNING: Unknown version !===");
+			printf(" ===WARNING: Unknown version !===");
 	}
 	printf("\n");
 }
@@ -105,7 +131,6 @@ void flags(FILE *file, Elf32_Ehdr *Header){
 	printf("Processor flags : \t\t\t");
 	fread(&Header->e_flags, 4, 1, file);
 	printOctet(&Header->e_flags, 4, 1);
-
 	printf("\n");
 }
 
@@ -159,21 +184,30 @@ void indexStringHeader(FILE *file, Elf32_Ehdr *Header){
 
 
 int main(int argc, char **argv){
-	printf("\nAll values are in hexadecimal format.\n");
-	printf("All sizes are written in bytes.\n");
+
 	if (argc<2){
-		printf("Usage : ./ReadBitaBit <FichierBinaire>\n");
+		printf("Usage : ./read_elf_header <FichierBinaire>\n");
 		exit(1);
 	}
 
 	FILE *file = fopen(argv[1],"rb");
 	if (file==NULL){
-		printf("Erreur lors de l'ouverture du fichier!\n");
+		printf("ERROR : No such file.\n");
 		exit(1);
 	}
 
+	if (!checkELF(file)){
+		printf("Not a ELF file !\n");
+		printf("Does not have magic bytes 0x7F454C46 at the start.\n");
+		exit(1);
+	}
+	
+	fseek(file, -4, SEEK_CUR); /* Go backwards 4 bytes */
+
 	Elf32_Ehdr* Header = malloc(sizeof(Elf32_Ehdr));
 
+	printf("\nAll values are in hexadecimal format.\n");
+	printf("All sizes are written in bytes.\n");
 	printf("ELF Header Reader : \n\n");
 	magicNumber(file, Header);
 	objectType(file, Header);

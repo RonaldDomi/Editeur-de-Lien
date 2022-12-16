@@ -7,3 +7,5 @@ Editeur de Liens.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.p
 Editeur de Liens.xcodeproj/project.xcworkspace/xcuserdata/bastienlevasseur.xcuserdatad/UserInterfaceState.xcuserstate
 Editeur de Liens.xcodeproj/xcuserdata/bastienlevasseur.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
 Editeur de Liens.xcodeproj/xcuserdata/bastienlevasseur.xcuserdatad/xcschemes/xcschememanagement.plist
+.DS_Store
+*.gch
