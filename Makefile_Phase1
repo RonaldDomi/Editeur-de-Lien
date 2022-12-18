@@ -1,16 +1,22 @@
 CFLAGS= -g -Wall -Werror
 CC=clang
 
-all: read_elf_header
+all: read_elf_header read_elf_section_table
 
 read_elf_header.o : read_elf_header.c modules/freadoctet.h
-		$(CC) -c $(CFLAGS) read_elf_header.c modules/freadoctet.h
+	$(CC) -c $(CFLAGS) read_elf_header.c modules/freadoctet.h
+
+read_elf_section_table.o : read_elf_section_table.c read_elf_section_table.h modules/freadoctet.h
+	$(CC) -c $(CFLAGS) read_elf_section_table.c read_elf_section_table.h modules/freadoctet.h
 
 read_elf_header : read_elf_header.o modules/freadoctet.o
-		$(CC) $(CFLAGS) $^ -o $@  -lm
+	$(CC) $(CFLAGS) $^ -o $@  -lm
+
+read_elf_section_table : read_elf_section_table.o modules/freadoctet.o
+	$(CC) $(CFLAGS) $^ -o $@  -lm
 
 modules/freadoctet.o: modules/freadoctet.c modules/freadoctet.h
 
 .PHONY: clean
 clean:
-		rm -f read_elf_header read_elf_header.o modules/freadoctet.o modules/freadoctet.h.gch
+	rm -f read_elf_header read_elf_section_table read_elf_section_table.o read_elf_header.o modules/freadoctet.o modules/freadoctet.h.gch

@@ -7,7 +7,7 @@
 int checkELF(FILE *file){
 	char buffer[4];
 	fread(buffer, 4, 1, file);
-
+	fseek(file, -4, SEEK_CUR); /* Go backwards 4 bytes */
 	if (feof(file)){
 		return 0;
 	}
@@ -199,8 +199,7 @@ int main(int argc, char **argv){
 		printf("Does not have magic bytes 0x7F454C46 at the start.\n");
 		exit(1);
 	}
-	
-	fseek(file, -4, SEEK_CUR); /* Go backwards 4 bytes */
+
 
 	Elf32_Ehdr* Header = malloc(sizeof(Elf32_Ehdr));
 
@@ -222,4 +221,5 @@ int main(int argc, char **argv){
 	nbSectionHeader(file, Header);
 	indexStringHeader(file, Header);
 	fclose(file);
+	return 0;
 }
