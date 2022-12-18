@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "modules/freadoctet.h"
 #include "modules/CustomElf.h"
 
@@ -10,7 +9,6 @@ int checkELF(FILE *file){
 	fread(buffer, 4, 1, file);
 
 	if (feof(file)){
-		printf("FAIL FEOF\n");
 		return 0;
 	}
 	if (buffer[0] != 0x7F){
@@ -192,7 +190,7 @@ int main(int argc, char **argv){
 
 	FILE *file = fopen(argv[1],"rb");
 	if (file==NULL){
-		printf("ERROR : No such file.\n");
+		printf("ERROR : %s no such file.\n", argv[1]);
 		exit(1);
 	}
 
