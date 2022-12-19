@@ -6,8 +6,8 @@ all: read_elf_header read_elf_section_table
 read_elf_header.o : read_elf_header.c modules/freadoctet.h modules/CheckElf.h
 	$(CC) -c $(CFLAGS) read_elf_header.c modules/freadoctet.h modules/CheckElf.h
 
-read_elf_section_table.o : read_elf_section_table.c read_elf_section_table.h modules/freadoctet.h modules/CheckElf.h
-	$(CC) -c $(CFLAGS) read_elf_section_table.c read_elf_section_table.h modules/freadoctet.h modules/CheckElf.h
+read_elf_section_table.o : read_elf_section_table.c read_elf_section_table.h read_elf_header.h modules/freadoctet.h modules/CheckElf.h
+	$(CC) -c $(CFLAGS) read_elf_section_table.c read_elf_section_table.h read_elf_header.h modules/freadoctet.h modules/CheckElf.h
 
 read_elf_header : read_elf_header.o modules/freadoctet.o modules/CheckElf.o
 	$(CC) $(CFLAGS) $^ -o $@  -lm
@@ -21,4 +21,4 @@ modules/CheckElf.o: modules/CheckElf.h
 
 .PHONY: clean
 clean:
-	rm -f read_elf_header read_elf_section_table read_elf_section_table.h.gch read_elf_section_table.o read_elf_header.o modules/freadoctet.o modules/freadoctet.h.gch modules/CheckElf.h.gch
+	rm -f read_elf_header read_elf_section_table read_elf_section_table.h.gch read_elf_section_table.o read_elf_header.o modules/freadoctet.o modules/freadoctet.h.gch modules/CheckElf.h.gch modules/CheckElf.o

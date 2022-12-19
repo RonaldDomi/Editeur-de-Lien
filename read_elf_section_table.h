@@ -9,5 +9,8 @@
 #define read_elf_section_table_h
 
 #include <stdio.h>
+#include "modules/CustomElf.h"
+
+void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose);
 
 #endif /* read_elf_section_table_h */

@@ -7,6 +7,9 @@
 
 #ifndef read_elf_header_h
 #define read_elf_header_h
+#include <stdio.h>
+#include "modules/CustomElf.h"
+
 int checkELF(FILE *file);
 
 
@@ -43,7 +46,7 @@ void headerProgramSize(FILE *file, Elf32_Ehdr *Header, char verbose);
 void nbProgramHeaders(FILE *file,Elf32_Ehdr *Header, char verbose);
 
 
-void sizeSectionHeaders(FILE *file, Elf32_Ehdr *Header), char verbose;
+void sizeSectionHeaders(FILE *file, Elf32_Ehdr *Header, char verbose);
 
 
 void nbSectionHeader(FILE *file, Elf32_Ehdr *Header, char verbose);
@@ -52,7 +55,7 @@ void nbSectionHeader(FILE *file, Elf32_Ehdr *Header, char verbose);
 void indexStringHeader(FILE *file, Elf32_Ehdr *Header, char verbose);
 
 
-void getHeader(FILE *file, Elf32_Ehdr *Header);
+void getHeader(FILE *file, Elf32_Ehdr *Header, char verbose);
 
 
 #endif /* read_elf_header_h */

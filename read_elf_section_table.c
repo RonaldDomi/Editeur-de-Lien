@@ -7,16 +7,24 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "read_elf_section_table.h"
+#include "read_elf_header.h"
 #include "modules/CustomElf.h"
 #include "modules/freadoctet.h"
 #include "modules/CheckElf.h"
 
+void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose){
+	if (verbose){
+		printf("Nb\tName\tType\tFlags\tExecution adresss\tOffset\tSection Size\tLink To\tInfo\tAlign\tEntry Size");
+	}
+	//TODO: Faire toutes les fonctions
+}
+
+
 int main(int argc, char **argv){
 
 	if (argc<2){
-		printf("Usage : ./read_elf_header <FichierBinaire>\n");
+		printf("Usage : ./read_elf_section_table <FichierBinaire>\n");
 		exit(1);
 	}
 
@@ -31,24 +39,13 @@ int main(int argc, char **argv){
 		printf("Does not have magic bytes 0x7F454C46 at the start.\n");
 		exit(1);
 	}
+	
+	Elf32_Ehdr* Header = malloc(sizeof(Elf32_Ehdr));
+	Elf32_Shdr* SectionTable = malloc(sizeof(Elf32_Shdr));
 
-	/* On cherche à aller directement a la section table, pour cela on a besoin du Offset situé dans le header */
-	/* 1: On peut soit utiliser l'étape 1, lire tout le header, et récupérer l'Offset de la structure Header */
-	/* OU */
-	/* 2: On saute directement à l'Offset, on le lit, on va à la Section Table */
+	getHeader(file, Header, 0);
 
-	/* Méthode 2: */
-	/* On sait que l'offset est à 28 bytes du début (on peut vérifier en faisant la somme des types de la structure du Header jusqu'à l'Offset */
-	/* On saute donc directment de 28 bytes */
-	fseek(file, 28, SEEK_CUR);
-
-	/* On lit l'offset */
-	uint32_t buffer;
-	fread(&buffer, 4, 1, file);
-
-	/* On saute de buffer-28 comme l'offset part du début de fichier */
-	fseek(file, buffer-28, SEEK_CUR);
-
+	getSectionTable(file, Header, SectionTable, 1);
 
 	return 0;
 }
