@@ -10,44 +10,49 @@
 int checkELF(FILE *file);
 
 
-void magicNumber(FILE *file, Elf32_Ehdr* Header);
+void magicNumber(FILE *file, Elf32_Ehdr* Header, char verbose);
 
 
-void objectType(FILE *file, Elf32_Ehdr* Header);
+void objectType(FILE *file, Elf32_Ehdr* Header, char verbose);
 
 
-void machineType(FILE *file, Elf32_Ehdr* Header);
+void machineType(FILE *file, Elf32_Ehdr* Header, char verbose);
 
 
-void version(FILE *file, Elf32_Ehdr* Header);
+void version(FILE *file, Elf32_Ehdr* Header, char verbose);
 
 
-void entry(FILE *file, Elf32_Ehdr* Header);
+void entry(FILE *file, Elf32_Ehdr* Header, char verbose);
 
 
-void progHeaderOff(FILE *file, Elf32_Ehdr* Header);
+void progHeaderOff(FILE *file, Elf32_Ehdr* Header, char verbose);
 
 
-void sectHeaderOff(FILE *file, Elf32_Ehdr* Header);
+void sectHeaderOff(FILE *file, Elf32_Ehdr* Header, char verbose);
 
 
-void flags(FILE *file, Elf32_Ehdr *Header);
+void flags(FILE *file, Elf32_Ehdr *Header, char verbose);
 
 
-void headerSize(FILE *file, Elf32_Ehdr *Header);
+void headerSize(FILE *file, Elf32_Ehdr *Header, char verbose);
 
 
-void headerProgramSize(FILE *file, Elf32_Ehdr *Header);
+void headerProgramSize(FILE *file, Elf32_Ehdr *Header, char verbose);
 
 
-void nbProgramHeaders(FILE *file,Elf32_Ehdr *Header);
+void nbProgramHeaders(FILE *file,Elf32_Ehdr *Header, char verbose);
 
 
-void sizeSectionHeaders(FILE *file, Elf32_Ehdr *Header);
+void sizeSectionHeaders(FILE *file, Elf32_Ehdr *Header), char verbose;
 
 
-void nbSectionHeader(FILE *file, Elf32_Ehdr *Header);
+void nbSectionHeader(FILE *file, Elf32_Ehdr *Header, char verbose);
 
 
-void indexStringHeader(FILE *file, Elf32_Ehdr *Header);
+void indexStringHeader(FILE *file, Elf32_Ehdr *Header, char verbose);
+
+
+void getHeader(FILE *file, Elf32_Ehdr *Header);
+
+
 #endif /* read_elf_header_h */

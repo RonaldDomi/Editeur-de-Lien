@@ -12,6 +12,7 @@ void printOctet(void * buffer, int length, char reverse){
 	}
 }
 
+
 void * readOctet(FILE * file, int nbOctet){
 	void * buffer = malloc(sizeof(char)*nbOctet);
     fread(buffer, sizeof(char)*nbOctet, 1, file);

@@ -69,7 +69,7 @@ int main(int argc, char **argv){
 	fread(&buffer, 4, 1, file);
 
 	/* On saute de buffer-28 comme l'offset part du début de fichier */
-	fseek(file, buffer-28, SEEK_CUR)
+	fseek(file, buffer-28, SEEK_CUR);
 
 
 	return 0;
