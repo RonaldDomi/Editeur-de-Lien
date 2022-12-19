@@ -11,29 +11,7 @@
 #include "read_elf_section_table.h"
 #include "modules/CustomElf.h"
 #include "modules/freadoctet.h"
-
-int checkELF(FILE *file){
-	char buffer[4];
-	fread(buffer, 4, 1, file);
-	fseek(file, -4, SEEK_CUR); /* Go backwards 4 bytes */
-	if (feof(file)){
-		return 0;
-	}
-	if (buffer[0] != 0x7F){
-		return 0;
-	}
-	if (buffer[1] != 0x45){
-		return 0;
-	}
-	if (buffer[2] != 0x4C){
-		return 0;
-	}
-	if (buffer[3] != 0x46){
-		return 0;
-	}
-	return 1;
-}
-
+#include "modules/CheckElf.h"
 
 int main(int argc, char **argv){
 
