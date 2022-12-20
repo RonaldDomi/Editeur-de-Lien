@@ -7,17 +7,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "modules/readHeader.h"
-#include "modules/freadoctet.h"
 #include "modules/CheckElf.h"
-
-void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose){
-	if (verbose){
-		printf("Nb\tName\tType\tFlags\tExecution adresss\tOffset\tSection Size\tLink To\tInfo\tAlign\tEntry Size");
-	}
-	//TODO: Faire toutes les fonctions
-}
-
+#include "modules/readHeader.h"
+#include "modules/readSectionTable.h"
 
 int main(int argc, char **argv){
 
@@ -43,6 +35,14 @@ int main(int argc, char **argv){
 
 	getHeader(file, Header, 0);
 
+	fseek(file, Header->e_shoff, SEEK_SET);
+	printf("\n");
+	printf("Adresses are given un hexadecimal format.\n");
+	printf("All values are given in bytes in decimal format.\n\n");
+	printf("Nb\tName\t\tType\t\tFlags\tExecutionAdresss\tOffset\t\tSectionSize\tLinkTo\tInfo\tAlign\tEntrySize\n");
+	printf("====================================================================");
+	printf("=====================================================================\n");
+	
 	getSectionTable(file, Header, SectionTable, 1);
 
 	return 0;

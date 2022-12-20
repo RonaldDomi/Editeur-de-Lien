@@ -19,5 +19,6 @@ int checkELF(FILE *file){
 	if (buffer[3] != 0x46){
 		return 0;
 	}
+	fseek(file, 0, SEEK_SET);
 	return 1;
 }

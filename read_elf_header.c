@@ -24,7 +24,6 @@ int main(int argc, char **argv){
 		printf("Does not have magic bytes 0x7F454C46 at the start.\n");
 		exit(1);
 	}
-	fseek(file, -4, SEEK_CUR); /* Go backwards 4 bytes */
 
 	Elf32_Ehdr* Header = malloc(sizeof(Elf32_Ehdr));
 

@@ -185,7 +185,7 @@ void sizeSectionHeaders(FILE *file, Elf32_Ehdr *Header, char verbose){
 	if (verbose){
 		printf("Size of section headers : \t\t");
 		fread(&Header->e_shentsize, 2, 1, file);
-		printf("%d Bytes\n", Header->e_phentsize);
+		printf("%d Bytes\n", Header->e_shentsize);
 	}else{
 		fread(&Header->e_shentsize, 2, 1, file);
 	}
