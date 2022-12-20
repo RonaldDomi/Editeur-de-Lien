@@ -7,9 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "read_elf_section_table.h"
-#include "read_elf_header.h"
-#include "modules/CustomElf.h"
+#include "modules/readHeader.h"
 #include "modules/freadoctet.h"
 #include "modules/CheckElf.h"
 

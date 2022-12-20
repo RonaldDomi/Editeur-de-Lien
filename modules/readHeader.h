@@ -1,17 +1,15 @@
 //
-//  read_elf_header.h
+//  readHeader.h
 //  Editeur de Liens
 //
-//  Created by Bastien Levasseur on 16/12/2022.
+//  Created by Bastien Levasseur on 20/12/2022.
 //
 
-#ifndef read_elf_header_h
-#define read_elf_header_h
+#ifndef readHeader_h
+#define readHeader_h
+
 #include <stdio.h>
-#include "modules/CustomElf.h"
-
-int checkELF(FILE *file);
-
+#include "CustomElf.h"
 
 void magicNumber(FILE *file, Elf32_Ehdr* Header, char verbose);
 
@@ -56,6 +54,4 @@ void indexStringHeader(FILE *file, Elf32_Ehdr *Header, char verbose);
 
 
 void getHeader(FILE *file, Elf32_Ehdr *Header, char verbose);
-
-
-#endif /* read_elf_header_h */
+#endif /* readHeader_h */
