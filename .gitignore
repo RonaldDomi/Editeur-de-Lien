@@ -9,3 +9,16 @@ Editeur de Liens.xcodeproj/xcuserdata/bastienlevasseur.xcuserdatad/xcdebugger/Br
 Editeur de Liens.xcodeproj/xcuserdata/bastienlevasseur.xcuserdatad/xcschemes/xcschememanagement.plist
 .DS_Store
 *.gch
+
+# for automake
+config.log
+config.status
+config.h
+Makefile.in 
+*.Po 
+requests
+*.0
+stamp-h1
+
+
+
