@@ -8,3 +8,16 @@ Editeur-de-Liens.xcodeproj/project.xcworkspace/contents.xcworkspacedata
 Editeur-de-Liens.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 Editeur-de-Liens.xcodeproj/project.xcworkspace/xcuserdata/bastienlevasseur.xcuserdatad/UserInterfaceState.xcuserstate
 Editeur-de-Liens.xcodeproj/xcuserdata/bastienlevasseur.xcuserdatad/xcschemes/xcschememanagement.plist
+
+# for automake
+config.log
+config.status
+config.h
+Makefile.in 
+*.Po 
+requests
+*.0
+stamp-h1
+
+
+
