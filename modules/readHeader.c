@@ -13,6 +13,7 @@
 
 
 void magicNumber(FILE *file, Elf32_Ehdr* Header, char verbose){
+	//On lit 16 octets du fichier, on les affichent si verbose
 	if (verbose){
 		printf("Magic number : ");
 		fread(Header->e_ident , 16, 1, file);
@@ -31,22 +32,22 @@ void objectType(FILE *file, Elf32_Ehdr* Header, char verbose){
 		printf("%d ", Header->e_type);
 		switch(Header->e_type){
 			case(ET_NONE):
-				printf(" No type");
+				printf("No type");
 				break;
 			case(ET_REL):
-				printf(" Relocatable file");
+				printf("Relocatable file");
 				break;
 			case(ET_EXEC):
-				printf(" Executable file");
+				printf("Executable file");
 				break;
 			case(ET_DYN):
-				printf(" Shared object file");
+				printf("Shared object file");
 				break;
 			case(ET_CORE):
-				printf(" Core file");
+				printf("Core file");
 				break;
-			default:
-				printf(" ===WARNING: Unable to determine object type !===");
+			default: //Les processor-specifics n'ont pas étés implémentés, on peut les ajouter si besoin.
+				printf("===WARNING: Unable to determine object type !===");
 				break;
 		}
 		printf("\n");
@@ -63,13 +64,13 @@ void machineType(FILE *file, Elf32_Ehdr* Header, char verbose){
 		printf("%d ", Header->e_machine);
 		switch(Header->e_machine){
 			case(EM_NONE):
-				printf(" No Machine");
+				printf("No Machine");
 				break;
 			case(EM_ARM):
-				printf(" ARM");
+				printf("ARM");
 				break;
-			case(EM_X86_64):
-				printf(" AMD x86-64");
+			default: //On peut rajouter encore des types si besoin.
+				printf("===UNK===");
 				break;
 		}
 		printf("\n");
@@ -86,13 +87,13 @@ void version(FILE *file, Elf32_Ehdr* Header, char verbose){
 		printf("%d ", Header->e_version);
 		switch(Header->e_version){
 			case(EV_NONE):
-				printf(" Invalid ELF Version");
+				printf("Invalid ELF Version");
 				break;
 			case(EV_CURRENT):
-				printf(" Current ELF Version");
+				printf("Current ELF Version");
 				break;
-			default:
-				printf(" ===WARNING: Unknown version !===");
+			default: //Peut-être retirer le warning si des extensions sont à prévoir, et que donc la current version sera supérieure à 1
+				printf("===WARNING: Unknown version !===");
 		}
 		printf("\n");
 	}else{
@@ -105,7 +106,7 @@ void entry(FILE *file, Elf32_Ehdr* Header, char verbose){
 	if (verbose){
 		printf("Entry point adress : \t\t\t");
 		fread(&Header->e_entry, 4, 1, file);
-		printOctet(&Header->e_entry, 4, 1);
+		printAdress(&Header->e_entry, 4, 1);
 		printf("\n");
 	}else{
 		fread(&Header->e_entry, 4, 1, file);
@@ -139,7 +140,7 @@ void flags(FILE *file, Elf32_Ehdr *Header, char verbose){
 	if (verbose){
 		printf("Processor flags : \t\t\t");
 		fread(&Header->e_flags, 4, 1, file);
-		printOctet(&Header->e_flags, 4, 1);
+		printAdress(&Header->e_flags, 4, 1);
 		printf("\n");
 	}else{
 		fread(&Header->e_flags, 4, 1, file);
