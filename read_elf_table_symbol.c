@@ -49,7 +49,7 @@ int main(int argc, char **argv){
 	for (int i = 0; i < SectionTable->sh_size/16; i++)
 	{
 		printf("%d\t", i);
-		getTabSymb(file, symTab, 1);
+		getTabSymb(file, Header, symTab, 1);
 		printf("\n");
 	}
 	
