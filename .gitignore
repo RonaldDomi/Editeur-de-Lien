@@ -17,7 +17,6 @@ Makefile.in
 *.Po 
 requests
 *.0
+*.1
+*.2
 stamp-h1
-
-
-
