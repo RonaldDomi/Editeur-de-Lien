@@ -1,7 +1,7 @@
 CFLAGS= -g -Wall -Werror
 CC=clang
 
-all: read_elf_header read_elf_section_table
+all: read_elf_header read_elf_section_table read_elf_table_symbol
 
 read_elf_header.o : read_elf_header.c modules/readHeader.h modules/freadoctet.h modules/CheckElf.h
 	$(CC) -c $(CFLAGS) read_elf_header.c modules/readHeader.h modules/freadoctet.h modules/CheckElf.h
@@ -15,6 +15,12 @@ read_elf_header : read_elf_header.o modules/readHeader.o modules/freadoctet.o mo
 read_elf_section_table : read_elf_section_table.o modules/readSectionTable.o modules/readHeader.o modules/freadoctet.o modules/CheckElf.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 
+read_elf_table_symbol.o: read_elf_table_symbol.c modules/freadoctet.h modules/CheckElf.h
+	$(CC) -c $(CFLAGS) read_elf_table_symbol.c modules/freadoctet.h modules/CheckElf.h
+
+read_elf_table_symbol : read_elf_table_symbol.o modules/getTableSymbSection.o modules/readHeader.o modules/freadoctet.o modules/CheckElf.o
+	$(CC) $(CFLAGS) $^ -o $@ -lm
+
 modules/freadoctet.o: modules/freadoctet.c modules/freadoctet.h
 
 modules/CheckElf.o: modules/CheckElf.h
@@ -22,9 +28,11 @@ modules/CheckElf.o: modules/CheckElf.h
 modules/readHeader.o : modules/readHeader.c modules/readHeader.h
 
 modules/readSectionTable.o : modules/readSectionTable.c modules/readSectionTable.h
+
+modules/getTableSymbSection.o : modules/getTableSymbSection.c
 .PHONY: clean
 clean:
-	rm -f read_elf_header read_elf_section_table
+	rm -f read_elf_header read_elf_section_table read_elf_table_symbol
 	rm -f read_elf_header.h.gch read_elf_section_table.h.gch modules/freadoctet.h.gch modules/CheckElf.h.gch modules/readHeader.h.gch
 	rm -f read_elf_header.o read_elf_section_table.o modules/freadoctet.o modules/CheckElf.o modules/readHeader.o modules/readSectionTable.o
-
+	rm -f *.o *.gch
