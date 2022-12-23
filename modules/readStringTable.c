@@ -1,7 +1,7 @@
 
 
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 #include "CustomElf.h"
 
 void GetTableStringPart(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose){

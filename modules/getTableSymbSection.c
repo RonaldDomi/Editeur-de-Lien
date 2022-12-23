@@ -4,7 +4,9 @@
 //
 #include <stdio.h>
 #include "CustomElf.h"
-#include "readStringTable.c"
+#include "readSectionTable.h"
+#include "freadoctet.h"
+// #include "readStringTable.c"
 
 void GetTableSymbPart(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose){
 	if (Header->e_shnum == 0){
