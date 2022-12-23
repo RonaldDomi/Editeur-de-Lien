@@ -17,6 +17,7 @@ bin_PROGRAMS=
 bin_PROGRAMS+=Options_and_debug_example
 bin_PROGRAMS+=read_elf_header
 bin_PROGRAMS+=read_elf_section_table
+<<<<<<< HEAD
 bin_PROGRAMS+=read_elf_table_symbol
 
 
@@ -29,5 +30,16 @@ Options_and_debug_example_SOURCES=$(COMMON) Options_and_debug_example.c
 read_elf_header_SOURCES=$(COMMON) read_elf_header.c
 read_elf_section_table_SOURCES=$(COMMON) read_elf_section_table.c
 read_elf_table_symbol_SOURCES=$(COMMON) read_elf_table_symbol.c
+=======
+
+COMMON=debug.h debug.c util.h util.c 
+COMMON+=modules/freadoctet.h modules/freadoctet.c modules/CustomElf.h modules/checkELF.c
+COMMON+=modules/readHeader.h modules/readHeader.c modules/readSectionTable.h modules/readSectionTable.c
+
+EXTRA_DIST=filtre.pl
+Options_and_debug_example_SOURCES=$(COMMON) Options_and_debug_example.c
+read_elf_header_SOURCES=$(COMMON) read_elf_header.c 
+read_elf_section_table_SOURCES=$(COMMON) read_elf_section_table.c
+>>>>>>> 3bb874921ef0723b95d7a541b4b502df60ca9076
 
 EXTRA_DIST+=
