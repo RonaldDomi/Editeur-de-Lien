@@ -41,7 +41,7 @@ void objectType(FILE *file, Elf32_Ehdr* Header, char verbose){
 				printf("Executable file");
 				break;
 			case(ET_DYN):
-				printf("Shared object file");
+				printf("Position-Independent Executable file");
 				break;
 			case(ET_CORE):
 				printf("Core file");
@@ -68,6 +68,9 @@ void machineType(FILE *file, Elf32_Ehdr* Header, char verbose){
 				break;
 			case(EM_ARM):
 				printf("ARM");
+				break;
+			case(EM_386):
+				printf("Intel 80386");
 				break;
 			default: //On peut rajouter encore des types si besoin.
 				printf("===UNK===");
