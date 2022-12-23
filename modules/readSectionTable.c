@@ -26,8 +26,7 @@ void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char 
 void sectionType(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 	if (verbose){
 		fread(&SectionTable->sh_type, 4, 1, file);
-		//TODO: Rajouter des cases, prendre firmware.elf comme référence
-		switch(SectionTable->sh_type){
+		switch(SectionTable->sh_type){ //Beaucoup de types à cause de firmware.elf pour éviter des =UNK=
 			case(SHT_NULL):
 				printf("NULL\t\t");
 				break;
