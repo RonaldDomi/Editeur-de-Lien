@@ -35,6 +35,23 @@ void printAdress(void * buffer, int length, char reverse){
 }
 
 
+void printAdress8(void * buffer, int length, char reverse){
+	/* Même remarque pour le type unsigned char */
+	printf("0x");
+	if (reverse){ //On commence par buffer[3], buffer[2]...
+		printf("%02x", ((unsigned char *)buffer)[length - 1]);
+		for(int i = length - 2; i>=0; i--){
+			printf("%02x", ((unsigned char *)buffer)[i]);
+		}
+	}else{ //On commence par buffer[0], buffer[1]...
+		printf("%02x", ((unsigned char *)buffer)[0]);
+		for(int i = 1; i<length; i++){
+			printf("%02x", ((unsigned char *)buffer)[i]);
+		}
+	}
+}
+
+
 void * readOctet(FILE * file, int nbOctet){
 	void * buffer = malloc(sizeof(char)*nbOctet);
     fread(buffer, sizeof(char)*nbOctet, 1, file);

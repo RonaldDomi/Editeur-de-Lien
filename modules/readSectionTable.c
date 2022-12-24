@@ -19,7 +19,7 @@ void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char 
 		fseek(file, position, 0);
 		int wordLength = strlen(mot);
 		if (wordLength==0){
-			printf("==NO NAME==\t\t");
+			printf("==NO_NAME==\t\t");
 		}else if ((0<=wordLength) && (8>wordLength)){
 			printf("%s\t\t\t", mot);
 		}else if ((8<=wordLength) && (16>wordLength)){
@@ -62,7 +62,7 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 				printf("NOTE\t\t");
 				break;
 			case(SHT_NOBITS):
-				printf("NO BITS\t\t");
+				printf("NOBITS\t\t");
 				break;
 			case(SHT_REL):
 				printf("REL\t\t");
@@ -71,16 +71,16 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 				printf("SHLIB\t\t");
 				break;
 			case(SHT_LOPROC):
-				printf("LOW PROC\t");
+				printf("LOWPROC\t");
 				break;
 			case(SHT_HIPROC):
-				printf("HI PROC\t\t");
+				printf("HIPROC\t\t");
 				break;
 			case(SHT_LOUSER):
-				printf("LOW USR\t\t");
+				printf("LOWUSR\t\t");
 				break;
 			case(SHT_HIUSER):
-				printf("HI USR\t\t");
+				printf("HIUSR\t\t");
 				break;
 			case(SHT_PREINIT_ARRAY):
 				printf("PREINIT_ARRAY\t");
@@ -92,7 +92,7 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 				printf("FINI_ARRAY\t");
 				break;
 			case(SHT_ARM_ATTRIBUTES):
-				printf("ARM_ATTRIB\t");
+				printf("ARM_ATTRIBUTES\t");
 				break;
 			default:
 				printf("=UNK=\t\t");
@@ -119,7 +119,7 @@ void sectionFlags(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 void sectionAdress(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 	if (verbose){
 		fread(&SectionTable->sh_addr, 4, 1, file);
-		printAdress(&SectionTable->sh_addr, 4, 1);
+		printAdress8(&SectionTable->sh_addr, 4, 1);
 		printf("\t\t");
 	}else{
 		fread(&SectionTable->sh_addr, 4, 1, file);
