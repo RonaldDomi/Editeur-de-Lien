@@ -3,11 +3,17 @@
 a.out
 Breakpoints_v2.xcbkptlist
 *.gch
+*.output
 Editeur-de-Liens.xcodeproj/project.pbxproj
 Editeur-de-Liens.xcodeproj/project.xcworkspace/contents.xcworkspacedata
 Editeur-de-Liens.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 Editeur-de-Liens.xcodeproj/project.xcworkspace/xcuserdata/bastienlevasseur.xcuserdatad/UserInterfaceState.xcuserstate
 Editeur-de-Liens.xcodeproj/xcuserdata/bastienlevasseur.xcuserdatad/xcschemes/xcschememanagement.plist
+Editeur-de-lien.xcodeproj/project.pbxproj
+Editeur-de-lien.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+Editeur-de-lien.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+Editeur-de-lien.xcodeproj/project.xcworkspace/xcuserdata/bastienlevasseur.xcuserdatad/UserInterfaceState.xcuserstate
+Editeur-de-lien.xcodeproj/xcuserdata/bastienlevasseur.xcuserdatad/xcschemes/xcschememanagement.plist
 
 # for automake
 config.log
@@ -20,8 +26,4 @@ requests
 *.1
 *.2
 stamp-h1
-Editeur-de-lien.xcodeproj/project.pbxproj
-Editeur-de-lien.xcodeproj/project.xcworkspace/contents.xcworkspacedata
-Editeur-de-lien.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
-Editeur-de-lien.xcodeproj/project.xcworkspace/xcuserdata/bastienlevasseur.xcuserdatad/UserInterfaceState.xcuserstate
-Editeur-de-lien.xcodeproj/xcuserdata/bastienlevasseur.xcuserdatad/xcschemes/xcschememanagement.plist
+

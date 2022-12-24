@@ -48,15 +48,32 @@ fi
 echo
 
 cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
-    #On prend un système clé -> valeur, par exemple: Machine -> ARM
+    #On prend un système clé -> valeur, par exemple: [ 1] -> .text          PROGBITS ...
     #On retire les espaces avant/après le texte et les Tabs
-    
-    key=`echo $line | awk -F[ '{gsub(/^[ \t]+|[ \t]+$/, "", $2) ; gsub(/]/, "]$", $2) ; print $2}' | awk -F$ '{gsub(/^[ \t]+|[ \t]+$/, "", $1) ; print $1}'`
+
+    key=`echo $line | cut -d] -f1`
+    key="${key}]"
+
     value=`echo $line | awk -F] '{gsub(/^[ \t]+|[ \t]+$/, "", $2) ; print $2}'`
+    
+    
+    echo "Key : $key"
+    echo "Value : $value"
 
-    echo "Key : <$key>"
-    echo "Value : <$value>"
+    case $key in
+    #\[[[:space:]*[0-9]*\])
+    
+    \[[[:space:]*[0-9]*\]) #Regex permettant de reconnaitre [  0] ... [ 10] ... [100]
+        otherValue=`grep -F "  $key" readelfCommand.output | cut -d] -f2 `
+        echo "otherValue : $otherValue"
 
-    otherValue=`grep "^  \[.$key" readelfCommand.output | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2) ; print $1}'`
-    echo "Other value of Key $key : $otherValue"
+        #On commence par vérifier le nom :
+
+        name=`echo $value | cut -d' ' -f1`
+        echo "name : $name"
+        otherName=`echo $otherValue | cut -d' ' -f1`
+        echo "otherName : $otherName"
+
+        echo
+    esac
 done

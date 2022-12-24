@@ -3,6 +3,7 @@
 //  Editeur de Liens
 //
 #include <math.h>
+#include <string.h>
 #include "readSectionTable.h"
 #include "readStringTable.c"
 #include "readHeader.h"
@@ -16,8 +17,16 @@ void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char 
 		long position = ftell(file);
 		getString(file, SectionTable->sh_name, Header, mot);
 		fseek(file, position, 0);
-		printf("%s\t", mot);
-		//TODO: Décoder sh_name en nom avec la String Index Table
+		int wordLength = strlen(mot);
+		if (wordLength==0){
+			printf("==NO NAME==\t\t");
+		}else if ((0<=wordLength) && (8>wordLength)){
+			printf("%s\t\t\t", mot);
+		}else if ((8<=wordLength) && (16>wordLength)){
+			printf("%s\t\t", mot);
+		}else{
+			printf("%s\t", mot);
+		}
 	}else{
 		fread(&SectionTable->sh_name, 4, 1, file);
 	}
@@ -62,7 +71,7 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 				printf("SHLIB\t\t");
 				break;
 			case(SHT_LOPROC):
-				printf("LOW PROC\t\t");
+				printf("LOW PROC\t");
 				break;
 			case(SHT_HIPROC):
 				printf("HI PROC\t\t");
@@ -110,7 +119,7 @@ void sectionFlags(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 void sectionAdress(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 	if (verbose){
 		fread(&SectionTable->sh_addr, 4, 1, file);
-		printOctet(&SectionTable->sh_addr, 4, 1);
+		printAdress(&SectionTable->sh_addr, 4, 1);
 		printf("\t\t");
 	}else{
 		fread(&SectionTable->sh_addr, 4, 1, file);
