@@ -2,8 +2,6 @@
 //  readHeader.h
 //  Editeur de Liens
 //
-//  Created by Bastien Levasseur on 20/12/2022.    
-//
 
 #ifndef readHeader_h
 #define readHeader_h
