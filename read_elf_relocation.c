@@ -38,16 +38,13 @@ int main(int argc, char **argv){
 	Elf32_Ehdr* Header = malloc(sizeof(Elf32_Ehdr));
 	Elf32_Shdr* SectionTable = malloc(sizeof(Elf32_Shdr));
 	Elf32_Rel* rel = malloc(sizeof(Elf32_Rel));
+	Elf32_Rela* rela = malloc(sizeof(Elf32_Rela));
 
 	getHeader(file, Header, 0);
 
 	/* On va directement à l'adresse ou est contenue l'en-tête de la section et on la remplit
 		On affiche aussi un début de tableau pour l'affichage de l'étape 2 */
 	fseek(file, Header->e_shoff, SEEK_SET);
-
-	GetRelocationPart(file, Header, SectionTable, 0);
-    fseek(file, SectionTable->sh_offset, SEEK_SET);
-
 	printf("\n");
 	printf("Adresses are given un hexadecimal format.\n");
 	printf("All values are given in bytes in decimal format.\n\n");
@@ -56,11 +53,11 @@ int main(int argc, char **argv){
 	getString(file, SectionTable->sh_name, Header, mot);
 	fseek(file, position, 0);
 	printf("relocation section '%s'\n", mot);
-	printf("Offset\t\tsymb\t\tInfo\t\t\n");
+	printf("Offset\t\tsymb\t\tInfo\t\tType\n");
 	printf("====================================================================");
 	printf("=====================================================================\n");
 
-    get_relocation(file, rel, 1);
+    GetRelocationPart(file,Header,SectionTable, rel, rela, 0);
 	printf("\n");
 	return 0;
 }
