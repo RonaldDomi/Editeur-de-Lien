@@ -94,6 +94,12 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 			case(SHT_ARM_ATTRIBUTES):
 				printf("ARM_ATTRIBUTES\t");
 				break;
+			case(SHT_ARM_EXIDX):
+				printf("ARM_EXIDX\t");
+				break;
+			case(SHT_LOOS):
+				printf("LOOS");
+				break;
 			default:
 				printf("=UNK=\t\t");
 				break;
@@ -219,10 +225,17 @@ void printNumber(Elf32_Ehdr* Header, int sectionNumber){
 	}
 
 	printf("[");
-	for (int i=0; i<spacesToPrint; i++){
+	/* Cas particulier si on a un seul caractère à imprimer (donc 1 seul [0-9]), on imprime quand même un espace */
+	/* Ce dernier cas rend toute la méthode inconsistante mais l'affichage de readelf -H est fait ainsi... */
+	if (charactersToPrint == 1){
 		printf(" ");
+		printf("%d]\t", sectionNumber);
+	}else{
+		for (int i=0; i<spacesToPrint; i++){
+			printf(" ");
+		}
+		printf("%d]\t", sectionNumber);
 	}
-	printf("%d]\t", sectionNumber);
 }
 
 
