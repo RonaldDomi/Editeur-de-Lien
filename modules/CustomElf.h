@@ -384,6 +384,7 @@ typedef struct
 typedef struct
 {
   Elf32_Word	sh_name;		/* Section name (string tbl index) */
+	char*			sh_charname; /* Section name in char format */
   Elf32_Word	sh_type;		/* Section type */
   Elf32_Word	sh_flags;		/* Section flags */
   Elf32_Addr	sh_addr;		/* Section virtual addr at execution */

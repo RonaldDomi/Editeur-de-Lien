@@ -123,12 +123,18 @@ void sectionAdressAlign(FILE *file, Elf32_Shdr* SectionTable, char verbose);
 void sectionEntrySize(FILE *file, Elf32_Shdr* SectionTable, char verbose);
 
 
-/* Remplit la structure SectionTable avec une fonction pour chaque membre
-
- Paramètre: un pointeur file de fichier, un pointeur Header de structure d'en-tête, 
-			un pointeur SectionTable de structure d'en-tête de section, un booléen verbose pour gérer l'affichage
+/*
+ Paramètre:
+	un pointeur file de fichier,
+	un pointeur Header de structure d'en-tête,
+	un pointeur SectionTable de structure d'en-tête de section,
+	un entier désignant spécifiquement le numéro de section à remplir (-1 pour ignorer)
+	un booléen verbose pour gérer l'affichage
  Sortie : Ne renvoie rien
  Effets de bords : Modifie la structure SectionTable, la remplie entièrement
- */
-void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose);
+*/
+void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, int sectionNumber, char verbose);
+
+
+int getSectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char sectionName, char verbose);
 #endif /* readSectionTable_h */

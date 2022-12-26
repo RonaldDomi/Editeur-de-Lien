@@ -90,6 +90,7 @@ build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = Options_and_debug_example$(EXEEXT) \
 	read_elf_header$(EXEEXT) read_elf_section_table$(EXEEXT) \
+	read_elf_section_content$(EXEEXT) \
 	read_elf_table_symbol$(EXEEXT)
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -108,7 +109,7 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__objects_1 = debug.$(OBJEXT) util.$(OBJEXT) freadoctet.$(OBJEXT) \
 	CheckElf.$(OBJEXT) readHeader.$(OBJEXT) \
-	readSectionTable.$(OBJEXT)
+	readSectionTable.$(OBJEXT) readContent.$(OBJEXT)
 am_Options_and_debug_example_OBJECTS = $(am__objects_1) \
 	Options_and_debug_example.$(OBJEXT)
 Options_and_debug_example_OBJECTS =  \
@@ -118,6 +119,11 @@ am_read_elf_header_OBJECTS = $(am__objects_1) \
 	read_elf_header.$(OBJEXT)
 read_elf_header_OBJECTS = $(am_read_elf_header_OBJECTS)
 read_elf_header_LDADD = $(LDADD)
+am_read_elf_section_content_OBJECTS = $(am__objects_1) \
+	read_elf_section_content.$(OBJEXT)
+read_elf_section_content_OBJECTS =  \
+	$(am_read_elf_section_content_OBJECTS)
+read_elf_section_content_LDADD = $(LDADD)
 am_read_elf_section_table_OBJECTS = $(am__objects_1) \
 	read_elf_section_table.$(OBJEXT)
 read_elf_section_table_OBJECTS = $(am_read_elf_section_table_OBJECTS)
@@ -143,8 +149,10 @@ depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/CheckElf.Po \
 	./$(DEPDIR)/Options_and_debug_example.Po ./$(DEPDIR)/debug.Po \
-	./$(DEPDIR)/freadoctet.Po ./$(DEPDIR)/readHeader.Po \
-	./$(DEPDIR)/readSectionTable.Po ./$(DEPDIR)/read_elf_header.Po \
+	./$(DEPDIR)/freadoctet.Po ./$(DEPDIR)/readContent.Po \
+	./$(DEPDIR)/readHeader.Po ./$(DEPDIR)/readSectionTable.Po \
+	./$(DEPDIR)/read_elf_header.Po \
+	./$(DEPDIR)/read_elf_section_content.Po \
 	./$(DEPDIR)/read_elf_section_table.Po \
 	./$(DEPDIR)/read_elf_table_symbol.Po ./$(DEPDIR)/util.Po
 am__mv = mv -f
@@ -165,10 +173,12 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(Options_and_debug_example_SOURCES) \
-	$(read_elf_header_SOURCES) $(read_elf_section_table_SOURCES) \
+	$(read_elf_header_SOURCES) $(read_elf_section_content_SOURCES) \
+	$(read_elf_section_table_SOURCES) \
 	$(read_elf_table_symbol_SOURCES)
 DIST_SOURCES = $(Options_and_debug_example_SOURCES) \
-	$(read_elf_header_SOURCES) $(read_elf_section_table_SOURCES) \
+	$(read_elf_header_SOURCES) $(read_elf_section_content_SOURCES) \
+	$(read_elf_section_table_SOURCES) \
 	$(read_elf_table_symbol_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
 	ctags-recursive dvi-recursive html-recursive info-recursive \
@@ -374,11 +384,13 @@ SUBDIRS = . Examples_fusion
 COMMON = debug.h debug.c util.h util.c modules/freadoctet.h \
 	modules/freadoctet.c modules/CustomElf.h modules/CheckElf.h \
 	modules/CheckElf.c modules/readHeader.h modules/readHeader.c \
-	modules/readSectionTable.h modules/readSectionTable.c
+	modules/readSectionTable.h modules/readSectionTable.c \
+	modules/readContent.h modules/readContent.c
 EXTRA_DIST = filtre.pl
 Options_and_debug_example_SOURCES = $(COMMON) Options_and_debug_example.c
 read_elf_header_SOURCES = $(COMMON) read_elf_header.c 
 read_elf_section_table_SOURCES = $(COMMON) read_elf_section_table.c
+read_elf_section_content_SOURCES = $(COMMON) read_elf_section_content.c
 read_elf_table_symbol_SOURCES = $(COMMON) read_elf_table_symbol.c
 all: all-recursive
 
@@ -468,6 +480,10 @@ read_elf_header$(EXEEXT): $(read_elf_header_OBJECTS) $(read_elf_header_DEPENDENC
 	@rm -f read_elf_header$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(read_elf_header_OBJECTS) $(read_elf_header_LDADD) $(LIBS)
 
+read_elf_section_content$(EXEEXT): $(read_elf_section_content_OBJECTS) $(read_elf_section_content_DEPENDENCIES) $(EXTRA_read_elf_section_content_DEPENDENCIES) 
+	@rm -f read_elf_section_content$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(read_elf_section_content_OBJECTS) $(read_elf_section_content_LDADD) $(LIBS)
+
 read_elf_section_table$(EXEEXT): $(read_elf_section_table_OBJECTS) $(read_elf_section_table_DEPENDENCIES) $(EXTRA_read_elf_section_table_DEPENDENCIES) 
 	@rm -f read_elf_section_table$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(read_elf_section_table_OBJECTS) $(read_elf_section_table_LDADD) $(LIBS)
@@ -486,9 +502,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Options_and_debug_example.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/debug.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/freadoctet.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/readContent.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/readHeader.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/readSectionTable.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/read_elf_header.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/read_elf_section_content.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/read_elf_section_table.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/read_elf_table_symbol.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@ # am--include-marker
@@ -568,6 +586,20 @@ readSectionTable.obj: modules/readSectionTable.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='modules/readSectionTable.c' object='readSectionTable.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o readSectionTable.obj `if test -f 'modules/readSectionTable.c'; then $(CYGPATH_W) 'modules/readSectionTable.c'; else $(CYGPATH_W) '$(srcdir)/modules/readSectionTable.c'; fi`
+
+readContent.o: modules/readContent.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT readContent.o -MD -MP -MF $(DEPDIR)/readContent.Tpo -c -o readContent.o `test -f 'modules/readContent.c' || echo '$(srcdir)/'`modules/readContent.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/readContent.Tpo $(DEPDIR)/readContent.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='modules/readContent.c' object='readContent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o readContent.o `test -f 'modules/readContent.c' || echo '$(srcdir)/'`modules/readContent.c
+
+readContent.obj: modules/readContent.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT readContent.obj -MD -MP -MF $(DEPDIR)/readContent.Tpo -c -o readContent.obj `if test -f 'modules/readContent.c'; then $(CYGPATH_W) 'modules/readContent.c'; else $(CYGPATH_W) '$(srcdir)/modules/readContent.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/readContent.Tpo $(DEPDIR)/readContent.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='modules/readContent.c' object='readContent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o readContent.obj `if test -f 'modules/readContent.c'; then $(CYGPATH_W) 'modules/readContent.c'; else $(CYGPATH_W) '$(srcdir)/modules/readContent.c'; fi`
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run 'make' without going through this Makefile.
@@ -919,9 +951,11 @@ distclean: distclean-recursive
 	-rm -f ./$(DEPDIR)/Options_and_debug_example.Po
 	-rm -f ./$(DEPDIR)/debug.Po
 	-rm -f ./$(DEPDIR)/freadoctet.Po
+	-rm -f ./$(DEPDIR)/readContent.Po
 	-rm -f ./$(DEPDIR)/readHeader.Po
 	-rm -f ./$(DEPDIR)/readSectionTable.Po
 	-rm -f ./$(DEPDIR)/read_elf_header.Po
+	-rm -f ./$(DEPDIR)/read_elf_section_content.Po
 	-rm -f ./$(DEPDIR)/read_elf_section_table.Po
 	-rm -f ./$(DEPDIR)/read_elf_table_symbol.Po
 	-rm -f ./$(DEPDIR)/util.Po
@@ -976,9 +1010,11 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f ./$(DEPDIR)/Options_and_debug_example.Po
 	-rm -f ./$(DEPDIR)/debug.Po
 	-rm -f ./$(DEPDIR)/freadoctet.Po
+	-rm -f ./$(DEPDIR)/readContent.Po
 	-rm -f ./$(DEPDIR)/readHeader.Po
 	-rm -f ./$(DEPDIR)/readSectionTable.Po
 	-rm -f ./$(DEPDIR)/read_elf_header.Po
+	-rm -f ./$(DEPDIR)/read_elf_section_content.Po
 	-rm -f ./$(DEPDIR)/read_elf_section_table.Po
 	-rm -f ./$(DEPDIR)/read_elf_table_symbol.Po
 	-rm -f ./$(DEPDIR)/util.Po
