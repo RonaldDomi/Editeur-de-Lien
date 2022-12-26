@@ -46,15 +46,15 @@ int main(int argc, char **argv){
 	printf("\n");
 	printf("Adresses are given un hexadecimal format.\n");
 	printf("All values are given in bytes in decimal format.\n\n");
-	printf("Nb\tName\t\tType\t\tFlags\tExecutionAdresss\tOffset\t\tSectionSize\tLinkTo\tInfo\tAlign\tEntrySize\n");
+	printf("Nb\tName\t\t\tType\t\tFlags\tExecutionAdresss\tOffset\t\tSectionSize\tLinkTo\tInfo\tAlign\tEntrySize\n");
 	printf("====================================================================");
-	printf("=====================================================================\n");
+	printf("=============================================================================\n");
 	
 	if (Header->e_shnum == 0){
 		printf("No section Table...\n");
 	}else{
 		for (int i=0; i<Header->e_shnum; i++){
-			printf("[%d]\t", i);
+			printNumber(Header, i);
 			getSectionTable(file, Header, SectionTable, -1, 1);
 			printf("\n");
 		}

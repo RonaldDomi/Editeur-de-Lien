@@ -24,6 +24,18 @@ void printOctet(void * buffer, int length, char reverse);
 void printAdress(void * buffer, int length, char reverse);
 
 
+/* Affiche une adresse au format héxadécimal avec le préfixe 0x
+ On prend le même format que readelf, donc les adresses sont affichées sur 8 bits
+ Suivant le paramètre reverse, commence par le début ou la fin du tableau
+ Cela permet de prendre en compte le Big Endian où non.
+
+ Paramètres: Un pointeur vers une valeur, la longueur length de la valeur, un booléen reverse
+ Sortie: Ne renvoie rien
+ Effets de bords: Affiche octet par octet au format hexadécimal
+ */
+void printAdress8(void * buffer, int length, char reverse);
+
+
 void dumpOctet(void * buffer, int length);
 
 
