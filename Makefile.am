@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-AM_CFLAGS=-Wall -g
+AM_CFLAGS=-Wall -g -lm
 AM_CFLAGS+=-D DEBUG
 AM_CFLAGS+=-D WARNING
 # Uncomment if performance when running with -DDEBUG is an issue

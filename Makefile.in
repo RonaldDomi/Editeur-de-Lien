@@ -365,7 +365,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4
-AM_CFLAGS = -Wall -g -D DEBUG -D WARNING
+AM_CFLAGS = -Wall -g -lm -D DEBUG -D WARNING
 # Uncomment if performance when running with -DDEBUG is an issue
 # Warning, if uncommented, issuing calls to debug functions during options
 # parsing might result in debug flag incorrectly set to 0 for some files
