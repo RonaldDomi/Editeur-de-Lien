@@ -120,11 +120,13 @@ am_read_elf_header_OBJECTS = $(am__objects_1) \
 	read_elf_header.$(OBJEXT)
 read_elf_header_OBJECTS = $(am_read_elf_header_OBJECTS)
 read_elf_header_LDADD = $(LDADD)
+read_elf_header_DEPENDENCIES =
 am_read_elf_section_content_OBJECTS = $(am__objects_1) \
 	read_elf_section_content.$(OBJEXT)
 read_elf_section_content_OBJECTS =  \
 	$(am_read_elf_section_content_OBJECTS)
 read_elf_section_content_LDADD = $(LDADD)
+read_elf_section_content_DEPENDENCIES =
 am_read_elf_section_table_OBJECTS = $(am__objects_1) \
 	read_elf_section_table.$(OBJEXT)
 read_elf_section_table_OBJECTS = $(am_read_elf_section_table_OBJECTS)

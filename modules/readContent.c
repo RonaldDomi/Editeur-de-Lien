@@ -24,14 +24,15 @@ void printContent(FILE* file, Elf32_Shdr* SectionTable, int sectionSelected, cha
 	int end=0;
 	int adressPrinted=0;
 	int sizeToRead=8;
-	long dumped=0;
+	uint32_t dumped=0;
 	char buffer[8];
 
 	while (!end){
 
-		if ((8 - SectionTable->sh_size) < 0){
-			printf("End in sight");
-			sizeToRead=(8 - SectionTable->sh_size);
+		if ((SectionTable->sh_size - dumped) < 8){
+			/* End in sight */
+			sizeToRead=SectionTable->sh_size - dumped;
+			//printf("Size to read : %d", sizeToRead);
 		}
 		if (dumped%16 == 0){
 			printf("\n");
@@ -40,7 +41,7 @@ void printContent(FILE* file, Elf32_Shdr* SectionTable, int sectionSelected, cha
 
 		fread(buffer, sizeToRead, 1, file);
 		dumpOctet(buffer, sizeToRead);
-		dumped+=8;
+		dumped+=sizeToRead;
 		adressPrinted+=8;
 
 		if (dumped == SectionTable->sh_size){

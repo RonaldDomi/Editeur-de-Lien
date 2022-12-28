@@ -51,6 +51,7 @@ int main(int argc, char **argv){
 
 	if (endPointer==argv[2]){
 
+		/* Search by Name */
 		printf("Search by Name\n");
 		if (! getSectionName(file, Header, SectionTable, *argv[2], 0)){
 			printf("Section Found!\n");
@@ -62,16 +63,19 @@ int main(int argc, char **argv){
 
 	}else{
 
+		/* Search by Number */
 		printf("Search by Number\n");
 		if (sectionSelected > Header->e_shnum){
 			printf("This section does not exist !\n");
 			printf("There are only %d sections.\n", Header->e_shnum);
 			exit(1);
 		}
-		if (sectionSelected == 0){
-			printf("There is no data to dump.\n");
-		}
 		getSectionTable(file, Header, SectionTable, sectionSelected, 0);
+
+		if (SectionTable->sh_size == 0){
+			printf("There is no data to dump.\n");
+			exit(1);
+		}
 		printContent(file, SectionTable, sectionSelected, NULL);
 	}
 
