@@ -137,7 +137,7 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
     case $key in
 
     [[:xdigit:]]*)
-        searchField="  0x$key"
+        
         otherValue=`grep "^  0x$key" readelfCommand.output | cut -c -48 | cut -dx -f2 | cut -c 10-`
         otherValue=`echo $otherValue | awk '{gsub(/$regex2Blanks/, "", $0) ; print $0}'`
         #echo "OtherValue : $otherValue"
