@@ -2,9 +2,8 @@
 //  readSectionTable.c
 //  Editeur de Liens
 //
-//  Created by Bastien Levasseur on 20/12/2022.
-//
-
+#include <math.h>
+#include <string.h>
 #include "readSectionTable.h"
 #include "readStringTable.c"
 #include "readHeader.h"
@@ -18,8 +17,16 @@ void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char 
 		long position = ftell(file);
 		getString(file, SectionTable->sh_name, Header, mot);
 		fseek(file, position, 0);
-		printf("%s\t", mot);
-		//TODO: Décoder sh_name en nom avec la String Index Table
+		int wordLength = strlen(mot);
+		if (wordLength==0){
+			printf("==NO_NAME==\t\t");
+		}else if ((0<=wordLength) && (8>wordLength)){
+			printf("%s\t\t\t", mot);
+		}else if ((8<=wordLength) && (16>wordLength)){
+			printf("%s\t\t", mot);
+		}else{
+			printf("%s\t", mot);
+		}
 	}else{
 		fread(&SectionTable->sh_name, 4, 1, file);
 	}
@@ -55,7 +62,7 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 				printf("NOTE\t\t");
 				break;
 			case(SHT_NOBITS):
-				printf("NO BITS\t\t");
+				printf("NOBITS\t\t");
 				break;
 			case(SHT_REL):
 				printf("REL\t\t");
@@ -64,16 +71,16 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 				printf("SHLIB\t\t");
 				break;
 			case(SHT_LOPROC):
-				printf("LOW PROC\t\t");
+				printf("LOWPROC\t");
 				break;
 			case(SHT_HIPROC):
-				printf("HI PROC\t\t");
+				printf("HIPROC\t\t");
 				break;
 			case(SHT_LOUSER):
-				printf("LOW USR\t\t");
+				printf("LOWUSR\t\t");
 				break;
 			case(SHT_HIUSER):
-				printf("HI USR\t\t");
+				printf("HIUSR\t\t");
 				break;
 			case(SHT_PREINIT_ARRAY):
 				printf("PREINIT_ARRAY\t");
@@ -85,7 +92,13 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 				printf("FINI_ARRAY\t");
 				break;
 			case(SHT_ARM_ATTRIBUTES):
-				printf("ARM_ATTRIB\t");
+				printf("ARM_ATTRIBUTES\t");
+				break;
+			case(SHT_ARM_EXIDX):
+				printf("ARM_EXIDX\t");
+				break;
+			case(SHT_LOOS):
+				printf("LOOS");
 				break;
 			default:
 				printf("=UNK=\t\t");
@@ -112,7 +125,7 @@ void sectionFlags(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 void sectionAdress(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 	if (verbose){
 		fread(&SectionTable->sh_addr, 4, 1, file);
-		printOctet(&SectionTable->sh_addr, 4, 1);
+		printAdress8(&SectionTable->sh_addr, 4, 1);
 		printf("\t\t");
 	}else{
 		fread(&SectionTable->sh_addr, 4, 1, file);
@@ -186,6 +199,46 @@ void sectionEntrySize(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 }
 
 
+void printNumber(Elf32_Ehdr* Header, int sectionNumber){
+	/* On calcule le nombre de caractères à imprimer entre les crochets,
+	 cela revient à savoir combien de caractères on a besoin pour afficher
+	 tous les numéros de table.
+	 On utilise le log10()+1 pour calculer le nombre de caractères, on prend le floor() */
+
+	/* Cas particulier si e_shnum=1, car log10(1-1) = -infinity */
+	int charactersToPrint;
+	if (Header->e_shnum==1){
+		charactersToPrint = 1;
+	}else{
+		charactersToPrint = floor(log10(Header->e_shnum-1) +1);
+		/*-1 car on part de 0, e.g: pour imprimer 10 nombres on a besoin que d'un caractère de 0 à 9*/
+	}
+
+	/* On cherche maintenant à savoir combien d'espaces on doit afficher avant le nombre
+		On calcule la taille en chiffres du nombre de la section et on fait la soustraction */
+	/* Cas particulier si la SectionNumber=0 ou 1 pour éviter -infinity */
+	int spacesToPrint;
+	if (sectionNumber==0 || sectionNumber==1){
+		spacesToPrint = charactersToPrint - 1;
+	}else{
+		spacesToPrint = charactersToPrint - floor(log10(sectionNumber) +1);
+	}
+
+	printf("[");
+	/* Cas particulier si on a un seul caractère à imprimer (donc 1 seul [0-9]), on imprime quand même un espace */
+	/* Ce dernier cas rend toute la méthode inconsistante mais l'affichage de readelf -H est fait ainsi... */
+	if (charactersToPrint == 1){
+		printf(" ");
+		printf("%d]\t", sectionNumber);
+	}else{
+		for (int i=0; i<spacesToPrint; i++){
+			printf(" ");
+		}
+		printf("%d]\t", sectionNumber);
+	}
+}
+
+
 void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose){
 	if (Header->e_shnum == 0){
 		if (verbose){
@@ -194,7 +247,7 @@ void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, c
 	}else{
 		for (int i=0; i<Header->e_shnum; i++){
 			if (verbose){
-				printf("[%d]\t", i);
+				printNumber(Header, i);
 			}
 			sectionName(file, Header, SectionTable, verbose);
 			sectionType(file, SectionTable, verbose);

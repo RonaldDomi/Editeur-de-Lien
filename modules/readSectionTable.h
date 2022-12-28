@@ -2,8 +2,6 @@
 //  readSectionTable.h
 //  Editeur de Liens
 //
-//  Created by Bastien Levasseur on 20/12/2022.
-//
 
 #ifndef readSectionTable_h
 #define readSectionTable_h
@@ -121,6 +119,14 @@ void sectionAdressAlign(FILE *file, Elf32_Shdr* SectionTable, char verbose);
  Effets de bords: Modifie la structure SectionTable, ajoute la taille à sh_entsize
  */
 void sectionEntrySize(FILE *file, Elf32_Shdr* SectionTable, char verbose);
+
+/* Affiche le numéro de la section entre crochets aligné à droite
+ Par exemple pour 101 sections à afficher: [  0] ... [ 10] ... [100]
+
+ Paramètre: un pointeur Header de structure d'en-tête, un entier correspondant au numéro de la section à afficher.
+ Sortie : Ne renvoie rien
+ Effets de bords : Affiche le numéro de la section, entre crochets, aligné à droite*/
+void printNumber(Elf32_Ehdr* Header, int sectionNumber);
 
 
 /* Remplit la structure SectionTable avec une fonction pour chaque membre

@@ -14,6 +14,9 @@ AM_PROG_LEX
 
 # Checks for libraries.
 
+#Automatically adds -lm flag if necessary:
+AC_SEARCH_LIBS([sqrt], [m])
+
 # Checks for header files.
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h netdb.h netinet/in.h stdlib.h string.h strings.h sys/socket.h sys/time.h unistd.h])
 
