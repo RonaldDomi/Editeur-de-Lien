@@ -13,7 +13,7 @@ int main(int argc, char **argv){
 
 	/* Vérifie le nombre d'arguments */
 	if (argc<2){
-		printf("Usage : ./read_elf_section_table <FichierBinaire>\n");
+		printf("Usage : ./read_elf_section_table <File>\n");
 		exit(1);
 	}
 
@@ -46,9 +46,17 @@ int main(int argc, char **argv){
 	printf("All values are given in bytes in decimal format.\n\n");
 	printf("Nb\tName\t\t\tType\t\tFlags\tExecutionAdresss\tOffset\t\tSectionSize\tLinkTo\tInfo\tAlign\tEntrySize\n");
 	printf("====================================================================");
-	printf("=====================================================================\n");
+	printf("=============================================================================\n");
 	
-	getSectionTable(file, Header, SectionTable, 1);
+	if (Header->e_shnum == 0){
+		printf("No section Table...\n");
+	}else{
+		for (int i=0; i<Header->e_shnum; i++){
+			printNumber(Header, i);
+			getSectionTable(file, Header, SectionTable, -1, 1);
+			printf("\n");
+		}
+	}
 
 	return 0;
 }

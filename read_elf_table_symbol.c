@@ -12,7 +12,7 @@
 int main(int argc, char **argv){
 
 	if (argc<2){
-		printf("Usage : ./read_elf_section_table <FichierBinaire>\n");
+		printf("Usage : ./read_elf_section_table <File>\n");
 		exit(1);
 	}
 

@@ -52,6 +52,16 @@ void printAdress8(void * buffer, int length, char reverse){
 }
 
 
+void dumpOctet(void * buffer, int length){
+	for(int i = 1; i<length+1; i++){
+		printf("%02x", ((unsigned char *)buffer)[i-1]);
+		if (i%4 == 0){
+			printf(" ");
+		}
+	}
+}
+
+
 void * readOctet(FILE * file, int nbOctet){
 	void * buffer = malloc(sizeof(char)*nbOctet);
     fread(buffer, sizeof(char)*nbOctet, 1, file);

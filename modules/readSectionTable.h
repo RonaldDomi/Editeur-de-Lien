@@ -109,7 +109,6 @@ void sectionInfo(FILE *file, Elf32_Shdr* SectionTable, char verbose);
  */
 void sectionAdressAlign(FILE *file, Elf32_Shdr* SectionTable, char verbose);
 
-
 /* Lit la taille de l'entrée de la section et la stocke dans la structure SectionTable
  Affiche la taille suivant le paramètre verbose.
  La taille est un Word, on lit donc 4 octets.
@@ -129,12 +128,37 @@ void sectionEntrySize(FILE *file, Elf32_Shdr* SectionTable, char verbose);
 void printNumber(Elf32_Ehdr* Header, int sectionNumber);
 
 
-/* Remplit la structure SectionTable avec une fonction pour chaque membre
+/* Affiche le numéro de la section entre crochets aligné à droite
+ Par exemple pour 101 sections à afficher: [  0] ... [ 10] ... [100]
 
- Paramètre: un pointeur file de fichier, un pointeur Header de structure d'en-tête, 
-			un pointeur SectionTable de structure d'en-tête de section, un booléen verbose pour gérer l'affichage
+ Paramètre: un pointeur Header de structure d'en-tête, un entier correspondant au numéro de la section à afficher.
+ Sortie : Ne renvoie rien
+ Effets de bords : Affiche le numéro de la section, entre crochets, aligné à droite*/
+void printNumber(Elf32_Ehdr* Header, int sectionNumber);
+
+
+/* Remplit la structure SectionTable avec une fonction pour chaque membre, remplit un membre spécifique si sectionNumber != -1
+ Paramètre:
+	un pointeur file de fichier,
+	un pointeur Header de structure d'en-tête,
+	un pointeur SectionTable de structure d'en-tête de section,
+	un entier désignant spécifiquement le numéro de section à remplir (-1 pour ignorer)
+	un booléen verbose pour gérer l'affichage
  Sortie : Ne renvoie rien
  Effets de bords : Modifie la structure SectionTable, la remplie entièrement
+*/
+void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, int sectionNumber, char verbose);
+
+/* Remplit la structure SectionTable avec une fonction pour chaque membre, en cherchant la section avec un nom spécifique
+ Paramètre:
+ un pointeur file de fichier,
+ un pointeur Header de structure d'en-tête,
+ un pointeur SectionTable de structure d'en-tête de section,
+ un char désignant spécifiquement le nom de section à remplir
+ un booléen verbose pour gérer l'affichage
+ Sortie : Renvoie 1 si la section a été trouvée
+			0 Sinon
+ Effets de bords : Modifie la structure SectionTable, la remplie entièrement
  */
-void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose);
+int getSectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char sectionName, char verbose);
 #endif /* readSectionTable_h */

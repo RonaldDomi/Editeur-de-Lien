@@ -9,6 +9,8 @@
 #include "readHeader.h"
 #include "CustomElf.h"
 #include "freadoctet.h"
+#include <string.h>
+#include <math.h>
 
 void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose){
 	if (verbose){
@@ -17,6 +19,9 @@ void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char 
 		long position = ftell(file);
 		getString(file, SectionTable->sh_name, Header, mot);
 		fseek(file, position, 0);
+		SectionTable->sh_charname="Temp";
+//		SectionTable->sh_charname=mot;
+//		printf("Name : %s",SectionTable->sh_charname);
 		int wordLength = strlen(mot);
 		if (wordLength==0){
 			printf("==NO_NAME==\t\t");
@@ -108,7 +113,6 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 		fread(&SectionTable->sh_type, 4, 1, file);
 	}
 }
-
 
 void sectionFlags(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 	if (verbose){
@@ -238,31 +242,29 @@ void printNumber(Elf32_Ehdr* Header, int sectionNumber){
 	}
 }
 
+void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, int sectionNumber, char verbose){
+	if (sectionNumber != -1){
+		fseek(file, Header->e_shoff + (Header->e_shentsize * sectionNumber), SEEK_SET);
+	}
+	sectionName(file, Header, SectionTable, verbose);
+	sectionType(file, SectionTable, verbose);
+	sectionFlags(file, SectionTable, verbose);
+	sectionAdress(file, SectionTable, verbose);
+	sectionOffset(file, SectionTable, verbose);
+	sectionSize(file, SectionTable, verbose);
+	sectionLink(file, SectionTable, verbose);
+	sectionInfo(file, SectionTable, verbose);
+	sectionAdressAlign(file, SectionTable, verbose);
+	sectionEntrySize(file, SectionTable, verbose);
+}
 
-void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose){
-	if (Header->e_shnum == 0){
-		if (verbose){
-			printf("No section Table...\n");
-		}
-	}else{
-		for (int i=0; i<Header->e_shnum; i++){
-			if (verbose){
-				printNumber(Header, i);
-			}
-			sectionName(file, Header, SectionTable, verbose);
-			sectionType(file, SectionTable, verbose);
-			sectionFlags(file, SectionTable, verbose);
-			sectionAdress(file, SectionTable, verbose);
-			sectionOffset(file, SectionTable, verbose);
-			sectionSize(file, SectionTable, verbose);
-			sectionLink(file, SectionTable, verbose);
-			sectionInfo(file, SectionTable, verbose);
-			sectionAdressAlign(file, SectionTable, verbose);
-			sectionEntrySize(file, SectionTable, verbose);
-			
-			if (verbose){
-				printf("\n");
-			}
+
+int getSectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char sectionName, char verbose){
+	for (int i=0; i<Header->e_shnum; i++){
+		getSectionTable(file, Header, SectionTable, i, 0);
+		if (! strcmp("Temp", &sectionName)){
+			return 1;
 		}
 	}
+	return 0;
 }
