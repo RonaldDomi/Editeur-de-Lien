@@ -11,7 +11,7 @@ AM_CFLAGS+=-D WARNING
 
 
 SUBDIRS=
-SUBDIRS+=. Examples_fusion
+# SUBDIRS+=. Examples_fusion
 
 bin_PROGRAMS=
 bin_PROGRAMS+=Options_and_debug_example
