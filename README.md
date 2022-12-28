@@ -14,7 +14,7 @@ La fonctionalite de cette projet plus precisement est de Fusioner 2 fichiers rel
 # Getting Started
 Pour lancer le projet il faut premierement generel le Makefile  
 `autoreconf -vif`  
-`for dir in Examples_fusion/*; do autoreconf -vif $dir; done`  
+// pas besoin `for dir in Examples_fusion/*; do autoreconf -vif $dir; done`  
 `./configure`  
 `make`  
 

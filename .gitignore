@@ -16,7 +16,7 @@ config.log
 config.status
 configure 
 configure~
-configure.ac
+# configure.ac
 Makefile
 Makefile.in 
 stamp-h1
