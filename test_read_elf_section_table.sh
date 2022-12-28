@@ -55,6 +55,10 @@ then
     if [ $errorMyReadelf -eq 1 ]
     then
         echo "Error code : \033[48;5;2mOK TEST\033[0;0m" #Pass
+        echo
+        echo "Test $(basename "$1") \033[48;5;2mpassed\033[0;0m!"
+        rm -f MyReadelfCommand.output readelfCommand.output
+        exit 0
     else
         echo "Is the project compiled?"
         printf "Error code : " #Fail
@@ -76,7 +80,7 @@ sectionNumber=0
 pid=$$
 alternateSourceName=0 # Permet de savoir si la ligne traitée contient un nom de section où non
 alternateSourceFlag=0 # Permet de savoir si la ligne traitée contient des flags où non
-regexNumber="^[0-9]" # Match tous les chiffres
+regexNumber="^[0-9]" # Match tous les chiffres en base 10
 regexZero="\[[[:space:]*[0]*\]" # Match tous les [0], [ 0], [  0], ...
 cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
     

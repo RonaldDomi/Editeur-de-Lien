@@ -69,6 +69,10 @@ then
     if [ $errorMyReadelf -eq 1 ]
     then
         echo "Error code : \033[48;5;2mOK TEST\033[0;0m" #Pass
+        echo
+        echo "Test $(basename "$1") \033[48;5;2mpassed\033[0;0m!"
+        rm -f MyReadelfCommand.output readelfCommand.output
+        exit 0
     else
         echo "Is the project compiled?"
         printf "Error code : " #Fail

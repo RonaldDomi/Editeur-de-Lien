@@ -9,7 +9,6 @@
 #include "freadoctet.h"
 
 void printContent(FILE* file, Elf32_Shdr* SectionTable, int sectionSelected, char* nameOfSection){
-	int adress = SectionTable->sh_addr + SectionTable->sh_offset + SectionTable->sh_addr;
 
 	if (sectionSelected==-1){
 		printf("\nDump of section %s :\n", nameOfSection);
@@ -17,12 +16,12 @@ void printContent(FILE* file, Elf32_Shdr* SectionTable, int sectionSelected, cha
 		printf("\nDump of section number %d :\n", sectionSelected);
 	}
 
-	printf("Starting at 0x%08x \n", adress);
+	printf("Starting at 0x%08x \n", SectionTable->sh_addr);
 
-	fseek(file, adress, SEEK_SET);
+	fseek(file, SectionTable->sh_offset, SEEK_SET);
 
 	int end=0;
-	int adressPrinted=0;
+	int adressPrinted=SectionTable->sh_addr;
 	int sizeToRead=8;
 	uint32_t dumped=0;
 	char buffer[8];

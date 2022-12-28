@@ -34,3 +34,4 @@ read_elf_header
 read_elf_section_table
 read_elf_table_symbol
 read_elf_section_content
+*.2
