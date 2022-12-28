@@ -2,8 +2,6 @@
 //  read_elf_section_table.c
 //  Editeur de Liens
 //
-//  Created by Bastien Levasseur on 18/12/2022.
-//
 
 #include <stdio.h>
 #include <stdlib.h>

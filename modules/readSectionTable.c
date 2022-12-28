@@ -2,9 +2,8 @@
 //  readSectionTable.c
 //  Editeur de Liens
 //
-//  Created by Bastien Levasseur on 20/12/2022.
-//
-
+#include <math.h>
+#include <string.h>
 #include "readSectionTable.h"
 #include "readStringTable.c"
 #include "readHeader.h"
@@ -130,7 +129,7 @@ void sectionFlags(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 void sectionAdress(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 	if (verbose){
 		fread(&SectionTable->sh_addr, 4, 1, file);
-		printOctet(&SectionTable->sh_addr, 4, 1);
+		printAdress8(&SectionTable->sh_addr, 4, 1);
 		printf("\t\t");
 	}else{
 		fread(&SectionTable->sh_addr, 4, 1, file);
@@ -220,7 +219,7 @@ void printNumber(Elf32_Ehdr* Header, int sectionNumber){
 	}
 
 	/* On cherche maintenant à savoir combien d'espaces on doit afficher avant le nombre
-	 On calcule la taille en chiffres du nombre de la section et on fait la soustraction */
+		On calcule la taille en chiffres du nombre de la section et on fait la soustraction */
 	/* Cas particulier si la SectionNumber=0 ou 1 pour éviter -infinity */
 	int spacesToPrint;
 	if (sectionNumber==0 || sectionNumber==1){
@@ -242,7 +241,6 @@ void printNumber(Elf32_Ehdr* Header, int sectionNumber){
 		printf("%d]\t", sectionNumber);
 	}
 }
-
 
 void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, int sectionNumber, char verbose){
 	if (sectionNumber != -1){

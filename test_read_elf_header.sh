@@ -13,7 +13,7 @@
 # Cette fonction prend en entrée un texte et supprime tout ce qui n'est pas un chiffre.
 # Par exemple: "25 Headers" devient "25"
 # On utilise une Regex NOT[0-9] avec le Flag Global
-function SupprimerLettres(){
+function SupprimerLettres {
     local ans=`echo $1 | sed '{s/[^0-9]//g;}'`
     echo "$ans"
 }
@@ -21,21 +21,25 @@ function SupprimerLettres(){
 #Cette fonction prend en entrée un texte et supprime tout ce qui n'est pas une lettre
 #Par exemple: "2 Executable File" devient "Executable File"
 #On utilise une Regex NOT[A-Z]*
-function SupprimerChiffres(){
+function SupprimerChiffres {
     local ans=`echo $1 | sed '{s/[^A-Z]*//;}'`
     echo "$ans"
 }
 
 # Cette fonction prend en entrée deux textes censés être différents et termine le script
 # On utilise cette fonction uniquement lorsqu'on trouve une différence entre les deux fonctions testées
-function FailTest(){
-    echo "\033[48;5;1m===FAIL TEST===\033[0;0m"
+function FailTest {
+    echo "\033[101;1;1m===FAIL TEST===\033[0;0m"
     echo "readelf is :\"$1\""
     echo "MyReadElf is : \"$2\""
     rm -f MyReadelfCommand.output readelfCommand.output
+    #TOFIX: Comme le while utilise un subprocess, on peut kill le processus, mais on aura pas de valeur de retour
+    #Il faut essayer d'utiliser zsh mais on peut avoir comme erreur "readelf command not found"...
+    kill -KILL $3
     exit 1
 }
 
+echo
 #On vérifie qu'on dispose d'un fichier pour le test
 if [ $# -eq 0 ]
 then
@@ -66,19 +70,20 @@ then
     then
         echo "Error code : \033[48;5;2mOK TEST\033[0;0m" #Pass
     else
-        echo "Error code : \033[48;5;1m===FAIL TEST===\033[0;0m" #Fail
-        exit 1
+        echo "Is the project compiled?"
+        printf "Error code : " #Fail
+        FailTest "$errorReadelf" "$errorMyReadelf" "$$"
     fi
 else #Si errorReadelf = 0
     if [ $errorMyReadelf -eq 0 ]
     then
         echo "Error code : \033[48;5;2mOK TEST\033[0;0m" #Pass
     else
-        echo "Error code : \033[48;5;1m===FAIL TEST===\033[0;0m" #Fail
-        exit 1
+        echo "Is the project compiled?"
+        printf "Error code : " #Fail
+        FailTest "$errorReadelf" "$errorMyReadelf" "$$"
     fi
 fi
-echo
 
 # On compare la sortie de notre programme avec celle de readelf, on le fait dans ce sens car cela permet d'ignorer
 # des données non-pertinentes telle que OS/ABI où Version qui est en double...
@@ -89,7 +94,7 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
     #On retire les espaces avant/après le texte et les Tabs
     key=`echo $line | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $1) ; print $1}'`
     value=`echo $line | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2) ; print $2}'`
-
+    
 
     # On fait un switch de la clé, suivant la caractéristique qu'on veut comparer (Version, Machine, ...)
     # On va chercher la ligne correspondante dans la sortie de readelf
@@ -105,7 +110,8 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         then
             echo "Magic Number : \033[48;5;2mOK TEST\033[0;0m" #Pass
         else
-            FailTest "$otherValue" "$value" #Fail
+            printf "Magic Number : "
+            FailTest "$otherValue" "$value" "$$" #Fail
         fi
     ;;
     
@@ -122,7 +128,8 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         then
             echo "Object Type : \033[48;5;2mOK TEST\033[0;0m"
         else
-           FailTest "$otherValue $value"
+            printf "Object Type : "
+            FailTest "$otherValue" "$value" "$$" #Fail
         fi     
     ;;
 
@@ -133,7 +140,8 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         then
             echo "Machine Type : \033[48;5;2mOK TEST\033[0;0m"
         else
-            FailTest "$otherValue $value"
+            printf "Machine Type : "
+            FailTest "$otherValue" "$value" "$$" #Fail
         fi
     ;;
 
@@ -147,7 +155,8 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         then
             echo "Version : \033[48;5;2mOK TEST\033[0;0m"
         else
-            FailTest "$otherValue $value"
+            printf "Version : "
+            FailTest "$otherValue" "$value" "$$"
         fi
     ;;
 
@@ -163,11 +172,13 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         then
             otherValue="0x0000000"
         fi
+        
         if [ "$value" = "$otherValue" ]
         then
             echo "Entry Point Adress : \033[48;5;2mOK TEST\033[0;0m"
         else
-            FailTest "$otherValue $value"
+            printf "Entry Point Adress : "
+            FailTest "$otherValue" "$value" "$$" #Fail
         fi
     ;;
 
@@ -179,7 +190,8 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         then
             echo "Program Header Offset : \033[48;5;2mOK TEST\033[0;0m"
         else
-            FailTest "$otherValue $value"
+            printf "Program Header Offset : "
+            FailTest "$otherValue" "$value" "$$" #Fail
         fi
     ;;
 
@@ -191,7 +203,8 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         then
             echo "Section Header Offset : \033[48;5;2mOK TEST\033[0;0m"
         else
-            FailTest "$otherValue" "$value"
+            printf "Section Header Offset : "
+            FailTest "$otherValue" "$value" "$$" #Fail
         fi
     ;;
 
@@ -206,11 +219,13 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         then
             otherValue="0x0000000"
         fi
+
         if [ "$value" = "$otherValue" ]
         then
             echo "Processor Flags : \033[48;5;2mOK TEST\033[0;0m"
         else
-            FailTest "$otherValue $value"
+            printf "Processor Flags : "
+            FailTest "$otherValue" "$value" "$$" #Fail
         fi
     ;;
 
@@ -221,9 +236,9 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         if [ "$value" = "$otherValue" ]
         then
             echo "Header Size : \033[48;5;2mOK TEST\033[0;0m"
-            
         else
-            FailTest "$otherValue $value"
+            printf "Header Size : "
+            FailTest "$otherValue" "$value" "$$" #Fail
         fi
     ;;
 
@@ -235,20 +250,22 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         then
             echo "Program Header Size : \033[48;5;2mOK TEST\033[0;0m"
         else
-            FailTest "$otherValue $value"
+            printf "Program Header Size : "
+            FailTest "$otherValue" "$value" "$$" #Fail
         fi
     ;;
 
     Number\ of\ program\ headers)
         otherValue=`grep '^  Number of program headers' readelfCommand.output | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2) ; print $2}'`
-        value=$(SupprimerLettres "$value") 
+        value=$(SupprimerLettres "$value")
         otherValue=$(SupprimerLettres "$otherValue")
         if [ "$value" = "$otherValue" ]
         then
             echo "Number Of Programs Headers : \033[48;5;2mOK TEST\033[0;0m"
             
         else
-            FailTest "$otherValue $value"
+            printf "Number Of Programs Headers : "
+            FailTest "$otherValue" "$value" "$$" #Fail
         fi
     ;;
 
@@ -259,9 +276,9 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         if [ "$value" = "$otherValue" ]
         then
             echo "Size of Section Header : \033[48;5;2mOK TEST\033[0;0m"
-            
         else
-            FailTest "$otherValue $value"
+            printf "Size of Section Header : "
+            FailTest "$otherValue" "$value" "$$" #Fail
         fi
     ;;
 
@@ -272,9 +289,9 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         if [ "$value" = "$otherValue" ]
         then
             echo "Number Of Section Headers : \033[48;5;2mOK TEST\033[0;0m"
-            
         else
-            FailTest "$otherValue $value"
+            printf "Number Of Section Headers : "
+            FailTest "$otherValue" "$value" "$$" #Fail
         fi
     ;;
 
@@ -284,14 +301,17 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         then
             echo "Index Section String Table : \033[48;5;2mOK TEST\033[0;0m"
         else
-            FailTest "$otherValue $value"
+            printf "Index Section String Table : "
+            FailTest "$otherValue" "$value" "$$" #Fail
         fi
     ;;
     esac
 
 done
-echo
 
+
+echo
 # Si tous les tests ont réussi, alors le test passe, on supprime les fichiers temporaires
-echo "Test $(basename "$1") passed!"
+echo "Test $(basename "$1") \033[48;5;2mpassed\033[0;0m!"
 rm -f MyReadelfCommand.output readelfCommand.output
+exit 0

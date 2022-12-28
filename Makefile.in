@@ -115,6 +115,7 @@ am_Options_and_debug_example_OBJECTS = $(am__objects_1) \
 Options_and_debug_example_OBJECTS =  \
 	$(am_Options_and_debug_example_OBJECTS)
 Options_and_debug_example_LDADD = $(LDADD)
+Options_and_debug_example_DEPENDENCIES =
 am_read_elf_header_OBJECTS = $(am__objects_1) \
 	read_elf_header.$(OBJEXT)
 read_elf_header_OBJECTS = $(am_read_elf_header_OBJECTS)
@@ -128,10 +129,12 @@ am_read_elf_section_table_OBJECTS = $(am__objects_1) \
 	read_elf_section_table.$(OBJEXT)
 read_elf_section_table_OBJECTS = $(am_read_elf_section_table_OBJECTS)
 read_elf_section_table_LDADD = $(LDADD)
+read_elf_section_table_DEPENDENCIES =
 am_read_elf_table_symbol_OBJECTS = $(am__objects_1) \
 	read_elf_table_symbol.$(OBJEXT)
 read_elf_table_symbol_OBJECTS = $(am_read_elf_table_symbol_OBJECTS)
 read_elf_table_symbol_LDADD = $(LDADD)
+read_elf_table_symbol_DEPENDENCIES =
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -381,6 +384,7 @@ AM_CFLAGS = -Wall -g -D DEBUG -D WARNING
 # parsing might result in debug flag incorrectly set to 0 for some files
 #AM_CFLAGS+=-D CACHE_DEBUG_FLAG
 SUBDIRS = . Examples_fusion
+LDADD = -lm
 COMMON = debug.h debug.c util.h util.c modules/freadoctet.h \
 	modules/freadoctet.c modules/CustomElf.h modules/CheckElf.h \
 	modules/CheckElf.c modules/readHeader.h modules/readHeader.c \
