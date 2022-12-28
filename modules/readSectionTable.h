@@ -109,6 +109,7 @@ void sectionInfo(FILE *file, Elf32_Shdr* SectionTable, char verbose);
  */
 void sectionAdressAlign(FILE *file, Elf32_Shdr* SectionTable, char verbose);
 
+
 /* Lit la taille de l'entrée de la section et la stocke dans la structure SectionTable
  Affiche la taille suivant le paramètre verbose.
  La taille est un Word, on lit donc 4 octets.
@@ -119,12 +120,14 @@ void sectionAdressAlign(FILE *file, Elf32_Shdr* SectionTable, char verbose);
  */
 void sectionEntrySize(FILE *file, Elf32_Shdr* SectionTable, char verbose);
 
+
 /* Affiche le numéro de la section entre crochets aligné à droite
  Par exemple pour 101 sections à afficher: [  0] ... [ 10] ... [100]
 
  Paramètre: un pointeur Header de structure d'en-tête, un entier correspondant au numéro de la section à afficher.
  Sortie : Ne renvoie rien
- Effets de bords : Affiche le numéro de la section, entre crochets, aligné à droite*/
+ Effets de bords : Affiche le numéro de la section, entre crochets, aligné à droite
+ */
 void printNumber(Elf32_Ehdr* Header, int sectionNumber);
 
 
@@ -133,11 +136,13 @@ void printNumber(Elf32_Ehdr* Header, int sectionNumber);
 
  Paramètre: un pointeur Header de structure d'en-tête, un entier correspondant au numéro de la section à afficher.
  Sortie : Ne renvoie rien
- Effets de bords : Affiche le numéro de la section, entre crochets, aligné à droite*/
+ Effets de bords : Affiche le numéro de la section, entre crochets, aligné à droite
+ */
 void printNumber(Elf32_Ehdr* Header, int sectionNumber);
 
 
 /* Remplit la structure SectionTable avec une fonction pour chaque membre, remplit un membre spécifique si sectionNumber != -1
+
  Paramètre:
 	un pointeur file de fichier,
 	un pointeur Header de structure d'en-tête,
@@ -148,6 +153,7 @@ void printNumber(Elf32_Ehdr* Header, int sectionNumber);
  Effets de bords : Modifie la structure SectionTable, la remplie entièrement
 */
 void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, int sectionNumber, char verbose);
+
 
 /* Remplit la structure SectionTable avec une fonction pour chaque membre, en cherchant la section avec un nom spécifique
  Paramètre:

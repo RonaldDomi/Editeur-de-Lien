@@ -35,6 +35,7 @@ void printContent(FILE* file, Elf32_Shdr* SectionTable, int sectionSelected, cha
 			//printf("Size to read : %d", sizeToRead);
 		}
 		if (dumped%16 == 0){
+			/* On revient à la ligne tous les 16 octets */
 			printf("\n");
 			printf("0x%08x ",adressPrinted);
 		}
@@ -45,6 +46,7 @@ void printContent(FILE* file, Elf32_Shdr* SectionTable, int sectionSelected, cha
 		adressPrinted+=8;
 
 		if (dumped == SectionTable->sh_size){
+			/* On a affiché toutes les données */
 			end=1;
 			printf("\n");
 		}

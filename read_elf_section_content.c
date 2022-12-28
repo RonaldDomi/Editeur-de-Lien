@@ -42,10 +42,14 @@ int main(int argc, char **argv){
 	Elf32_Ehdr* Header = malloc(sizeof(Elf32_Ehdr));
 
 	getHeader(file, Header, 0);
-	fseek(file, Header->e_shoff, SEEK_SET);
+
+	fseek(file, Header->e_shoff, SEEK_SET);// On oublie pas de pointer vers l'en-tête de la section
 
 	Elf32_Shdr* SectionTable = malloc(sizeof(Elf32_Shdr));
 
+	/* Pour vérifier si on cherche par Nom/Numéro, on strol(argv[2])
+		Si cela échoue, endPointer est le même pointeur que argv[2], donc argv[2] est un char on fait une recherche par nom
+		Si cela réussit, endPointer est toujours NULL donc argv[2] est un nombre on fait une recherche par numéro */
 	char* endPointer = NULL;
 	int sectionSelected = strtol(argv[2], &endPointer, 10);
 
@@ -53,6 +57,8 @@ int main(int argc, char **argv){
 
 		/* Search by Name */
 		printf("Search by Name\n");
+
+		/* On vérifie qu'il y a une section avec le nom voulu */
 		if (! getSectionName(file, Header, SectionTable, *argv[2], 0)){
 			printf("Section Found!\n");
 			printContent(file, SectionTable, -1, argv[2]);
@@ -70,12 +76,16 @@ int main(int argc, char **argv){
 			printf("There are only %d sections.\n", Header->e_shnum);
 			exit(1);
 		}
+
 		getSectionTable(file, Header, SectionTable, sectionSelected, 0);
 
 		if (SectionTable->sh_size == 0){
+			/* Une section de taille de zéro n'a pas de data à afficher */
 			printf("There is no data to dump.\n");
 			exit(1);
 		}
+
+		/* On a recupéré la table qu'on voulait, on affiche son contenu*/
 		printContent(file, SectionTable, sectionSelected, NULL);
 	}
 
