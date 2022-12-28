@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-AM_CFLAGS=-Wall -g -lm
+AM_CFLAGS=-Wall -g
 AM_CFLAGS+=-D DEBUG
 AM_CFLAGS+=-D WARNING
 # Uncomment if performance when running with -DDEBUG is an issue
@@ -18,6 +18,7 @@ bin_PROGRAMS+=Options_and_debug_example
 bin_PROGRAMS+=read_elf_header
 bin_PROGRAMS+=read_elf_section_table
 bin_PROGRAMS+=read_elf_table_symbol
+LDADD= -lm
 
 COMMON=debug.h debug.c util.h util.c 
 COMMON+=modules/freadoctet.h modules/freadoctet.c modules/CustomElf.h modules/CheckElf.h modules/CheckElf.c
