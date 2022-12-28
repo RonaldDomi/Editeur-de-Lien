@@ -48,15 +48,6 @@ int main(int argc, char **argv){
 	printf("\n");
 	printf("Adresses are given un hexadecimal format.\n");
 	printf("All values are given in bytes in decimal format.\n\n");
-	char* mot = malloc(50);
-	long position = ftell(file);
-	getString(file, SectionTable->sh_name, Header, mot);
-	fseek(file, position, 0);
-	printf("relocation section '%s'\n", mot);
-	printf("Offset\t\tsymb\t\tInfo\t\tType\n");
-	printf("====================================================================");
-	printf("=====================================================================\n");
-
     GetRelocationPart(file,Header,SectionTable, rel, rela, 0);
 	printf("\n");
 	return 0;
