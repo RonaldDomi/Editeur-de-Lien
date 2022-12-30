@@ -9,26 +9,17 @@ void GetTableStringPart(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable
 			printf("No section Table...\n");
 		}
 	}else{
-		for (int i=0; i<Header->e_shnum; i++){
-			if (verbose){
-				printf("[%d]\t", i);
-			}
-			sectionName(file, Header, SectionTable, verbose);
-			sectionType(file, SectionTable, verbose);
-			sectionFlags(file, SectionTable, verbose);
-			sectionAdress(file, SectionTable, verbose);
-			sectionOffset(file, SectionTable, verbose);
-			sectionSize(file, SectionTable, verbose);
-			sectionLink(file, SectionTable, verbose);
-			sectionInfo(file, SectionTable, verbose);
-			sectionAdressAlign(file, SectionTable, verbose);
-			sectionEntrySize(file, SectionTable, verbose);
-			
-			if (verbose){
-				printf("\n");
-			}
-            if(SectionTable->sh_type == SHT_STRTAB) return;
-		}
+		fseek(file, Header->e_shstrndx*Header->e_shentsize,SEEK_CUR);
+		sectionName(file, Header, SectionTable, verbose);
+		sectionType(file, SectionTable, verbose);
+		sectionFlags(file, SectionTable, verbose);
+		sectionAdress(file, SectionTable, verbose);
+		sectionOffset(file, SectionTable, verbose);
+		sectionSize(file, SectionTable, verbose);
+		sectionLink(file, SectionTable, verbose);
+		sectionInfo(file, SectionTable, verbose);
+		sectionAdressAlign(file, SectionTable, verbose);
+		sectionEntrySize(file, SectionTable, verbose);
 	}
 }
 
