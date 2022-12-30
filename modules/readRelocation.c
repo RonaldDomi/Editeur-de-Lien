@@ -6,8 +6,7 @@
 #include "CustomElf.h"
 #include "readSectionTable.h"
 #include "freadoctet.h"
-
-
+#include "readStringTable.h"
 
 void offset_rel(FILE* file, Elf32_Rel* rel, char verbose)
 {
