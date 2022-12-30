@@ -2,8 +2,6 @@
 //  readHeader.c
 //  Editeur de Liens
 //
-//  Created by Bastien Levasseur on 20/12/2022.
-//
 
 #include "readHeader.h"
 #include <stdio.h>
@@ -69,6 +67,7 @@ void machineType(FILE *file, Elf32_Ehdr* Header, char verbose){
 			case(EM_ARM):
 				printf("ARM");
 				break;
+			case(EM_X86_64):
 			case(EM_386):
 				printf("Intel 80386");
 				break;
