@@ -3,7 +3,7 @@
 
 # Cette fonction prend en entrée deux textes censés être différents et termine le script
 # On utilise cette fonction uniquement lorsqu'on trouve une différence entre les deux fonctions testées
-function FailTest {
+FailTest () {
     echo "\033[41;1;1m===FAIL TEST===\033[0;0m"
     echo "  • readelf is :\"$1\""
     echo "  • MyReadElf is : \"$2\""
