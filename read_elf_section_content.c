@@ -74,7 +74,7 @@ int main(int argc, char **argv){
 
 		if (SectionTable->sh_size == 0){
 			printf("There is no data to dump.\n");
-			exit(1);
+			exit(0);
 		}
 		printContent(file, SectionTable, sectionSelected, NULL);
 	}

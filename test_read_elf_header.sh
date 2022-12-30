@@ -21,15 +21,15 @@ SupprimerLettres () {
 #Cette fonction prend en entrée un texte et supprime tout ce qui n'est pas une lettre
 #Par exemple: "2 Executable File" devient "Executable File"
 #On utilise une Regex NOT[A-Z]*
-SupprimerChiffres(){
+SupprimerChiffres () {
     local ans=`echo $1 | sed '{s/[^A-Z]*//;}'`
     echo "$ans"
 }
 
 # Cette fonction prend en entrée deux textes censés être différents et termine le script
 # On utilise cette fonction uniquement lorsqu'on trouve une différence entre les deux fonctions testées
-FailTest(){
-    echo "\033[48;5;1m===FAIL TEST===\033[0;0m"
+FailTest () {
+    echo "\033[101;1;1m===FAIL TEST===\033[0;0m"
     echo "readelf is :\"$1\""
     echo "MyReadElf is : \"$2\""
     rm -f MyReadelfCommand.output readelfCommand.output
@@ -69,6 +69,10 @@ then
     if [ $errorMyReadelf -eq 1 ]
     then
         echo "Error code : \033[48;5;2mOK TEST\033[0;0m" #Pass
+        echo
+        echo "Test $(basename "$1") \033[48;5;2mpassed\033[0;0m!"
+        rm -f MyReadelfCommand.output readelfCommand.output
+        exit 0
     else
         echo "Is the project compiled?"
         printf "Error code : " #Fail
