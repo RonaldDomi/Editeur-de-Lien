@@ -19,6 +19,7 @@ bin_PROGRAMS+=read_elf_header
 bin_PROGRAMS+=read_elf_section_table
 bin_PROGRAMS+=read_elf_section_content
 bin_PROGRAMS+=read_elf_table_symbol
+bin_PROGRAMS+=read_elf_relocation
 LDADD= -lm
 
 COMMON=debug.h debug.c util.h util.c
@@ -32,5 +33,6 @@ read_elf_header_SOURCES=$(COMMON) read_elf_header.c
 read_elf_section_table_SOURCES=$(COMMON) read_elf_section_table.c
 read_elf_section_content_SOURCES=$(COMMON) read_elf_section_content.c
 read_elf_table_symbol_SOURCES=$(COMMON) read_elf_table_symbol.c
+read_elf_relocation_SOURCES=$(COMMON) read_elf_relocation.c
 
 EXTRA_DIST+=

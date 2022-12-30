@@ -13,7 +13,7 @@
 # Cette fonction prend en entrée un texte et supprime tout ce qui n'est pas un chiffre.
 # Par exemple: "25 Headers" devient "25"
 # On utilise une Regex NOT[0-9] avec le Flag Global
-function SupprimerLettres {
+SupprimerLettres () {
     local ans=`echo $1 | sed '{s/[^0-9]//g;}'`
     echo "$ans"
 }
@@ -21,15 +21,15 @@ function SupprimerLettres {
 #Cette fonction prend en entrée un texte et supprime tout ce qui n'est pas une lettre
 #Par exemple: "2 Executable File" devient "Executable File"
 #On utilise une Regex NOT[A-Z]*
-function SupprimerChiffres {
+SupprimerChiffres(){
     local ans=`echo $1 | sed '{s/[^A-Z]*//;}'`
     echo "$ans"
 }
 
 # Cette fonction prend en entrée deux textes censés être différents et termine le script
 # On utilise cette fonction uniquement lorsqu'on trouve une différence entre les deux fonctions testées
-function FailTest {
-    echo "\033[101;1;1m===FAIL TEST===\033[0;0m"
+FailTest(){
+    echo "\033[48;5;1m===FAIL TEST===\033[0;0m"
     echo "readelf is :\"$1\""
     echo "MyReadElf is : \"$2\""
     rm -f MyReadelfCommand.output readelfCommand.output
