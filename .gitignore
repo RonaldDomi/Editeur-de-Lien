@@ -5,8 +5,8 @@ Breakpoints_v2.xcbkptlist
 *.gch
 *.output
 
-Editeur-de-Liens.xcodeproj/
 Editeur-de-lien.xcodeproj/
+Editeur-de-lien.xcodeproj
 
 # for automake
 aclocal.m4
@@ -16,7 +16,6 @@ config.log
 config.status
 configure 
 configure~
-# configure.ac
 Makefile
 Makefile.in 
 stamp-h1
@@ -32,5 +31,6 @@ confdefs.h
 Options_and_debug_example
 read_elf_header 
 read_elf_section_table
-read_elf_table_symbol
 read_elf_section_content
+read_elf_table_symbol
+read_elf_relocation
