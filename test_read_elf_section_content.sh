@@ -30,17 +30,6 @@ then
 fi
 
 
-#####TEMP######
-regexNumber="^[0-9]" # Match tous les chiffres en base 10
-if [[ ! "$2" =~ $regexNumber ]]
-then
-    echo "Les recherches par nom sont pour l'instant impossibles dans le programme "
-    echo "On ne peut pas tester les recherches par nom pour le momemnt "
-    exit 1
-fi
-###############
-
-
 # Dans ce script, on appelle la commande built-in readelf "Readelf"
 # Le programme écrit dans le cadre du projet s'appelle "MyReadelf"
 

@@ -53,11 +53,11 @@ int main(int argc, char **argv){
 
 		/* Search by Name */
 		printf("Search by Name\n");
-		if (! getSectionName(file, Header, SectionTable, *argv[2], 0)){
+		if (getSectionName(file, Header, SectionTable, argv[2], 0)){
 			printf("Section Found!\n");
 			printContent(file, SectionTable, -1, argv[2]);
 		}else{
-			printf("\nThere are no section called \"%s\".",argv[2]);
+			printf("\nThere are no section called \"%s\".", argv[2]);
 			exit(1);
 		}
 

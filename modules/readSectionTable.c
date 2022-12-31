@@ -12,15 +12,14 @@
 #include <string.h>
 #include <math.h>
 
-void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose){
+void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
 		fread(&SectionTable->sh_name, 4, 1, file);
 		char* mot = malloc(50);
 		long position = ftell(file);
 		getString(file, SectionTable->sh_name, Header, mot);
 		fseek(file, position, 0);
-		SectionTable->sh_charname="Temp";
-//		SectionTable->sh_charname=mot;
+		SectionTable->sh_charname=mot;
 //		printf("Name : %s",SectionTable->sh_charname);
 		int wordLength = strlen(mot);
 		if (wordLength==0){
@@ -33,12 +32,20 @@ void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char 
 			printf("%s\t", mot);
 		}
 	}else{
+		/* TODO: Fixer cette partie pour qu'on puisse aussi récupérer le nom si verbose==0 */
+		//printf("Trop d'itérations ici\n");
 		fread(&SectionTable->sh_name, 4, 1, file);
+//		char* mot = malloc(50);
+//		long position = ftell(file);
+//		getString(file, SectionTable->sh_name, Header, mot);
+//		fseek(file, position, 0);
+//		SectionTable->sh_charname=mot;
+		//printf("Name : %s",SectionTable->sh_charname);
 	}
 }
 
 
-void sectionType(FILE *file, Elf32_Shdr* SectionTable, char verbose){
+void sectionType(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
 		fread(&SectionTable->sh_type, 4, 1, file);
 		switch(SectionTable->sh_type){ //Beaucoup de types à cause de firmware.elf pour éviter des =UNK=
@@ -114,7 +121,7 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 	}
 }
 
-void sectionFlags(FILE *file, Elf32_Shdr* SectionTable, char verbose){
+void sectionFlags(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
 		fread(&SectionTable->sh_flags, 4, 1, file);
 		printf("%d ", SectionTable->sh_flags);
@@ -126,7 +133,7 @@ void sectionFlags(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 }
 
 
-void sectionAdress(FILE *file, Elf32_Shdr* SectionTable, char verbose){
+void sectionAdress(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
 		fread(&SectionTable->sh_addr, 4, 1, file);
 		printAdress8(&SectionTable->sh_addr, 4, 1);
@@ -137,7 +144,7 @@ void sectionAdress(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 }
 
 
-void sectionOffset(FILE *file, Elf32_Shdr* SectionTable, char verbose){
+void sectionOffset(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
 		fread(&SectionTable->sh_offset, 4, 1, file);
 		printf("%d ", SectionTable->sh_offset);
@@ -148,7 +155,7 @@ void sectionOffset(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 }
 
 
-void sectionSize(FILE *file, Elf32_Shdr* SectionTable, char verbose){
+void sectionSize(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
 		fread(&SectionTable->sh_size, 4, 1, file);
 		printf("%d ", SectionTable->sh_size);
@@ -159,7 +166,7 @@ void sectionSize(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 }
 
 
-void sectionLink(FILE *file, Elf32_Shdr* SectionTable, char verbose){
+void sectionLink(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
 		fread(&SectionTable->sh_link, 4, 1, file);
 		printf("%d ",SectionTable->sh_link);
@@ -170,7 +177,7 @@ void sectionLink(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 }
 
 
-void sectionInfo(FILE *file, Elf32_Shdr* SectionTable, char verbose){
+void sectionInfo(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
 		fread(&SectionTable->sh_info, 4, 1, file);
 		printf("%d ",SectionTable->sh_info);
@@ -181,7 +188,7 @@ void sectionInfo(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 }
 
 
-void sectionAdressAlign(FILE *file, Elf32_Shdr* SectionTable, char verbose){
+void sectionAdressAlign(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
 		fread(&SectionTable->sh_addralign, 4, 1, file);
 		printf("%d ", SectionTable->sh_addralign);
@@ -192,7 +199,7 @@ void sectionAdressAlign(FILE *file, Elf32_Shdr* SectionTable, char verbose){
 }
 
 
-void sectionEntrySize(FILE *file, Elf32_Shdr* SectionTable, char verbose){
+void sectionEntrySize(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
 		fread(&SectionTable->sh_entsize, 4, 1, file);
 		printf("%d ", SectionTable->sh_entsize);
@@ -242,7 +249,7 @@ void printNumber(Elf32_Ehdr* Header, int sectionNumber){
 	}
 }
 
-void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, int sectionNumber, char verbose){
+void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, int sectionNumber, int verbose){
 	if (sectionNumber != -1){
 		fseek(file, Header->e_shoff + (Header->e_shentsize * sectionNumber), SEEK_SET);
 	}
@@ -259,10 +266,13 @@ void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, i
 }
 
 
-int getSectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char sectionName, char verbose){
+int getSectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char * sectionName, int verbose){
 	for (int i=0; i<Header->e_shnum; i++){
-		getSectionTable(file, Header, SectionTable, i, 0);
-		if (! strcmp("Temp", &sectionName)){
+		/*TODO: Il faudrait pouvoir mettre verbose=0, mais une seg fault se produit...*/
+		getSectionTable(file, Header, SectionTable, i, 1);
+//		printf("sh_charname : %s\n",SectionTable->sh_charname);
+//		printf("Section searched : <%s>\n", sectionName);
+		if (! strcmp(SectionTable->sh_charname, sectionName)){
 			return 1;
 		}
 	}
