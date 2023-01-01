@@ -53,7 +53,7 @@ int main(int argc, char **argv){
 	}else{
 		for (int i=0; i<Header->e_shnum; i++){
 			printNumber(Header, i);
-			getSectionTable(file, Header, SectionTable, -1, 1);
+			getSectionTable(file, Header, SectionTable, -1, 0);
 			printf("\n");
 		}
 	}
