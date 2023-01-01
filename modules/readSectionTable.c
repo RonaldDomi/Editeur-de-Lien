@@ -20,7 +20,6 @@ void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char 
 		getString(file, SectionTable->sh_name, Header, mot);
 		fseek(file, position, 0);
 		SectionTable->sh_charname=mot;
-		printf("Name : %s",SectionTable->sh_charname);
 		if (verbose){
 			SectionTable->sh_charname="Temp";
 			int wordLength = strlen(mot);
