@@ -30,11 +30,11 @@ confdefs.h
 *.Po
 
 Options_and_debug_example
-read_elf_header 
-read_elf_section_table
-read_elf_table_symbol
-read_elf_section_content
-read_elf_relocation
+readelf_header
+readelf_relocation
+readelf_section_content
+readelf_section_table
+readelf_symbol_table
 
 *.2
 autom4te.cache/output.0
@@ -59,6 +59,7 @@ autom4te.cache/output.1
 autom4te.cache/requests
 autom4te.cache/traces.0
 autom4te.cache/traces.1
+Editeur-de-lien.xcodeproj/project.xcworkspace/xcuserdata/bastienlevasseur.xcuserdatad/UserInterfaceState.xcuserstate
 Editeur-de-lien.xcodeproj/project.xcworkspace/xcuserdata/bastienlevasseur.xcuserdatad/UserInterfaceState.xcuserstate
 Examples_fusion/autom4te.cache/output.0
 Examples_fusion/autom4te.cache/output.1
