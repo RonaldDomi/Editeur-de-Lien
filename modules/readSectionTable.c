@@ -20,8 +20,9 @@ void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char 
 		getString(file, SectionTable->sh_name, Header, mot);
 		fseek(file, position, 0);
 		SectionTable->sh_charname=mot;
+//		printf("\nNom : %s\n",SectionTable->sh_charname);
 		if (verbose){
-			SectionTable->sh_charname="Temp";
+
 			int wordLength = strlen(mot);
 			if (wordLength==0){
 				printf("==NO_NAME==\t\t");
@@ -33,7 +34,7 @@ void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char 
 				printf("%s\t", mot);
 			}
 		}
-		free(mot);
+		//free(mot);
 	}
 }
 
@@ -103,7 +104,7 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 				printf("ARM_EXIDX\t");
 				break;
 			case(SHT_LOOS):
-				printf("LOOS");
+				printf("LOOS\t\t");
 				break;
 			default:
 				printf("=UNK=\t\t");
@@ -261,9 +262,8 @@ void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, i
 
 int getSectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char * sectionName, int verbose){
 	for (int i=0; i<Header->e_shnum; i++){
-		/*TODO: Il faudrait pouvoir mettre verbose=0, mais une seg fault se produit...*/
-		getSectionTable(file, Header, SectionTable, i, 1);
-//		printf("sh_charname : %s\n",SectionTable->sh_charname);
+		getSectionTable(file, Header, SectionTable, i, 0);
+//		printf("\nsh_charname : <%s>\n", SectionTable->sh_charname);
 //		printf("Section searched : <%s>\n", sectionName);
 		if (! strcmp(SectionTable->sh_charname, sectionName)){
 			return 1;
