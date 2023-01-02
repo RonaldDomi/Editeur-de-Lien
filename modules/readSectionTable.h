@@ -19,7 +19,7 @@
  Sortie : Ne renvoie rien
  Effets de bords : Modifie la structure SectionTable, ajoute la valeur à sh_name
  */
-void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, int verbose);
+void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose, char nom);
 
 
 /* Lit le type de la section et la stocke dans la structure SectionTable

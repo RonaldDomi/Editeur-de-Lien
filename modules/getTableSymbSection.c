@@ -18,7 +18,7 @@ void GetTableSymbPart(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, 
 			if (verbose){
 				printf("[%d]\t", i);
 			}
-			sectionName(file, Header, SectionTable, verbose);
+			sectionName(file, Header, SectionTable, verbose, 1);
 			sectionType(file, SectionTable, verbose);
 			sectionFlags(file, SectionTable, verbose);
 			sectionAdress(file, SectionTable, verbose);

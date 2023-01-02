@@ -12,35 +12,28 @@
 #include <string.h>
 #include <math.h>
 
-void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, int verbose){
-	if (verbose){
-		fread(&SectionTable->sh_name, 4, 1, file);
+void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose, char nom){
+	fread(&SectionTable->sh_name, 4, 1, file);
+	if(nom){
 		char* mot = malloc(50);
 		long position = ftell(file);
 		getString(file, SectionTable->sh_name, Header, mot);
 		fseek(file, position, 0);
 		SectionTable->sh_charname=mot;
-//		printf("Name : %s",SectionTable->sh_charname);
-		int wordLength = strlen(mot);
-		if (wordLength==0){
-			printf("==NO_NAME==\t\t");
-		}else if ((0<=wordLength) && (8>wordLength)){
-			printf("%s\t\t\t", mot);
-		}else if ((8<=wordLength) && (16>wordLength)){
-			printf("%s\t\t", mot);
-		}else{
-			printf("%s\t", mot);
+		if (verbose){
+			SectionTable->sh_charname="Temp";
+			int wordLength = strlen(mot);
+			if (wordLength==0){
+				printf("==NO_NAME==\t\t");
+			}else if ((0<=wordLength) && (8>wordLength)){
+				printf("%s\t\t\t", mot);
+			}else if ((8<=wordLength) && (16>wordLength)){
+				printf("%s\t\t", mot);
+			}else{
+				printf("%s\t", mot);
+			}
 		}
-	}else{
-		/* TODO: Fixer cette partie pour qu'on puisse aussi récupérer le nom si verbose==0 */
-		//printf("Trop d'itérations ici\n");
-		fread(&SectionTable->sh_name, 4, 1, file);
-//		char* mot = malloc(50);
-//		long position = ftell(file);
-//		getString(file, SectionTable->sh_name, Header, mot);
-//		fseek(file, position, 0);
-//		SectionTable->sh_charname=mot;
-		//printf("Name : %s",SectionTable->sh_charname);
+		free(mot);
 	}
 }
 
@@ -253,7 +246,7 @@ void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, i
 	if (sectionNumber != -1){
 		fseek(file, Header->e_shoff + (Header->e_shentsize * sectionNumber), SEEK_SET);
 	}
-	sectionName(file, Header, SectionTable, verbose);
+	sectionName(file, Header, SectionTable, verbose, 1);
 	sectionType(file, SectionTable, verbose);
 	sectionFlags(file, SectionTable, verbose);
 	sectionAdress(file, SectionTable, verbose);

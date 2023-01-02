@@ -34,6 +34,8 @@ read_elf_header
 read_elf_section_table
 read_elf_table_symbol
 read_elf_section_content
+read_elf_relocation
+
 *.2
 autom4te.cache/output.0
 autom4te.cache/output.1
