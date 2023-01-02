@@ -64,7 +64,7 @@ int main(int argc, char **argv){
 			printContent(file, SectionTable, -1, argv[2]);
 		}else{
 			printf("\nThere are no section called \"%s\".", argv[2]);
-			exit(1);
+			exit(0);
 		}
 
 	}else{
@@ -74,7 +74,7 @@ int main(int argc, char **argv){
 		if (sectionSelected > Header->e_shnum){
 			printf("This section does not exist !\n");
 			printf("There are only %d sections.\n", Header->e_shnum);
-			exit(1);
+			exit(0);
 		}
 
 		getSectionTable(file, Header, SectionTable, sectionSelected, 0);

@@ -108,15 +108,18 @@ int main(int argc, char *argv[]) {
         printf("ELF Header Reader : \n\n");
 
         getHeader(file, Header, 1);
-    }else if(strcmp(type, "S") == 0){
+    }else{ // type != "h"
+        getHeader(file, Header, 0);
+        fseek(file, Header->e_shoff, SEEK_SET);
+    }
+    
+    if(strcmp(type, "S") == 0){
         printf("\nAdresses  are given un hexadecimal format.\n");
         printf("All values are given in bytes in decimal format.\n\n");
         printf("Nb\tName\t\t\tType\t\tFlags\tExecutionAdresss\tOffset\t\tSectionSize\tLinkTo\tInfo\tAlign\tEntrySize\n");
         printf("====================================================================");
         printf("=============================================================================\n");
         
-        getHeader(file, Header, 0);
-        fseek(file, Header->e_shoff, SEEK_SET);
         if (Header->e_shnum == 0){
             printf("No section Table...\n");
         }else{
@@ -127,10 +130,6 @@ int main(int argc, char *argv[]) {
             }
         }
     }else if(strcmp(type, "x") == 0){
-
-        getHeader(file, Header, 0);
-    	fseek(file, Header->e_shoff, SEEK_SET);// On oublie pas de pointer vers l'en-tête de la section
-
         /* Pour vérifier si on cherche par Nom/Numéro, on strol(argv[2])
             Si cela échoue, endPointer est le même pointeur que argv[2], donc argv[2] est un char on fait une recherche par nom
             Si cela réussit, endPointer est toujours NULL donc argv[2] est un nombre on fait une recherche par numéro */
@@ -147,7 +146,7 @@ int main(int argc, char *argv[]) {
                 printContent(file, SectionTable, -1, argv[6]);
             }else{
                 printf("\nThere are no section called \"%s\".", argv[6]);
-                exit(1);
+                exit(0);
             }
 
         }else{
@@ -157,7 +156,7 @@ int main(int argc, char *argv[]) {
             if (sectionSelected > Header->e_shnum){
                 printf("This section does not exist !\n");
                 printf("There are only %d sections.\n", Header->e_shnum);
-                exit(1);
+                exit(0);
             }
 
             getSectionTable(file, Header, SectionTable, sectionSelected, 0);
@@ -178,8 +177,6 @@ int main(int argc, char *argv[]) {
         printf("====================================================================");
         printf("=====================================================================\n");
 	
-        getHeader(file, Header, 0);
-	    fseek(file, Header->e_shoff, SEEK_SET);
 	    GetTableSymbPart(file, Header, SectionTable, 0);
 	    fseek(file, SectionTable->sh_offset, SEEK_SET);	
         for (int i = 0; i < SectionTable->sh_size/16; i++){
@@ -191,8 +188,6 @@ int main(int argc, char *argv[]) {
         printf("\nAdresses are given un hexadecimal format.\n");
         printf("All values are given in bytes in decimal format.\n\n");
 
-        getHeader(file, Header, 0);
-        fseek(file, Header->e_shoff, SEEK_SET);
         GetRelocationPart(file, Header,SectionTable, rel, rela, 0);
         printf("\n");
     }

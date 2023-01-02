@@ -24,10 +24,10 @@ WarningTest () {
 }
 
 #On vérifie qu'on dispose d'un fichier pour le test
-if [ $# -eq 0 ]
+if [ $# -lt 1 ]
 then
     echo "Missing file !"
-    echo "Usage: test_read_elf_header <File>"
+    echo "Usage: test_read_elf_section_table <File>"
     exit 1
 fi
 

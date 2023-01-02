@@ -21,6 +21,10 @@ Pour lancer le projet il faut premierement generel le Makefile
 Ces lignes sont necessaire de faire chaque fois qu'on change le repertoire.   
 Comme par example: Changement de branches ou meme 'git pull'
 
+Pour lancer notre programme:  
+`./readelf_all --file ./tests/file.o --type h`  
+`./readelf_all --file ./tests/file.o --type x --arg 8`
+
 ## Tools
 Pour nous aider dans le proces de developement, on a utilise comme outil aidant [Trello](https://trello.com/b/Ac6JsYPy/editeur-de-lien) 
 
