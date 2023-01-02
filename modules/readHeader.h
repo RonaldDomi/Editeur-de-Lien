@@ -10,8 +10,8 @@
 #include "CustomElf.h"
 
 /* Lit le nombre magique d'un fichier ELF et le stocke dans la structure Header
-	Affiche le nombre suivant le paramètre verbose.
-	Le nombre magique est sur 16 octets, on lit donc 16 octets.
+ Affiche le nombre suivant le paramètre verbose.
+ Le nombre magique est sur 16 octets, on lit donc 16 octets.
 
  Paramètre: un pointeur file de fichier, un pointeur Header de structure d'en-tête, un booléen verbose pour gérer l'affichage
  Sortie : Ne renvoie rien
@@ -21,8 +21,8 @@ void magicNumber(FILE *file, Elf32_Ehdr* Header, char verbose);
 
 
 /* Lit le type objet du fichier et le stocke dans la structure Header.
-	Affiche le type et le détail suivant le paramètre verbose.
-	Le type est un Half-Word, on lit donc 2 octets.
+ Affiche le type et le détail suivant le paramètre verbose.
+ Le type est un Half-Word, on lit donc 2 octets.
 
  Paramètre: un pointeur file de fichier, un pointeur Header de structure d'en-tête, un booléen verbose pour gérer l'affichage
  Sortie : Ne renvoie rien
