@@ -197,7 +197,7 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         # On vérifie avec le flag (variable) alternateSourceFlag
         if [ $alternateSourceFlag -eq 1 ]; then
             #Pas de flag
-            if [ $flags -eq 0 ]; then
+            if [ "$flags" == "NONE" ]; then
                 echo -e "Flags : \033[48;5;2mOK TEST\033[0;0m" #Pass
             else
                 printf "Flags : "
@@ -208,7 +208,7 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
             if [ "$flags" == "$otherFlags" ]; then
                 echo -e "Flags : \033[48;5;2mOK TEST\033[0;0m" #Pass
             else
-                # Comme les flags ne sont pas encore décryptés on ne renvoie pas une errreur mais un avertissement
+                # On ne renvoie pas une errreur mais un avertissement
                 printf "Flags : "
                 WarningTest "$otherFlags" "$flags"
             fi

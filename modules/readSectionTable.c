@@ -42,85 +42,144 @@ void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char 
 void sectionType(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
 		fread(&SectionTable->sh_type, 4, 1, file);
-		switch(SectionTable->sh_type){ //Beaucoup de types à cause de firmware.elf pour éviter des =UNK=
-			case(SHT_NULL):
-				printf("NULL\t\t");
-				break;
-			case(SHT_PROGBITS):
-				printf("PROGBITS\t");
-				break;
-			case(SHT_SYMTAB):
-				printf("SYMTAB\t\t");
-				break;
-			case(SHT_STRTAB):
-				printf("STRTAB\t\t");
-				break;
-			case(SHT_RELA):
-				printf("RELA\t\t");
-				break;
-			case(SHT_HASH):
-				printf("HASH\t\t");
-				break;
-			case(SHT_DYNAMIC):
-				printf("DYNAMIC\t\t");
-				break;
-			case(SHT_NOTE):
-				printf("NOTE\t\t");
-				break;
-			case(SHT_NOBITS):
-				printf("NOBITS\t\t");
-				break;
-			case(SHT_REL):
-				printf("REL\t\t");
-				break;
-			case(SHT_SHLIB):
-				printf("SHLIB\t\t");
-				break;
-			case(SHT_LOPROC):
-				printf("LOWPROC\t");
-				break;
-			case(SHT_HIPROC):
-				printf("HIPROC\t\t");
-				break;
-			case(SHT_LOUSER):
-				printf("LOWUSR\t\t");
-				break;
-			case(SHT_HIUSER):
-				printf("HIUSR\t\t");
-				break;
-			case(SHT_PREINIT_ARRAY):
-				printf("PREINIT_ARRAY\t");
-				break;
-			case(SHT_INIT_ARRAY):
-				printf("INIT_ARRAY\t");
-				break;
-			case(SHT_FINI_ARRAY):
-				printf("FINI_ARRAY\t");
-				break;
-			case(SHT_ARM_ATTRIBUTES):
-				printf("ARM_ATTRIBUTES\t");
-				break;
-			case(SHT_ARM_EXIDX):
-				printf("ARM_EXIDX\t");
-				break;
-			case(SHT_LOOS):
-				printf("LOOS\t\t");
-				break;
-			default:
-				printf("=UNK=\t\t");
-				break;
-		}
+		if (SectionTable->sh_type >= SHT_LOOS && SectionTable->sh_type < SHT_HIOS){
+            printf("LOOS+0x%x\t", SectionTable->sh_type-SHT_LOOS);
+        }else if (SectionTable->sh_type >= SHT_LOPROC && SectionTable->sh_type <= SHT_HIPROC){
+            printf("PROC+0x%x\t", SectionTable->sh_type-SHT_LOPROC);
+        }else if (SectionTable->sh_type >= SHT_LOUSER && SectionTable->sh_type <= SHT_HIUSER){
+            printf("USER+0x%x\t", SectionTable->sh_type-SHT_LOUSER);
+        }else{
+            switch(SectionTable->sh_type){ //Beaucoup de types à cause de firmware.elf pour éviter des =UNK=
+                case(SHT_NULL):
+                    printf("NULL\t\t");
+                    break;
+                case(SHT_PROGBITS):
+                    printf("PROGBITS\t");
+                    break;
+                case(SHT_SYMTAB):
+                    printf("SYMTAB\t\t");
+                    break;
+                case(SHT_STRTAB):
+                    printf("STRTAB\t\t");
+                    break;
+                case(SHT_RELA):
+                    printf("RELA\t\t");
+                    break;
+                case(SHT_HASH):
+                    printf("HASH\t\t");
+                    break;
+                case(SHT_DYNAMIC):
+                    printf("DYNAMIC\t\t");
+                    break;
+                case(SHT_NOTE):
+                    printf("NOTE\t\t");
+                    break;
+                case(SHT_NOBITS):
+                    printf("NOBITS\t\t");
+                    break;
+                case(SHT_REL):
+                    printf("REL\t\t");
+                    break;
+                case(SHT_SHLIB):
+                    printf("SHLIB\t\t");
+                    break;
+                case(SHT_PREINIT_ARRAY):
+                    printf("PREINIT_ARRAY\t");
+                    break;
+                case(SHT_INIT_ARRAY):
+                    printf("INIT_ARRAY\t");
+                    break;
+                case(SHT_FINI_ARRAY):
+                    printf("FINI_ARRAY\t");
+                    break;
+                case(SHT_ARM_ATTRIBUTES):
+                    printf("ARM_ATTRIBUTES\t");
+                    break;
+                case(SHT_ARM_EXIDX):
+                    printf("ARM_EXIDX\t");
+                    break;
+                default:
+                    printf("=UNK=\t\t");
+                    break;
+            }
+        }
 	}else{
 		fread(&SectionTable->sh_type, 4, 1, file);
 	}
 }
 
+void decodeFlags(Elf32_Shdr* SectionTable){
+    int blank=1;
+    if (SectionTable->sh_flags & SHF_EXCLUDE) {
+        printf("E");
+        return;
+    }
+    if (SectionTable->sh_flags & SHF_WRITE) {
+        printf("W");
+        blank=0;
+    }
+    if (SectionTable->sh_flags & SHF_ALLOC) {
+        printf("A");
+        blank=0;
+    }
+    if (SectionTable->sh_flags & SHF_EXECINSTR) {
+        printf("X");
+        blank=0;
+    }
+    if (SectionTable->sh_flags & SHF_MERGE) {
+        printf("M");
+        blank=0;
+    }
+    if (SectionTable->sh_flags & SHF_STRINGS) {
+        printf("S");
+        blank=0;
+    }
+    if (SectionTable->sh_flags & SHF_INFO_LINK) {
+        printf("I");
+        blank=0;
+    }
+    if (SectionTable->sh_flags & SHF_LINK_ORDER) {
+        printf("L");
+        blank=0;
+    }
+    if (SectionTable->sh_flags & SHF_OS_NONCONFORMING) {
+        printf("O");
+        blank=0;
+    }
+    if (SectionTable->sh_flags & SHF_GROUP) {
+        printf("G");
+        blank=0;
+    }
+    if (SectionTable->sh_flags & SHF_TLS) {
+        printf("T");
+        blank=0;
+    }
+    if (SectionTable->sh_flags & SHF_COMPRESSED) {
+        printf("C");
+        blank=0;
+    }
+    if (SectionTable->sh_flags & SHF_MASKOS) {
+        printf("o");
+        blank=0;
+    }
+    if (SectionTable->sh_flags & SHF_MASKPROC) {
+        printf("p");
+        blank=0;
+    }
+    if (SectionTable->sh_flags & SHF_ORDERED) {
+        printf("x");
+        blank=0;
+    }
+    if (blank){
+        printf("NONE");
+    }
+}
+
 void sectionFlags(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
 		fread(&SectionTable->sh_flags, 4, 1, file);
-		printf("%d ", SectionTable->sh_flags);
+        decodeFlags(SectionTable);
 		printf("\t");
-		//TODO: Décoder sh_flags en attributs (A, B, C ...) avec la Figure 1-11 page 13
 	}else{
 		fread(&SectionTable->sh_flags, 4, 1, file);
 	}
