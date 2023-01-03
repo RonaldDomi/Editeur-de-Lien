@@ -200,9 +200,9 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
 
     Processor\ flags)
         otherValue=$(grep '^  Flags' readelfCommand.output | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2) ; print $2}')
-        # Comme notre programme ne gère pas (pour l'instant) l'affichage détaillé des flags
         # On prend simplement l'adresse et on la compare, on ignore les détails de readelf
         # Chaque détail est séparé par une virgule, on cut et on prend le premier champ (celui de l'adresse)
+        value=$(echo $value | cut -d, -f1)
         otherValue=$(echo $otherValue | cut -d, -f1)
         # Ici aussi si il n'y a aucun flag l'adresse est 0x0 au lieu de 0x0000000. On force le changement.
         if [ $otherValue = "0x0" ]; then

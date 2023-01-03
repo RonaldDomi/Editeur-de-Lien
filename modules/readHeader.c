@@ -137,12 +137,70 @@ void sectHeaderOff(FILE *file, Elf32_Ehdr* Header, char verbose){
 	}
 }
 
+void decodeHeaderFlags(Elf32_Ehdr *Header){
+    if (Header->e_flags & EF_ARM_EABI_VER5){
+        printf(", EABI Version 5");
+    }
+    else if (Header->e_flags & EF_ARM_EABI_VER4){
+        printf(", EABI Version 4");
+    }
+    else if (Header->e_flags & EF_ARM_EABI_VER3){
+        printf(", EABI Version 3");
+    }
+    else if (Header->e_flags & EF_ARM_EABI_VER2){
+        printf(", EABI Version 2");
+    }
+    else if (Header->e_flags & EF_ARM_EABI_VER1){
+        printf(", EABI Version 1");
+    }
+    else if (Header->e_flags & EF_ARM_EABI_UNKNOWN){
+        printf(", EABI Unknown");
+    }
+
+    if (Header->e_flags & EF_ARM_RELEXEC){
+        printf(", Relexec");
+    }
+    else if (Header->e_flags & EF_ARM_HASENTRY){
+        printf(", Rasentry");
+    }
+    else if (Header->e_flags & EF_ARM_INTERWORK){
+        printf(", Interwork");
+    }
+    else if (Header->e_flags & EF_ARM_APCS_26){
+        printf(", APCS 26");
+    }
+    else if (Header->e_flags & EF_ARM_APCS_FLOAT){
+        printf(", APCS Float");
+    }
+    else if (Header->e_flags & EF_ARM_PIC){
+        printf(", PIC");
+    }
+    else if (Header->e_flags & EF_ARM_ALIGN8){
+        printf(", Align 8");
+    }
+    else if (Header->e_flags & EF_ARM_NEW_ABI){
+        printf(", new ABI");
+    }
+    else if (Header->e_flags & EF_ARM_OLD_ABI){
+        printf(", old ABI");
+    }
+    else if (Header->e_flags & EF_ARM_SOFT_FLOAT){
+        printf(", Soft Float");
+    }
+    else if (Header->e_flags & EF_ARM_VFP_FLOAT){
+        printf(", VFP Float");
+    }
+    else if (Header->e_flags & EF_ARM_MAVERICK_FLOAT){
+        printf(", Maverick Float");
+    }
+}
 
 void flags(FILE *file, Elf32_Ehdr *Header, char verbose){
 	if (verbose){
 		printf("Processor flags : \t\t\t");
 		fread(&Header->e_flags, 4, 1, file);
 		printAdress(&Header->e_flags, 4, 1);
+        decodeHeaderFlags(Header);
 		printf("\n");
 	}else{
 		fread(&Header->e_flags, 4, 1, file);

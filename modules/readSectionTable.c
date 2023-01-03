@@ -108,7 +108,7 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	}
 }
 
-void decodeFlags(Elf32_Shdr* SectionTable){
+void decodeSectionFlags(Elf32_Shdr* SectionTable){
     int blank=1;
     if (SectionTable->sh_flags & SHF_EXCLUDE) {
         printf("E");
@@ -178,7 +178,7 @@ void decodeFlags(Elf32_Shdr* SectionTable){
 void sectionFlags(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
 		fread(&SectionTable->sh_flags, 4, 1, file);
-        decodeFlags(SectionTable);
+        decodeSectionFlags(SectionTable);
 		printf("\t");
 	}else{
 		fread(&SectionTable->sh_flags, 4, 1, file);

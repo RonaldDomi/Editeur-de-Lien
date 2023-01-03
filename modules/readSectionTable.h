@@ -12,8 +12,6 @@
 /* Lit la valeur du nom de la table et la stocke dans la structure SectionTable
  Affiche la valeur suivant le paramètre verbose.
  La valeur du nom est un Word, on lit donc 4 octets.
- === ATTENTION: Le détail n'est pas (encore) disponible pour cette caractéristique, bien qu'il serait pratique...
- Pour l'instant on affiche donc que la valeur qui n'est pas parlante par elle-même ===
 
  Paramètre: un pointeur file de fichier, un pointeur SectionTable de structure d'en-tête, un booléen verbose pour gérer l'affichage
  Sortie : Ne renvoie rien
@@ -31,6 +29,15 @@ void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char 
  Effets de bords : Modifie la structure SectionTable, ajoute la valeur à sh_type
  */
 void sectionType(FILE *file, Elf32_Shdr* SectionTable, int verbose);
+
+
+/* Décode les octets des flags de la section. Chaque décodage est un décalage bit-à-bit.
+
+ Paramètre: un pointeur SectionTable de structure d'en-tête
+ Sortie : Ne renvoie rien
+ Effets de bords : Affiche les détails des flags du Header de la section
+ */
+void decodeSectionFlags(Elf32_Shdr* SectionTable);
 
 
 /* Lit les flags de la section et la stocke dans la structure SectionTable

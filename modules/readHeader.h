@@ -86,9 +86,16 @@ void progHeaderOff(FILE *file, Elf32_Ehdr* Header, char verbose);
 void sectHeaderOff(FILE *file, Elf32_Ehdr* Header, char verbose);
 
 
+/* Décode les octets des flags du header. Chaque décodage est un décalage bit-à-bit.
+
+ Paramètre: un pointeur Header de structure d'en-tête, un booléen verbose pour gérer l'affichage
+ Sortie : Ne renvoie rien
+ Effets de bords : Affiche les détails des flags du Header
+ */
+void decodeHeaderFlags(Elf32_Ehdr *Header);
+
+
 /* Lit les flags prévus et les stockent dans la structure Header.
- === ATTENTION: Le détail n'est pas (encore) disponible pour cette caractéristique, bien qu'il serait pratique...
-				Pour l'instant on affiche donc que la valeur qui n'est pas parlante par elle-même ===
  Affiche le décalage suivant le paramètre verbose.
  La valeur est un Word, on lit donc 4 octets.
 
