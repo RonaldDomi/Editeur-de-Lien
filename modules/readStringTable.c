@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "CustomElf.h"
 
-void GetTableStringPart(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable){
+void GetTableStringPart(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable) {
 		fseek(file, Header->e_shstrndx*Header->e_shentsize,SEEK_CUR);
 		sectionName(file, Header, SectionTable, 0, 0);
 		sectionType(file, SectionTable, 0);
@@ -17,14 +17,14 @@ void GetTableStringPart(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable
 		sectionEntrySize(file, SectionTable, 0);
 }
 
-void getString(FILE* file, Elf32_Word index, Elf32_Ehdr* Header, char* mot){
+void getString(FILE* file, Elf32_Word index, Elf32_Ehdr* Header, char* mot) {
     Elf32_Shdr* strTabSect = malloc(sizeof(Elf32_Shdr));
     fseek(file, Header->e_shoff, SEEK_SET);
     GetTableStringPart(file, Header, strTabSect);
     fseek(file, strTabSect->sh_offset, SEEK_SET);
     fseek(file, index, SEEK_CUR);
     int i = 0;
-    while (mot[i] = fgetc(file))
+    while ((mot[i] = fgetc(file)))
     {
         i++;
     }

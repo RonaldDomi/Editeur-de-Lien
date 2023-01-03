@@ -8,6 +8,8 @@
 #include "freadoctet.h"
 #include "readStringTable.h"
 
+int unused; // Var non utilisée pour les warnings lors du make
+
 void GetTableSymbPart(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose){
 	if (Header->e_shnum == 0){
 		if (verbose){
@@ -40,7 +42,7 @@ void GetTableSymbPart(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, 
 //ici ecrire les fonction de recuperation du tableSymbole entry
 
 void symTabName(FILE* file, Elf32_Ehdr* Header, Elf32_Sym* symtab, char verbose){
-	fread(&symtab->st_name, 4, 1, file);
+	unused = fread(&symtab->st_name, 4, 1, file);
 	if (verbose)
 	{
 		char* mot = malloc(50);
@@ -52,7 +54,7 @@ void symTabName(FILE* file, Elf32_Ehdr* Header, Elf32_Sym* symtab, char verbose)
 }
 
 void symTabValue(FILE* file, Elf32_Sym* symtab, char verbose){
-	fread(&symtab->st_value, 4, 1, file);
+	unused = fread(&symtab->st_value, 4, 1, file);
 	if(verbose){
 		printOctet(&symtab->st_value, 4, 1);
 		printf("\t");
@@ -60,14 +62,14 @@ void symTabValue(FILE* file, Elf32_Sym* symtab, char verbose){
 }
 
 void symTabSize(FILE* file, Elf32_Sym* symtab, char verbose){
-	fread(&symtab->st_size, 4, 1, file);
+	unused = fread(&symtab->st_size, 4, 1, file);
 	if(verbose){
 		printf("%d\t", symtab->st_size);
 	}
 }
 
 void symTabInfo(FILE* file, Elf32_Sym* symtab, char verbose){
-	fread(&symtab->st_info, 1, 1, file);
+	unused = fread(&symtab->st_info, 1, 1, file);
 	if(verbose){
 		switch ((symtab->st_info) >> 4)
 		{
@@ -122,14 +124,14 @@ void symTabInfo(FILE* file, Elf32_Sym* symtab, char verbose){
 }
 
 void symTabOther(FILE* file, Elf32_Sym* symtab, char verbose){
-	fread(&symtab->st_other, 1, 1, file);
+	unused = fread(&symtab->st_other, 1, 1, file);
 	if(verbose){
 		printf("%d\t", symtab->st_other);
 	}
 }	
 
 void symTabShndx(FILE* file, Elf32_Sym* symtab, char verbose){
-	fread(&symtab->st_shndx, 2, 1, file);
+	unused = fread(&symtab->st_shndx, 2, 1, file);
 	if(verbose){
 		printf("%d\t", symtab->st_shndx);
 	}

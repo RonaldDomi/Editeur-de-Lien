@@ -9,26 +9,30 @@
 #include "CustomElf.h"
 #include "freadoctet.h"
 
+int unused; // Var non utilisée pour les warnings lors du make
 
-void magicNumber(FILE *file, Elf32_Ehdr* Header, char verbose){
-	//On lit 16 octets du fichier, on les affichent si verbose
-	if (verbose){
+
+void magicNumber(FILE *file, Elf32_Ehdr* Header, char verbose) {
+	// On lit 16 octets du fichier, on les affichent si verbose
+	if (verbose) {
 		printf("Magic number : ");
-		fread(Header->e_ident , 16, 1, file);
+		unused = fread(Header->e_ident , 16, 1, file);
 		printOctet(Header->e_ident, 16, 0);
 		printf("\n");
-	}else{
-		fread(Header->e_ident , 16, 1, file);
+	} 
+	else {
+		unused = fread(Header->e_ident , 16, 1, file);
 	}
 }
 
 
-void objectType(FILE *file, Elf32_Ehdr* Header, char verbose){
-	if (verbose){
+void objectType(FILE *file, Elf32_Ehdr* Header, char verbose) {
+	if (verbose) {
 		printf("Type objet : \t\t\t\t");
-		fread(&Header->e_type, 2, 1, file);
+		unused = fread(&Header->e_type, 2, 1, file);
 		printf("%d ", Header->e_type);
-		switch(Header->e_type){
+
+		switch(Header->e_type) { 
 			case(ET_NONE):
 				printf("No type");
 				break;
@@ -49,16 +53,19 @@ void objectType(FILE *file, Elf32_Ehdr* Header, char verbose){
 				break;
 		}
 		printf("\n");
-	}else{
-		fread(&Header->e_type, 2, 1, file);
+	} 
+	else {
+		unused = fread(&Header->e_type, 2, 1, file);
 	}
 }
 
 
-void machineType(FILE *file, Elf32_Ehdr* Header, char verbose){
-	if (verbose){
+void machineType(FILE *file, Elf32_Ehdr* Header, char verbose) {
+
+	if (verbose)
+	{
 		printf("Type machine : \t\t\t\t");
-		fread(&Header->e_machine, 2, 1, file);
+		unused = fread(&Header->e_machine, 2, 1, file);
 		printf("%d ", Header->e_machine);
 		switch(Header->e_machine){
 			case(EM_NONE):
@@ -76,18 +83,19 @@ void machineType(FILE *file, Elf32_Ehdr* Header, char verbose){
 				break;
 		}
 		printf("\n");
-	}else{
-		fread(&Header->e_machine, 2, 1, file);
+	}
+	else {
+		unused = fread(&Header->e_machine, 2, 1, file);
 	}
 }
 
 
-void version(FILE *file, Elf32_Ehdr* Header, char verbose){
-	if (verbose){
+void version(FILE *file, Elf32_Ehdr* Header, char verbose) {
+	if (verbose) {
 		printf("Version : \t\t\t\t");
-		fread(&Header->e_version, 4, 1, file);
+		unused = fread(&Header->e_version, 4, 1, file);
 		printf("%d ", Header->e_version);
-		switch(Header->e_version){
+		switch(Header->e_version) {
 			case(EV_NONE):
 				printf("Invalid ELF Version");
 				break;
@@ -98,184 +106,195 @@ void version(FILE *file, Elf32_Ehdr* Header, char verbose){
 				printf("===WARNING: Unknown version !===");
 		}
 		printf("\n");
-	}else{
-		fread(&Header->e_version, 4, 1, file);
+	}
+	else {
+		unused = fread(&Header->e_version, 4, 1, file);
 	}
 }
 
 
-void entry(FILE *file, Elf32_Ehdr* Header, char verbose){
-	if (verbose){
+void entry(FILE *file, Elf32_Ehdr* Header, char verbose) {
+	if (verbose) { 
 		printf("Entry point adress : \t\t\t");
-		fread(&Header->e_entry, 4, 1, file);
+		unused = fread(&Header->e_entry, 4, 1, file);
 		printAdress(&Header->e_entry, 4, 1);
 		printf("\n");
-	}else{
-		fread(&Header->e_entry, 4, 1, file);
+	}
+	else {
+		unused = fread(&Header->e_entry, 4, 1, file);
 	}
 }
 
 
-void progHeaderOff(FILE *file, Elf32_Ehdr* Header, char verbose){
-	if (verbose){
+void progHeaderOff(FILE *file, Elf32_Ehdr* Header, char verbose) {
+	if (verbose) {
 		printf("Program header offset : \t\t");
-		fread(&Header->e_phoff, 4, 1, file);
+		unused = fread(&Header->e_phoff, 4, 1, file);
 		printf("%d Bytes\n", Header->e_phoff);
-	}else{
-		fread(&Header->e_phoff, 4, 1, file);
+	}
+	else {
+		unused = fread(&Header->e_phoff, 4, 1, file);
 	}
 }
 
 
-void sectHeaderOff(FILE *file, Elf32_Ehdr* Header, char verbose){
-	if (verbose){
+void sectHeaderOff(FILE *file, Elf32_Ehdr* Header, char verbose) {
+	if (verbose) {
 		printf("Section header offset : \t\t");
-		fread(&Header->e_shoff, 4, 1, file);
+		unused = fread(&Header->e_shoff, 4, 1, file);
 		printf("%d Bytes\n", Header->e_shoff);
-	}else{
-		fread(&Header->e_shoff, 4, 1, file);
+	}
+	else {
+		unused = fread(&Header->e_shoff, 4, 1, file);
 	}
 }
 
-void decodeHeaderFlags(Elf32_Ehdr *Header){
-    if (Header->e_flags & EF_ARM_EABI_VER5){
+void decodeHeaderFlags(Elf32_Ehdr *Header) {
+    if (Header->e_flags & EF_ARM_EABI_VER5) {
         printf(", EABI Version 5");
     }
-    else if (Header->e_flags & EF_ARM_EABI_VER4){
+    else if (Header->e_flags & EF_ARM_EABI_VER4) {
         printf(", EABI Version 4");
     }
-    else if (Header->e_flags & EF_ARM_EABI_VER3){
+    else if (Header->e_flags & EF_ARM_EABI_VER3) {
         printf(", EABI Version 3");
     }
-    else if (Header->e_flags & EF_ARM_EABI_VER2){
+    else if (Header->e_flags & EF_ARM_EABI_VER2) {
         printf(", EABI Version 2");
     }
-    else if (Header->e_flags & EF_ARM_EABI_VER1){
+    else if (Header->e_flags & EF_ARM_EABI_VER1) {
         printf(", EABI Version 1");
     }
-    else if (Header->e_flags & EF_ARM_EABI_UNKNOWN){
+    else if (Header->e_flags & EF_ARM_EABI_UNKNOWN) {
         printf(", EABI Unknown");
     }
 
-    if (Header->e_flags & EF_ARM_RELEXEC){
+    if (Header->e_flags & EF_ARM_RELEXEC) {
         printf(", Relexec");
     }
-    else if (Header->e_flags & EF_ARM_HASENTRY){
+    else if (Header->e_flags & EF_ARM_HASENTRY) {
         printf(", Rasentry");
     }
-    else if (Header->e_flags & EF_ARM_INTERWORK){
+    else if (Header->e_flags & EF_ARM_INTERWORK) {
         printf(", Interwork");
     }
-    else if (Header->e_flags & EF_ARM_APCS_26){
+    else if (Header->e_flags & EF_ARM_APCS_26) {
         printf(", APCS 26");
     }
-    else if (Header->e_flags & EF_ARM_APCS_FLOAT){
+    else if (Header->e_flags & EF_ARM_APCS_FLOAT) {
         printf(", APCS Float");
     }
-    else if (Header->e_flags & EF_ARM_PIC){
+    else if (Header->e_flags & EF_ARM_PIC) {
         printf(", PIC");
     }
-    else if (Header->e_flags & EF_ARM_ALIGN8){
+    else if (Header->e_flags & EF_ARM_ALIGN8) {
         printf(", Align 8");
     }
-    else if (Header->e_flags & EF_ARM_NEW_ABI){
+    else if (Header->e_flags & EF_ARM_NEW_ABI) {
         printf(", new ABI");
     }
-    else if (Header->e_flags & EF_ARM_OLD_ABI){
+    else if (Header->e_flags & EF_ARM_OLD_ABI) {
         printf(", old ABI");
     }
-    else if (Header->e_flags & EF_ARM_SOFT_FLOAT){
+    else if (Header->e_flags & EF_ARM_SOFT_FLOAT) {
         printf(", Soft Float");
     }
-    else if (Header->e_flags & EF_ARM_VFP_FLOAT){
+    else if (Header->e_flags & EF_ARM_VFP_FLOAT) {
         printf(", VFP Float");
     }
-    else if (Header->e_flags & EF_ARM_MAVERICK_FLOAT){
+    else if (Header->e_flags & EF_ARM_MAVERICK_FLOAT) {
         printf(", Maverick Float");
     }
 }
 
-void flags(FILE *file, Elf32_Ehdr *Header, char verbose){
-	if (verbose){
+void flags(FILE *file, Elf32_Ehdr *Header, char verbose) {
+	if (verbose) {
 		printf("Processor flags : \t\t\t");
-		fread(&Header->e_flags, 4, 1, file);
+		unused = fread(&Header->e_flags, 4, 1, file);
 		printAdress(&Header->e_flags, 4, 1);
         decodeHeaderFlags(Header);
 		printf("\n");
-	}else{
-		fread(&Header->e_flags, 4, 1, file);
+	}
+	else {
+		unused = fread(&Header->e_flags, 4, 1, file);
 	}
 }
 
 
-void headerSize(FILE *file, Elf32_Ehdr *Header, char verbose){
-	if (verbose){
+void headerSize(FILE *file, Elf32_Ehdr *Header, char verbose) {
+	if (verbose) {
 		printf("Header size : \t\t\t\t");
-		fread(&Header->e_ehsize, 2, 1, file);
+		unused = fread(&Header->e_ehsize, 2, 1, file);
 		printf("%d Bytes\n", Header->e_ehsize);
-	}else{
-		fread(&Header->e_ehsize, 2, 1, file);
+	}
+	else {
+		unused = fread(&Header->e_ehsize, 2, 1, file);
 	}
 }
 
 
-void headerProgramSize(FILE *file, Elf32_Ehdr *Header, char verbose){
-	if (verbose){
+void headerProgramSize(FILE *file, Elf32_Ehdr *Header, char verbose) {
+	if (verbose) {
 		printf("Program header size : \t\t\t");
-		fread(&Header->e_phentsize, 2, 1, file);
+		unused = fread(&Header->e_phentsize, 2, 1, file);
 		printf("%d Bytes\n", Header->e_phentsize);
-	}else{
-		fread(&Header->e_phentsize, 2, 1, file);
+	}
+	else {
+		unused = fread(&Header->e_phentsize, 2, 1, file);
 	}
 
 }
 
 
-void nbProgramHeaders(FILE *file,Elf32_Ehdr *Header, char verbose){
-	if (verbose){
+void nbProgramHeaders(FILE *file,Elf32_Ehdr *Header, char verbose) {
+	if (verbose) {
 		printf("Number of program headers : \t\t");
-		fread(&Header->e_phnum, 2, 1, file);
+		unused = fread(&Header->e_phnum, 2, 1, file);
 		printf("%d Headers\n", Header->e_phnum);
-	}else{
-		fread(&Header->e_phnum, 2, 1, file);
+	}
+	else {
+		unused = fread(&Header->e_phnum, 2, 1, file);
 	}
 }
 
 
-void sizeSectionHeaders(FILE *file, Elf32_Ehdr *Header, char verbose){
-	if (verbose){
+void sizeSectionHeaders(FILE *file, Elf32_Ehdr *Header, char verbose) {
+	if (verbose) {
 		printf("Size of section headers : \t\t");
-		fread(&Header->e_shentsize, 2, 1, file);
+		unused = fread(&Header->e_shentsize, 2, 1, file);
 		printf("%d Bytes\n", Header->e_shentsize);
-	}else{
-		fread(&Header->e_shentsize, 2, 1, file);
+	}
+	else {
+		unused = fread(&Header->e_shentsize, 2, 1, file);
 	}
 }
 
 
-void nbSectionHeader(FILE *file, Elf32_Ehdr *Header, char verbose){
-	if (verbose){
+void nbSectionHeader(FILE *file, Elf32_Ehdr *Header, char verbose) {
+	if (verbose) {
 		printf("Number of section headers : \t\t");
-		fread(&Header->e_shnum, 2, 1, file);
+		unused = fread(&Header->e_shnum, 2, 1, file);
 		printf("%d Headers\n", Header->e_shnum);
-	}else{
-		fread(&Header->e_shnum, 2, 1, file);
+	}
+	else {
+		unused = fread(&Header->e_shnum, 2, 1, file);
 	}
 }
 
 
-void indexStringHeader(FILE *file, Elf32_Ehdr *Header, char verbose){
-	if (verbose){
+void indexStringHeader(FILE *file, Elf32_Ehdr *Header, char verbose) {
+	if (verbose) {
 		printf("Index section string table : \t\t");
-		fread(&Header->e_shstrndx, 2, 1, file);
+		unused = fread(&Header->e_shstrndx, 2, 1, file);
 		printf("%d\n", Header->e_shstrndx);
-	}else{
-		fread(&Header->e_shstrndx, 2, 1, file);
+	} 
+	else {
+		unused = fread(&Header->e_shstrndx, 2, 1, file);
 	}
 }
 
 
-void getHeader(FILE *file, Elf32_Ehdr *Header, char verbose){
+void getHeader(FILE *file, Elf32_Ehdr *Header, char verbose) {
 	magicNumber(file, Header, verbose);
 	objectType(file, Header, verbose);
 	machineType(file, Header, verbose);

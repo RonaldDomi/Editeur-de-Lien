@@ -8,6 +8,8 @@
 #include "CustomElf.h"
 #include "freadoctet.h"
 
+int unused; // Var non utilisée pour les warnings lors du make
+
 void printContent(FILE* file, Elf32_Shdr* SectionTable, int sectionSelected, char* nameOfSection){
 
 	if (sectionSelected==-1){
@@ -39,7 +41,7 @@ void printContent(FILE* file, Elf32_Shdr* SectionTable, int sectionSelected, cha
 			printf("0x%08x ",adressPrinted);
 		}
 
-		fread(buffer, sizeToRead, 1, file);
+		unused = fread(buffer, sizeToRead, 1, file);
 		dumpOctet(buffer, sizeToRead);
 		dumped+=sizeToRead;
 		adressPrinted+=8;

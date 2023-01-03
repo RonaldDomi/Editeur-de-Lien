@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int unused; // Var non utilisée pour les warnings lors du make
+
 int checkELF(FILE *file){
 	char buffer[4];
-	fread(buffer, 4, 1, file);
+	unused = fread(buffer, 4, 1, file);
 	/* On vérifie si les 4 premiers nombres sont bien 7F 45 4C 46
 	qui correspondent au Magic Number d'un ELF */
 	if (feof(file)){

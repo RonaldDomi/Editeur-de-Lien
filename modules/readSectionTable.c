@@ -12,25 +12,30 @@
 #include <string.h>
 #include <math.h>
 
-void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose, char nom){
-	fread(&SectionTable->sh_name, 4, 1, file);
+int unused; // Var non utilisée pour les warnings lors du make
+
+void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose, char nom) {
+	unused = fread(&SectionTable->sh_name, 4, 1, file);
 	if(nom){
 		char* mot = malloc(50);
 		long position = ftell(file);
 		getString(file, SectionTable->sh_name, Header, mot);
 		fseek(file, position, 0);
 		SectionTable->sh_charname=mot;
-//		printf("\nNom : %s\n",SectionTable->sh_charname);
-		if (verbose){
+		// Printf("\nNom : %s\n",SectionTable->sh_charname);
+		if (verbose) {
 
 			int wordLength = strlen(mot);
-			if (wordLength==0){
+			if (wordLength==0) {
 				printf("==NO_NAME==\t\t");
-			}else if ((0<=wordLength) && (8>wordLength)){
+			}
+			else if ((0<=wordLength) && (8>wordLength)) {
 				printf("%s\t\t\t", mot);
-			}else if ((8<=wordLength) && (16>wordLength)){
+			}
+			else if ((8<=wordLength) && (16>wordLength)) {
 				printf("%s\t\t", mot);
-			}else{
+			}
+			else {
 				printf("%s\t", mot);
 			}
 		}
@@ -41,7 +46,7 @@ void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char 
 
 void sectionType(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
-		fread(&SectionTable->sh_type, 4, 1, file);
+		unused = fread(&SectionTable->sh_type, 4, 1, file);
 		if (SectionTable->sh_type >= SHT_LOOS && SectionTable->sh_type < SHT_HIOS){
             printf("LOOS+0x%x\t", SectionTable->sh_type-SHT_LOOS);
         }else if (SectionTable->sh_type >= SHT_LOPROC && SectionTable->sh_type <= SHT_HIPROC){
@@ -104,7 +109,7 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, int verbose){
             }
         }
 	}else{
-		fread(&SectionTable->sh_type, 4, 1, file);
+		unused = fread(&SectionTable->sh_type, 4, 1, file);
 	}
 }
 
@@ -177,88 +182,88 @@ void decodeSectionFlags(Elf32_Shdr* SectionTable){
 
 void sectionFlags(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
-		fread(&SectionTable->sh_flags, 4, 1, file);
+		unused = fread(&SectionTable->sh_flags, 4, 1, file);
         decodeSectionFlags(SectionTable);
 		printf("\t");
 	}else{
-		fread(&SectionTable->sh_flags, 4, 1, file);
+		unused = fread(&SectionTable->sh_flags, 4, 1, file);
 	}
 }
 
 
 void sectionAdress(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
-		fread(&SectionTable->sh_addr, 4, 1, file);
+		unused = fread(&SectionTable->sh_addr, 4, 1, file);
 		printAdress8(&SectionTable->sh_addr, 4, 1);
 		printf("\t\t");
 	}else{
-		fread(&SectionTable->sh_addr, 4, 1, file);
+		unused = fread(&SectionTable->sh_addr, 4, 1, file);
 	}
 }
 
 
 void sectionOffset(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
-		fread(&SectionTable->sh_offset, 4, 1, file);
+		unused = fread(&SectionTable->sh_offset, 4, 1, file);
 		printf("%d ", SectionTable->sh_offset);
 		printf("\t\t");
 	}else{
-		fread(&SectionTable->sh_offset, 4, 1, file);
+		unused = fread(&SectionTable->sh_offset, 4, 1, file);
 	}
 }
 
 
 void sectionSize(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
-		fread(&SectionTable->sh_size, 4, 1, file);
+		unused = fread(&SectionTable->sh_size, 4, 1, file);
 		printf("%d ", SectionTable->sh_size);
 		printf("\t\t");
 	}else{
-		fread(&SectionTable->sh_size, 4, 1, file);
+		unused = fread(&SectionTable->sh_size, 4, 1, file);
 	}
 }
 
 
 void sectionLink(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
-		fread(&SectionTable->sh_link, 4, 1, file);
+		unused = fread(&SectionTable->sh_link, 4, 1, file);
 		printf("%d ",SectionTable->sh_link);
 		printf("\t");
 	}else{
-		fread(&SectionTable->sh_link, 4, 1, file);
+		unused = fread(&SectionTable->sh_link, 4, 1, file);
 	}
 }
 
 
 void sectionInfo(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
-		fread(&SectionTable->sh_info, 4, 1, file);
+		unused = fread(&SectionTable->sh_info, 4, 1, file);
 		printf("%d ",SectionTable->sh_info);
 		printf("\t");
 	}else{
-		fread(&SectionTable->sh_info, 4, 1, file);
+		unused = fread(&SectionTable->sh_info, 4, 1, file);
 	}
 }
 
 
 void sectionAdressAlign(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
-		fread(&SectionTable->sh_addralign, 4, 1, file);
+		unused = fread(&SectionTable->sh_addralign, 4, 1, file);
 		printf("%d ", SectionTable->sh_addralign);
 		printf("\t");
 	}else{
-		fread(&SectionTable->sh_addralign, 4, 1, file);
+		unused = fread(&SectionTable->sh_addralign, 4, 1, file);
 	}
 }
 
 
 void sectionEntrySize(FILE *file, Elf32_Shdr* SectionTable, int verbose){
 	if (verbose){
-		fread(&SectionTable->sh_entsize, 4, 1, file);
+		unused = fread(&SectionTable->sh_entsize, 4, 1, file);
 		printf("%d ", SectionTable->sh_entsize);
 		printf("\t");
 	}else{
-		fread(&SectionTable->sh_entsize, 4, 1, file);
+		unused = fread(&SectionTable->sh_entsize, 4, 1, file);
 	}
 }
 
@@ -273,7 +278,8 @@ void printNumber(Elf32_Ehdr* Header, int sectionNumber){
 	int charactersToPrint;
 	if (Header->e_shnum==1){
 		charactersToPrint = 1;
-	}else{
+	}
+	else {
 		charactersToPrint = floor(log10(Header->e_shnum-1) +1);
 		/*-1 car on part de 0, e.g: pour imprimer 10 nombres on a besoin que d'un caractère de 0 à 9*/
 	}
@@ -284,7 +290,8 @@ void printNumber(Elf32_Ehdr* Header, int sectionNumber){
 	int spacesToPrint;
 	if (sectionNumber==0 || sectionNumber==1){
 		spacesToPrint = charactersToPrint - 1;
-	}else{
+	}
+	else {
 		spacesToPrint = charactersToPrint - floor(log10(sectionNumber) +1);
 	}
 
@@ -322,9 +329,9 @@ void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, i
 int getSectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char * sectionName, int verbose){
 	for (int i=0; i<Header->e_shnum; i++){
 		getSectionTable(file, Header, SectionTable, i, 0);
-//		printf("\nsh_charname : <%s>\n", SectionTable->sh_charname);
-//		printf("Section searched : <%s>\n", sectionName);
-		if (! strcmp(SectionTable->sh_charname, sectionName)){
+		// printf("\nsh_charname : <%s>\n", SectionTable->sh_charname);
+		// printf("Section searched : <%s>\n", sectionName);
+		if (! strcmp(SectionTable->sh_charname, sectionName)) {
 			return 1;
 		}
 	}
