@@ -23,7 +23,8 @@ Contact: Guillaume.Huard@imag.fr
 #include "util.h"
 #include <stdint.h>
 
-int is_big_endian() {
+int is_big_endian()
+{
     static uint32_t one = 1;
-    return ((* (uint8_t *) &one) == 0);
+    return ((*(uint8_t *)&one) == 0);
 }

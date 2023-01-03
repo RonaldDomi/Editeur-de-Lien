@@ -19,6 +19,6 @@
  Sortie : Ne renvoie rien
  Effets de bords: Ecrit les données sur la sortie standard
  */
-void printContent(FILE* file, Elf32_Shdr* SectionTable, int sectionSelected, char* nameOfSection);
+void printContent(FILE *file, Elf32_Shdr *SectionTable, int sectionSelected, char *nameOfSection);
 
 #endif /* readContent_h */

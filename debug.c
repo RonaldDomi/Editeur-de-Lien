@@ -29,33 +29,37 @@ Contact: Guillaume.Huard@imag.fr
 char *debugged_files[MAX_FILES_NUMBER];
 int nb_debugged_files = 0;
 
-void add_debug_to(char *name) {
-    int i=0, j;
+void add_debug_to(char *name)
+{
+    int i = 0, j;
 
-    while ((i<nb_debugged_files) && (i<MAX_FILES_NUMBER) &&
-           (strcmp(debugged_files[i], name) < 0)) {
+    while ((i < nb_debugged_files) && (i < MAX_FILES_NUMBER) &&
+           (strcmp(debugged_files[i], name) < 0))
+    {
         i++;
     }
     if (i >= MAX_FILES_NUMBER)
         return;
-    for (j=nb_debugged_files; j>i; j--)
-        debugged_files[j] = debugged_files[j-1];
+    for (j = nb_debugged_files; j > i; j--)
+        debugged_files[j] = debugged_files[j - 1];
     debugged_files[i] = name;
     nb_debugged_files++;
 }
 
-int __is_debugged(char *name) {
+int __is_debugged(char *name)
+{
     int from, to, middle, result;
 
     from = 0;
     to = nb_debugged_files - 1;
-    while (from < to) {
-        middle = (from+to) / 2;
+    while (from < to)
+    {
+        middle = (from + to) / 2;
         result = strcmp(debugged_files[middle], name);
         if (result < 0)
-            from = middle+1;
+            from = middle + 1;
         else if (result > 0)
-            to = middle-1;
+            to = middle - 1;
         else
             return 1;
     }
@@ -64,8 +68,10 @@ int __is_debugged(char *name) {
     return 0;
 }
 
-int __debug_raw_binary(char *data, int len) {
-    while (len--) {
+int __debug_raw_binary(char *data, int len)
+{
+    while (len--)
+    {
         if (isprint(*data))
             fprintf(stderr, "%c", *data);
         else
