@@ -17,8 +17,7 @@
  Sortie : Ne renvoie rien
  Effets de bords : Modifie la structure SectionTable, ajoute la valeur à sh_name
  */
-void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose, char nom);
-
+void sectionName(FILE *file, Elf32_Ehdr *Header, Elf32_Shdr *SectionTable, char verbose, char nom);
 
 /* Lit le type de la section et la stocke dans la structure SectionTable
  Affiche la valeur suivant le paramètre verbose.
@@ -28,8 +27,7 @@ void sectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char 
  Sortie : Ne renvoie rien
  Effets de bords : Modifie la structure SectionTable, ajoute la valeur à sh_type
  */
-void sectionType(FILE *file, Elf32_Shdr* SectionTable, int verbose);
-
+void sectionType(FILE *file, Elf32_Shdr *SectionTable, int verbose);
 
 /* Décode les octets des flags de la section. Chaque décodage est un décalage bit-à-bit.
 
@@ -37,8 +35,7 @@ void sectionType(FILE *file, Elf32_Shdr* SectionTable, int verbose);
  Sortie : Ne renvoie rien
  Effets de bords : Affiche les détails des flags du Header de la section
  */
-void decodeSectionFlags(Elf32_Shdr* SectionTable);
-
+void decodeSectionFlags(Elf32_Shdr *SectionTable);
 
 /* Lit les flags de la section et la stocke dans la structure SectionTable
  Affiche la valeur suivant le paramètre verbose.
@@ -48,8 +45,7 @@ void decodeSectionFlags(Elf32_Shdr* SectionTable);
  Sortie: Ne renvoie rien
  Effets de bords: Modifie la structure SectionTable, ajoute la valeur à sh_flags
  */
-void sectionFlags(FILE *file, Elf32_Shdr* SectionTable, int verbose);
-
+void sectionFlags(FILE *file, Elf32_Shdr *SectionTable, int verbose);
 
 /* Lit l'adresse du début de la section et la stocke dans la structure SectionTable
  Affiche l'adresse suivant le paramètre verbose.
@@ -59,8 +55,7 @@ void sectionFlags(FILE *file, Elf32_Shdr* SectionTable, int verbose);
  Sortie : Ne renvoie rien
  Effets de bords: Modifie la structure SectionTable, ajoute la valeur à sh_addr
  */
-void sectionAdress(FILE *file, Elf32_Shdr* SectionTable, int verbose);
-
+void sectionAdress(FILE *file, Elf32_Shdr *SectionTable, int verbose);
 
 /* Lit le décalage la section et la stocke dans la structure SectionTable
  Affiche le décalage suivant le paramètre verbose.
@@ -70,8 +65,7 @@ void sectionAdress(FILE *file, Elf32_Shdr* SectionTable, int verbose);
  Sortie : Ne renvoie rien
  Effets de bords: Modifie la structure SectionTable, ajoute la valeur à sh_offset
  */
-void sectionOffset(FILE *file, Elf32_Shdr* SectionTable, int verbose);
-
+void sectionOffset(FILE *file, Elf32_Shdr *SectionTable, int verbose);
 
 /* Lit la taille de la section et la stocke dans la structure SectionTable
  Affiche la taille suivant le paramètre verbose.
@@ -81,8 +75,7 @@ void sectionOffset(FILE *file, Elf32_Shdr* SectionTable, int verbose);
  Sortie : Ne renvoie rien
  Effets de bords: Modifie la structure SectionTable, ajoute la valeur à sh_size
  */
-void sectionSize(FILE *file, Elf32_Shdr* SectionTable, int verbose);
-
+void sectionSize(FILE *file, Elf32_Shdr *SectionTable, int verbose);
 
 /* Lit l'index de lien la section et la stocke dans la structure SectionTable
  Affiche l'index suivant le paramètre verbose.
@@ -92,8 +85,7 @@ void sectionSize(FILE *file, Elf32_Shdr* SectionTable, int verbose);
  Sortie : Ne renvoie rien
  Effets de bords: Modifie la structure SectionTable, ajoute l'index à sh_link
  */
-void sectionLink(FILE *file, Elf32_Shdr* SectionTable, int verbose);
-
+void sectionLink(FILE *file, Elf32_Shdr *SectionTable, int verbose);
 
 /* Lit les informations additionnelles la section et la stocke dans la structure SectionTable
  Affiche les infos suivant le paramètre verbose.
@@ -103,8 +95,7 @@ void sectionLink(FILE *file, Elf32_Shdr* SectionTable, int verbose);
  Sortie : Ne renvoie rien
  Effets de bords: Modifie la structure SectionTable, ajoute la valeur à sh_info
  */
-void sectionInfo(FILE *file, Elf32_Shdr* SectionTable, int verbose);
-
+void sectionInfo(FILE *file, Elf32_Shdr *SectionTable, int verbose);
 
 /* Lit l'alignement de l'adresse la section et la stocke dans la structure SectionTable
  Affiche l'alignement suivant le paramètre verbose.
@@ -114,8 +105,7 @@ void sectionInfo(FILE *file, Elf32_Shdr* SectionTable, int verbose);
  Sortie : Ne renvoie rien
  Effets de bords: Modifie la structure SectionTable, ajoute l'adresse à sh_addralign
  */
-void sectionAdressAlign(FILE *file, Elf32_Shdr* SectionTable, int verbose);
-
+void sectionAdressAlign(FILE *file, Elf32_Shdr *SectionTable, int verbose);
 
 /* Lit la taille de l'entrée de la section et la stocke dans la structure SectionTable
  Affiche la taille suivant le paramètre verbose.
@@ -125,18 +115,7 @@ void sectionAdressAlign(FILE *file, Elf32_Shdr* SectionTable, int verbose);
  Sortie : Ne renvoie rien
  Effets de bords: Modifie la structure SectionTable, ajoute la taille à sh_entsize
  */
-void sectionEntrySize(FILE *file, Elf32_Shdr* SectionTable, int verbose);
-
-
-/* Affiche le numéro de la section entre crochets aligné à droite
- Par exemple pour 101 sections à afficher: [  0] ... [ 10] ... [100]
-
- Paramètre: un pointeur Header de structure d'en-tête, un entier correspondant au numéro de la section à afficher.
- Sortie : Ne renvoie rien
- Effets de bords : Affiche le numéro de la section, entre crochets, aligné à droite
- */
-void printNumber(Elf32_Ehdr* Header, int sectionNumber);
-
+void sectionEntrySize(FILE *file, Elf32_Shdr *SectionTable, int verbose);
 
 /* Affiche le numéro de la section entre crochets aligné à droite
  Par exemple pour 101 sections à afficher: [  0] ... [ 10] ... [100]
@@ -145,8 +124,16 @@ void printNumber(Elf32_Ehdr* Header, int sectionNumber);
  Sortie : Ne renvoie rien
  Effets de bords : Affiche le numéro de la section, entre crochets, aligné à droite
  */
-void printNumber(Elf32_Ehdr* Header, int sectionNumber);
+void printNumber(Elf32_Ehdr *Header, int sectionNumber);
 
+/* Affiche le numéro de la section entre crochets aligné à droite
+ Par exemple pour 101 sections à afficher: [  0] ... [ 10] ... [100]
+
+ Paramètre: un pointeur Header de structure d'en-tête, un entier correspondant au numéro de la section à afficher.
+ Sortie : Ne renvoie rien
+ Effets de bords : Affiche le numéro de la section, entre crochets, aligné à droite
+ */
+void printNumber(Elf32_Ehdr *Header, int sectionNumber);
 
 /* Remplit la structure SectionTable avec une fonction pour chaque membre, remplit un membre spécifique si sectionNumber != -1
 
@@ -159,8 +146,7 @@ void printNumber(Elf32_Ehdr* Header, int sectionNumber);
  Sortie : Ne renvoie rien
  Effets de bords : Modifie la structure SectionTable, la remplie entièrement
 */
-void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, int sectionNumber, int verbose);
-
+void getSectionTable(FILE *file, Elf32_Ehdr *Header, Elf32_Shdr *SectionTable, int sectionNumber, int verbose);
 
 /* Remplit la structure SectionTable avec une fonction pour chaque membre, en cherchant la section avec un nom spécifique
  Paramètre:
@@ -173,5 +159,5 @@ void getSectionTable(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, i
 			0 Sinon
  Effets de bords : Modifie la structure SectionTable, la remplie entièrement
  */
-int getSectionName(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char * sectionName, int verbose);
+int getSectionName(FILE *file, Elf32_Ehdr *Header, Elf32_Shdr *SectionTable, char *sectionName, int verbose);
 #endif /* readSectionTable_h */

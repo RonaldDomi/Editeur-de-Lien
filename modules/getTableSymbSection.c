@@ -10,14 +10,21 @@
 
 int unused; // Var non utilisée pour les warnings lors du make
 
-void GetTableSymbPart(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, char verbose){
-	if (Header->e_shnum == 0){
-		if (verbose){
+void GetTableSymbPart(FILE *file, Elf32_Ehdr *Header, Elf32_Shdr *SectionTable, char verbose)
+{
+	if (Header->e_shnum == 0)
+	{
+		if (verbose)
+		{
 			printf("No section Table...\n");
 		}
-	}else{
-		for (int i=0; i<Header->e_shnum; i++){
-			if (verbose){
+	}
+	else
+	{
+		for (int i = 0; i < Header->e_shnum; i++)
+		{
+			if (verbose)
+			{
 				printf("[%d]\t", i);
 			}
 			sectionName(file, Header, SectionTable, verbose, 1);
@@ -30,22 +37,25 @@ void GetTableSymbPart(FILE *file, Elf32_Ehdr* Header, Elf32_Shdr* SectionTable, 
 			sectionInfo(file, SectionTable, verbose);
 			sectionAdressAlign(file, SectionTable, verbose);
 			sectionEntrySize(file, SectionTable, verbose);
-			
-			if (verbose){
+
+			if (verbose)
+			{
 				printf("\n");
 			}
-            if(SectionTable->sh_type == SHT_SYMTAB) return;
+			if (SectionTable->sh_type == SHT_SYMTAB)
+				return;
 		}
 	}
 }
 
-//ici ecrire les fonction de recuperation du tableSymbole entry
+// ici ecrire les fonction de recuperation du tableSymbole entry
 
-void symTabName(FILE* file, Elf32_Ehdr* Header, Elf32_Sym* symtab, char verbose){
+void symTabName(FILE *file, Elf32_Ehdr *Header, Elf32_Sym *symtab, char verbose)
+{
 	unused = fread(&symtab->st_name, 4, 1, file);
 	if (verbose)
 	{
-		char* mot = malloc(50);
+		char *mot = malloc(50);
 		long position = ftell(file);
 		getString(file, symtab->st_name, Header, mot);
 		fseek(file, position, 0);
@@ -53,24 +63,30 @@ void symTabName(FILE* file, Elf32_Ehdr* Header, Elf32_Sym* symtab, char verbose)
 	}
 }
 
-void symTabValue(FILE* file, Elf32_Sym* symtab, char verbose){
+void symTabValue(FILE *file, Elf32_Sym *symtab, char verbose)
+{
 	unused = fread(&symtab->st_value, 4, 1, file);
-	if(verbose){
+	if (verbose)
+	{
 		printOctet(&symtab->st_value, 4, 1);
 		printf("\t");
 	}
 }
 
-void symTabSize(FILE* file, Elf32_Sym* symtab, char verbose){
+void symTabSize(FILE *file, Elf32_Sym *symtab, char verbose)
+{
 	unused = fread(&symtab->st_size, 4, 1, file);
-	if(verbose){
+	if (verbose)
+	{
 		printf("%d\t", symtab->st_size);
 	}
 }
 
-void symTabInfo(FILE* file, Elf32_Sym* symtab, char verbose){
+void symTabInfo(FILE *file, Elf32_Sym *symtab, char verbose)
+{
 	unused = fread(&symtab->st_info, 1, 1, file);
-	if(verbose){
+	if (verbose)
+	{
 		switch ((symtab->st_info) >> 4)
 		{
 		case 0:
@@ -123,21 +139,26 @@ void symTabInfo(FILE* file, Elf32_Sym* symtab, char verbose){
 	}
 }
 
-void symTabOther(FILE* file, Elf32_Sym* symtab, char verbose){
+void symTabOther(FILE *file, Elf32_Sym *symtab, char verbose)
+{
 	unused = fread(&symtab->st_other, 1, 1, file);
-	if(verbose){
+	if (verbose)
+	{
 		printf("%d\t", symtab->st_other);
 	}
-}	
+}
 
-void symTabShndx(FILE* file, Elf32_Sym* symtab, char verbose){
+void symTabShndx(FILE *file, Elf32_Sym *symtab, char verbose)
+{
 	unused = fread(&symtab->st_shndx, 2, 1, file);
-	if(verbose){
+	if (verbose)
+	{
 		printf("%d\t", symtab->st_shndx);
 	}
 }
 
-void getTabSymb(FILE* file, Elf32_Ehdr* Header, Elf32_Sym* symtab, char verbose){
+void getTabSymb(FILE *file, Elf32_Ehdr *Header, Elf32_Sym *symtab, char verbose)
+{
 	symTabName(file, Header, symtab, verbose);
 	symTabValue(file, symtab, verbose);
 	symTabSize(file, symtab, verbose);
@@ -145,4 +166,3 @@ void getTabSymb(FILE* file, Elf32_Ehdr* Header, Elf32_Sym* symtab, char verbose)
 	symTabOther(file, symtab, verbose);
 	symTabShndx(file, symtab, verbose);
 }
-

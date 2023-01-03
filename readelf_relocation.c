@@ -11,23 +11,27 @@
 #include "modules/readHeader.h"
 #include "modules/readRelocation.c"
 
-int main(int argc, char **argv){
+int main(int argc, char **argv)
+{
 
 	/* Vérifie le nombre d'arguments */
-	if (argc<2){
+	if (argc < 2)
+	{
 		printf("Usage : ./read_elf_section_table <FichierBinaire>\n");
 		exit(1);
 	}
 
 	/* Tente d'ouvrir un fichier avec son nom donné en argument */
-	FILE *file = fopen(argv[1],"rb");
-	if (file==NULL){
+	FILE *file = fopen(argv[1], "rb");
+	if (file == NULL)
+	{
 		printf("ERROR : %s no such file.\n", argv[1]);
 		exit(1);
 	}
 
 	/* Vérifie que le fichier est un ELF, renvoie une exception sinon*/
-	if (!checkELF(file)){
+	if (!checkELF(file))
+	{
 		printf("Not a ELF file !\n");
 		printf("Does not have magic bytes 0x7F454C46 at the start.\n");
 		exit(1);
@@ -35,10 +39,10 @@ int main(int argc, char **argv){
 
 	/* Alloue de la mémoire pour une en-tête et la remplit
 		Alloue aussi de la mémoire pour une en-tête de section */
-	Elf32_Ehdr* Header = malloc(sizeof(Elf32_Ehdr));
-	Elf32_Shdr* SectionTable = malloc(sizeof(Elf32_Shdr));
-	Elf32_Rel* rel = malloc(sizeof(Elf32_Rel));
-	Elf32_Rela* rela = malloc(sizeof(Elf32_Rela));
+	Elf32_Ehdr *Header = malloc(sizeof(Elf32_Ehdr));
+	Elf32_Shdr *SectionTable = malloc(sizeof(Elf32_Shdr));
+	Elf32_Rel *rel = malloc(sizeof(Elf32_Rel));
+	Elf32_Rela *rela = malloc(sizeof(Elf32_Rela));
 
 	getHeader(file, Header, 0);
 
@@ -48,7 +52,7 @@ int main(int argc, char **argv){
 	printf("\n");
 	printf("Adresses are given un hexadecimal format.\n");
 	printf("All values are given in bytes in decimal format.\n\n");
-    GetRelocationPart(file,Header,SectionTable, rel, rela, 0);
+	GetRelocationPart(file, Header, SectionTable, rel, rela, 0);
 	printf("\n");
 	return 0;
 }

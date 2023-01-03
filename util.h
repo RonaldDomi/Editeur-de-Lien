@@ -25,9 +25,9 @@ Contact: Guillaume.Huard@imag.fr
 
 int is_big_endian();
 
-#define reverse_2(x) ((((x)&0xFF)<<8)|(((x)>>8)&0xFF))
-#define reverse_4(x) ((((x)&0xFF)<<24)|((((x)>>8)&0xFF)<<16)|\
-						((((x)>>16)&0xFF)<<8)|(((x)>>24)&0xFF))
+#define reverse_2(x) ((((x)&0xFF) << 8) | (((x) >> 8) & 0xFF))
+#define reverse_4(x) ((((x)&0xFF) << 24) | ((((x) >> 8) & 0xFF) << 16) | \
+                      ((((x) >> 16) & 0xFF) << 8) | (((x) >> 24) & 0xFF))
 
-#define min(x,y) ((x)<(y)?(x):(y))
+#define min(x, y) ((x) < (y) ? (x) : (y))
 #endif

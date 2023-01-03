@@ -29,7 +29,7 @@ int __debug_raw_binary(char *data, int len);
 
 #ifdef DEBUG
 #ifdef __GNUC__
-#define VARIABLE_IS_NOT_USED __attribute__ ((unused))
+#define VARIABLE_IS_NOT_USED __attribute__((unused))
 #else
 #define VARIABLE_IS_NOT_USED
 #endif
@@ -42,23 +42,21 @@ int __debug_raw_binary(char *data, int len);
 */
 static int VARIABLE_IS_NOT_USED is_debugged_first = 1;
 static int VARIABLE_IS_NOT_USED is_debugged_result = 0;
-#define is_debugged(x) ((is_debugged_first && \
-                         (is_debugged_first = 0, \
-						  is_debugged_result = __is_debugged(x) \
-						 ) \
-						) || \
+#define is_debugged(x) ((is_debugged_first &&                        \
+                         (is_debugged_first = 0,                     \
+                          is_debugged_result = __is_debugged(x))) || \
                         (is_debugged_result))
 #else
 #define is_debugged(x) __is_debugged(x)
 #endif
 
-#define debug_raw(format, ...) ((void) (is_debugged(__FILE__) && \
-                                fprintf(stderr, format, ##__VA_ARGS__)))
-#define debug(format, ...) ((void) (is_debugged(__FILE__) && \
-                            fprintf(stderr, "[DEBUG] %s,%d: "format, \
-                                    __FILE__, __LINE__, ##__VA_ARGS__)))
-#define debug_raw_binary(data, len) ((void) (is_debugged(__FILE__) && \
-                                     __debug_raw_binary(data, len)))
+#define debug_raw(format, ...) ((void)(is_debugged(__FILE__) && \
+                                       fprintf(stderr, format, ##__VA_ARGS__)))
+#define debug(format, ...) ((void)(is_debugged(__FILE__) &&                  \
+                                   fprintf(stderr, "[DEBUG] %s,%d: " format, \
+                                           __FILE__, __LINE__, ##__VA_ARGS__)))
+#define debug_raw_binary(data, len) ((void)(is_debugged(__FILE__) && \
+                                            __debug_raw_binary(data, len)))
 #else
 #define debug_raw(format, ...)
 #define debug(format, ...)
@@ -66,12 +64,12 @@ static int VARIABLE_IS_NOT_USED is_debugged_result = 0;
 #endif
 
 #ifdef WARNING
-#define warning(format, ...) fprintf(stderr, "[WARNING] %s, %d: "format, \
+#define warning(format, ...) fprintf(stderr, "[WARNING] %s, %d: " format, \
                                      __FILE__, __LINE__, ##__VA_ARGS__)
 #endif
 
-#define error(format, ...) (fprintf(stderr, "[ERROR] %s, %d: "format, \
-									__FILE__, __LINE__, ##__VA_ARGS__), \
-									exit(1))
+#define error(format, ...) (fprintf(stderr, "[ERROR] %s, %d: " format,  \
+                                    __FILE__, __LINE__, ##__VA_ARGS__), \
+                            exit(1))
 
 #endif
