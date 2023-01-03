@@ -15,11 +15,12 @@ SUBDIRS=
 
 bin_PROGRAMS=
 bin_PROGRAMS+=Options_and_debug_example
-bin_PROGRAMS+=read_elf_header
-bin_PROGRAMS+=read_elf_section_table
-bin_PROGRAMS+=read_elf_section_content
-bin_PROGRAMS+=read_elf_table_symbol
-bin_PROGRAMS+=read_elf_relocation
+bin_PROGRAMS+=readelf_all
+bin_PROGRAMS+=readelf_header
+bin_PROGRAMS+=readelf_section_table
+bin_PROGRAMS+=readelf_section_content
+bin_PROGRAMS+=readelf_symbol_table
+bin_PROGRAMS+=readelf_relocation
 LDADD= -lm
 
 COMMON=debug.h debug.c util.h util.c
@@ -29,10 +30,11 @@ COMMON+=modules/readContent.h modules/readContent.c
 
 EXTRA_DIST=filtre.pl
 Options_and_debug_example_SOURCES=$(COMMON) Options_and_debug_example.c
-read_elf_header_SOURCES=$(COMMON) read_elf_header.c 
-read_elf_section_table_SOURCES=$(COMMON) read_elf_section_table.c
-read_elf_section_content_SOURCES=$(COMMON) read_elf_section_content.c
-read_elf_table_symbol_SOURCES=$(COMMON) read_elf_table_symbol.c
-read_elf_relocation_SOURCES=$(COMMON) read_elf_relocation.c
+readelf_all_SOURCES=$(COMMON) readelf_all.c 
+readelf_header_SOURCES=$(COMMON) readelf_header.c 
+readelf_section_table_SOURCES=$(COMMON) readelf_section_table.c
+readelf_section_content_SOURCES=$(COMMON) readelf_section_content.c
+readelf_symbol_table_SOURCES=$(COMMON) readelf_symbol_table.c
+readelf_relocation_SOURCES=$(COMMON) readelf_relocation.c
 
 EXTRA_DIST+=

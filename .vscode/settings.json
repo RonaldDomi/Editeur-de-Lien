@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "readheader.h": "c",
+        "checkelf.h": "c",
+        "customelf.h": "c",
+        "readsectiontable.h": "c"
+    }
+}
