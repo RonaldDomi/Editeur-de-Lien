@@ -7,9 +7,9 @@
 #include "modules/CustomElf.h"
 #include "modules/readHeader.h"
 #include "modules/readSectionTable.h"
+#include "modules/readContent.h"
 #include "modules/getTableSymbSection.c"
 #include "modules/readRelocation.c"
-
 
 
 void usage(char *name) {
