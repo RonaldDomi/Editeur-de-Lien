@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
     }
 
     // ###### Starting readelf control ######
-    // correct type
+    // Correct type
     if (strcmp(type, "h") != 0 &&
         strcmp(type, "S") != 0 &&
         strcmp(type, "x") != 0 &&
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-    // correct number of arguments
+    // Correct number of arguments
     if (strcmp(type, "x") != 0 && argc > 5)
     {
         printf("No need for additional arguments, they will be ignored\n");
@@ -109,6 +109,7 @@ int main(int argc, char *argv[])
     Elf32_Sym *symTab = malloc(sizeof(Elf32_Sym));
     Elf32_Rel *rel = malloc(sizeof(Elf32_Rel));
     Elf32_Rela *rela = malloc(sizeof(Elf32_Rela));
+
     // HEADER
     if (strcmp(type, "h") == 0)
     {
@@ -119,7 +120,8 @@ int main(int argc, char *argv[])
         getHeader(file, Header, 1);
     }
     else
-    { // type != "h"
+    { 
+        // type != "h"
         getHeader(file, Header, 0);
         fseek(file, Header->e_shoff, SEEK_SET);
     }
@@ -221,6 +223,12 @@ int main(int argc, char *argv[])
         GetRelocationPart(file, Header, SectionTable, rel, rela, 0);
         printf("\n");
     }
+    
+    if(arg != NULL) 
+    {
+        ;
+    }
+    
     fclose(file);
     return 0;
 }
