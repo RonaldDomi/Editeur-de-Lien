@@ -101,11 +101,11 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
     # On ne veut pas que cette adresse soit une Clé, la Clé serait valide mais pas la valeur associée
     # Donc on décide de ne créer une clé que si une ligne commence par "0x"
     # toutes les lignes pertinentes commencent par l'adresse donc par le préfixe 0x
-    if [[ $line =~ $regexBegin ]]; then
-        key=$(echo $line | cut -dx -f2 | cut -d' ' -f1)
-    else
-        key=" "
-    fi
+    # if [[ $line =~ $regexBegin ]]; then
+    #     key=$(echo $line | cut -dx -f2 | cut -d' ' -f1)
+    # else
+    #     key=" "
+    # fi
 
     # On hard code la position 12, on sait que toutes les données commencent à partir de la 12ème position.
     # Donc on cut à partir de la 12ème position, on enlève les leading/trailing Whitespaces/Tabs
