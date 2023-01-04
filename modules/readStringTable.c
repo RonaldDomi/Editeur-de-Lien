@@ -32,5 +32,5 @@ void getString(FILE *file, Elf32_Word index, Elf32_Ehdr *Header, char *mot)
 	// 	i++;
 	// }
     
-    fgets(mot, 50, file);
+    mot = fgets(mot, 50, file);
 }
