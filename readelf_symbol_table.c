@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 	Elf32_Sym *symTab = malloc(sizeof(Elf32_Sym));
 	for (int i = 0; i < SectionTable->sh_size / 16; i++)
 	{
-		printf("%d\t", i);
+		printf("%d :\t", i);
 		getTabSymb(file, Header, symTab, 1);
 		printf("\n");
 	}

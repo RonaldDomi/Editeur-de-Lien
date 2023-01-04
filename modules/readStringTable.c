@@ -25,9 +25,12 @@ void getString(FILE *file, Elf32_Word index, Elf32_Ehdr *Header, char *mot)
 	GetTableStringPart(file, Header, strTabSect);
 	fseek(file, strTabSect->sh_offset, SEEK_SET);
 	fseek(file, index, SEEK_CUR);
-	int i = 0;
-	while ((mot[i] = fgetc(file)))
-	{
-		i++;
-	}
+
+	// int i = 0;
+	// while ((mot[i] = fgetc(file)))
+	// {
+	// 	i++;
+	// }
+    
+    fgets(mot, 50, file);
 }
