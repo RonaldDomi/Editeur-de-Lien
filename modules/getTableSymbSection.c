@@ -59,7 +59,8 @@ void symTabName(FILE *file, Elf32_Ehdr *Header, Elf32_Sym *symtab, char verbose)
 		long position = ftell(file);
 		getString(file, symtab->st_name, Header, mot);
 		fseek(file, position, 0);
-		printf("%s\t", mot);
+		printf("%s\t\t", mot);
+        //TODO le programme trouve des de noms bizarre
 	}
 }
 
