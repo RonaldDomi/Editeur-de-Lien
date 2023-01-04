@@ -408,6 +408,11 @@ typedef struct
   Elf64_Xword sh_entsize;   /* Entry size if section holds table */
 } Elf64_Shdr;
 
+typedef struct {
+    int nbSections;
+    Elf32_Shdr * TabAllSec[50];
+} Elf32_AllSec;
+
 /* Special section indices.  */
 
 #define SHN_UNDEF 0          /* Undefined section */

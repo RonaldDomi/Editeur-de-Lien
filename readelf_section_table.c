@@ -38,9 +38,8 @@ int main(int argc, char **argv)
 	/* Alloue de la mémoire pour une en-tête et la remplit
 		Alloue aussi de la mémoire pour une en-tête de section */
 	Elf32_Ehdr *Header = malloc(sizeof(Elf32_Ehdr));
-	Elf32_Shdr *SectionTable = malloc(sizeof(Elf32_Shdr));
 
-	getHeader(file, Header, 0);
+	getHeader(file, Header);
 
 	/* On va directement à l'adresse ou est contenue l'en-tête de la section et on la remplit
 		On affiche aussi un début de tableau pour l'affichage de l'étape 2 */
@@ -58,12 +57,9 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-		for (int i = 0; i < Header->e_shnum; i++)
-		{
-			printNumber(Header, i);
-			getSectionTable(file, Header, SectionTable, -1, 1);
-			printf("\n");
-		}
+        Elf32_AllSec * AllSectionTable = initSectionTable(Header->e_shnum);
+		getAllSectionsTables(file, Header, AllSectionTable);
+        printAllSectionsTables(AllSectionTable);
 	}
 
 	return 0;

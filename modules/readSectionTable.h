@@ -9,6 +9,28 @@
 #include <stdio.h>
 #include "CustomElf.h"
 
+Elf32_AllSec * initSectionTable(int nb);
+
+void printAllSectionsTables(Elf32_AllSec *Sections);
+
+/* Décode les octets des types de la section.
+
+ Paramètre: un pointeur SectionTable de structure d'en-tête
+ Sortie : Ne renvoie rien
+ Effets de bords : Affiche les détails des flags du Header de la section
+ */
+void DecodeSectionType(Elf32_Shdr *SectionTable);
+
+/* Décode les octets des flags de la section. Chaque décodage est un décalage bit-à-bit.
+
+ Paramètre: un pointeur SectionTable de structure d'en-tête
+ Sortie : Ne renvoie rien
+ Effets de bords : Affiche les détails des flags du Header de la section
+ */
+void DecodeSectionFlags(Elf32_Shdr *SectionTable);
+
+void printSectionTable(Elf32_Shdr *SectionTable);
+
 /* Lit la valeur du nom de la table et la stocke dans la structure SectionTable
  Affiche la valeur suivant le paramètre verbose.
  La valeur du nom est un Word, on lit donc 4 octets.
@@ -17,105 +39,7 @@
  Sortie : Ne renvoie rien
  Effets de bords : Modifie la structure SectionTable, ajoute la valeur à sh_name
  */
-void sectionName(FILE *file, Elf32_Ehdr *Header, Elf32_Shdr *SectionTable, char verbose, char nom);
-
-/* Lit le type de la section et la stocke dans la structure SectionTable
- Affiche la valeur suivant le paramètre verbose.
- Le type est un Word, on lit donc 4 octets.
-
- Paramètre: un pointeur file de fichier, un pointeur SectionTable de structure d'en-tête, un booléen verbose pour gérer l'affichage
- Sortie : Ne renvoie rien
- Effets de bords : Modifie la structure SectionTable, ajoute la valeur à sh_type
- */
-void sectionType(FILE *file, Elf32_Shdr *SectionTable, int verbose);
-
-/* Décode les octets des flags de la section. Chaque décodage est un décalage bit-à-bit.
-
- Paramètre: un pointeur SectionTable de structure d'en-tête
- Sortie : Ne renvoie rien
- Effets de bords : Affiche les détails des flags du Header de la section
- */
-void decodeSectionFlags(Elf32_Shdr *SectionTable);
-
-/* Lit les flags de la section et la stocke dans la structure SectionTable
- Affiche la valeur suivant le paramètre verbose.
- Les flags est un Word, on lit donc 4 octets.
-
- Paramètre: un pointeur file de fichier, un pointeur SectionTable de structure d'en-tête, un booléen verbose pour gérer l'affichage
- Sortie: Ne renvoie rien
- Effets de bords: Modifie la structure SectionTable, ajoute la valeur à sh_flags
- */
-void sectionFlags(FILE *file, Elf32_Shdr *SectionTable, int verbose);
-
-/* Lit l'adresse du début de la section et la stocke dans la structure SectionTable
- Affiche l'adresse suivant le paramètre verbose.
- L'adresse est un Word, on lit donc 4 octets.
-
- Paramètre: un pointeur file de fichier, un pointeur SectionTable de structure d'en-tête, un booléen verbose pour gérer l'affichage
- Sortie : Ne renvoie rien
- Effets de bords: Modifie la structure SectionTable, ajoute la valeur à sh_addr
- */
-void sectionAdress(FILE *file, Elf32_Shdr *SectionTable, int verbose);
-
-/* Lit le décalage la section et la stocke dans la structure SectionTable
- Affiche le décalage suivant le paramètre verbose.
- Le décalage est un Word, on lit donc 4 octets.
-
- Paramètre: un pointeur file de fichier, un pointeur SectionTable de structure d'en-tête, un booléen verbose pour gérer l'affichage
- Sortie : Ne renvoie rien
- Effets de bords: Modifie la structure SectionTable, ajoute la valeur à sh_offset
- */
-void sectionOffset(FILE *file, Elf32_Shdr *SectionTable, int verbose);
-
-/* Lit la taille de la section et la stocke dans la structure SectionTable
- Affiche la taille suivant le paramètre verbose.
- La taille est un Word, on lit donc 4 octets.
-
- Paramètre: un pointeur file de fichier, un pointeur SectionTable de structure d'en-tête, un booléen verbose pour gérer l'affichage
- Sortie : Ne renvoie rien
- Effets de bords: Modifie la structure SectionTable, ajoute la valeur à sh_size
- */
-void sectionSize(FILE *file, Elf32_Shdr *SectionTable, int verbose);
-
-/* Lit l'index de lien la section et la stocke dans la structure SectionTable
- Affiche l'index suivant le paramètre verbose.
- L'index est un Word, on lit donc 4 octets.
-
- Paramètre: un pointeur file de fichier, un pointeur SectionTable de structure d'en-tête, un booléen verbose pour gérer l'affichage
- Sortie : Ne renvoie rien
- Effets de bords: Modifie la structure SectionTable, ajoute l'index à sh_link
- */
-void sectionLink(FILE *file, Elf32_Shdr *SectionTable, int verbose);
-
-/* Lit les informations additionnelles la section et la stocke dans la structure SectionTable
- Affiche les infos suivant le paramètre verbose.
- Les infos est un Word, on lit donc 4 octets.
-
- Paramètre: un pointeur file de fichier, un pointeur SectionTable de structure d'en-tête, un booléen verbose pour gérer l'affichage
- Sortie : Ne renvoie rien
- Effets de bords: Modifie la structure SectionTable, ajoute la valeur à sh_info
- */
-void sectionInfo(FILE *file, Elf32_Shdr *SectionTable, int verbose);
-
-/* Lit l'alignement de l'adresse la section et la stocke dans la structure SectionTable
- Affiche l'alignement suivant le paramètre verbose.
- L'alignement est un Word, on lit donc 4 octets.
-
- Paramètre: un pointeur file de fichier, un pointeur SectionTable de structure d'en-tête, un booléen verbose pour gérer l'affichage
- Sortie : Ne renvoie rien
- Effets de bords: Modifie la structure SectionTable, ajoute l'adresse à sh_addralign
- */
-void sectionAdressAlign(FILE *file, Elf32_Shdr *SectionTable, int verbose);
-
-/* Lit la taille de l'entrée de la section et la stocke dans la structure SectionTable
- Affiche la taille suivant le paramètre verbose.
- La taille est un Word, on lit donc 4 octets.
-
- Paramètre: un pointeur file de fichier, un pointeur SectionTable de structure d'en-tête, un booléen verbose pour gérer l'affichage
- Sortie : Ne renvoie rien
- Effets de bords: Modifie la structure SectionTable, ajoute la taille à sh_entsize
- */
-void sectionEntrySize(FILE *file, Elf32_Shdr *SectionTable, int verbose);
+void sectionName(FILE *file, Elf32_Ehdr *Header, Elf32_Shdr *SectionTable, char nom);
 
 /* Affiche le numéro de la section entre crochets aligné à droite
  Par exemple pour 101 sections à afficher: [  0] ... [ 10] ... [100]
@@ -124,40 +48,36 @@ void sectionEntrySize(FILE *file, Elf32_Shdr *SectionTable, int verbose);
  Sortie : Ne renvoie rien
  Effets de bords : Affiche le numéro de la section, entre crochets, aligné à droite
  */
-void printNumber(Elf32_Ehdr *Header, int sectionNumber);
+void printNumber(int nbSections, int sectionNumber);
 
-/* Affiche le numéro de la section entre crochets aligné à droite
- Par exemple pour 101 sections à afficher: [  0] ... [ 10] ... [100]
-
- Paramètre: un pointeur Header de structure d'en-tête, un entier correspondant au numéro de la section à afficher.
- Sortie : Ne renvoie rien
- Effets de bords : Affiche le numéro de la section, entre crochets, aligné à droite
- */
-void printNumber(Elf32_Ehdr *Header, int sectionNumber);
-
-/* Remplit la structure SectionTable avec une fonction pour chaque membre, remplit un membre spécifique si sectionNumber != -1
+/* Remplit la structure SectionTable
 
  Paramètre:
 	un pointeur file de fichier,
-	un pointeur Header de structure d'en-tête,
 	un pointeur SectionTable de structure d'en-tête de section,
-	un entier désignant spécifiquement le numéro de section à remplir (-1 pour ignorer)
-	un booléen verbose pour gérer l'affichage
  Sortie : Ne renvoie rien
  Effets de bords : Modifie la structure SectionTable, la remplie entièrement
 */
-void getSectionTable(FILE *file, Elf32_Ehdr *Header, Elf32_Shdr *SectionTable, int sectionNumber, int verbose);
+void getSectionTable(FILE *file, Elf32_Shdr *SectionTable);
 
-/* Remplit la structure SectionTable avec une fonction pour chaque membre, en cherchant la section avec un nom spécifique
+/* Remplit la structure Sections contenant l'ensemble des Tables de Sections
  Paramètre:
  un pointeur file de fichier,
  un pointeur Header de structure d'en-tête,
- un pointeur SectionTable de structure d'en-tête de section,
- un pointeur char désignant spécifiquement le nom de section à remplir
- un booléen verbose pour gérer l'affichage
- Sortie : Renvoie 1 si la section a été trouvée
-			0 Sinon
+ un pointeur Sections de structure contenant l'ensemble des Tables de Sections
  Effets de bords : Modifie la structure SectionTable, la remplie entièrement
  */
-int getSectionName(FILE *file, Elf32_Ehdr *Header, Elf32_Shdr *SectionTable, char *sectionName, int verbose);
+void getAllSectionsTables(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec *Sections);
+
+/* Chereche si une fonction d'un certain nom existe et renvoie sont index
+ Paramètre:
+ un pointeur Header de structure d'en-tête,
+ un pointeur Sections de structure contenant l'ensemble des Tables de Sections
+ un pointeur char désignant spécifiquement le nom de section à chercher
+ Sortie : Renvoie i l'index de la section si elle à été trouvée
+			-1 Sinon
+ Effets de bords : Modifie la structure SectionTable, la remplie entièrement
+ */
+int getSectionName(Elf32_AllSec *Sections, char *sectionName);
+
 #endif /* readSectionTable_h */
