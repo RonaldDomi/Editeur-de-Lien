@@ -39,7 +39,8 @@ int main(int argc, char **argv)
 	printf("All sizes are written in bytes.\n");
 	printf("ELF Header Reader : \n\n");
 
-	getHeader(file, Header, 1);
+	getHeader(file, Header);
+    printHeader(Header);
 
 	fclose(file);
 	return 0;
