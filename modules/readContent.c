@@ -2,6 +2,7 @@
 //  readContent.c
 //  Editeur-de-lien
 //
+
 #include "readHeader.h"
 #include "readSectionTable.h"
 #include "readContent.h"
@@ -10,54 +11,37 @@
 
 int unused; // Var non utilisée pour les warnings lors du make
 
-void printContent(FILE *file, Elf32_Shdr *SectionTable, int sectionSelected, char *nameOfSection)
+void getAllSectionsContent(FILE* file, Elf32_AllSec * SectionsTables){
+    Elf32_Shdr * currentSectionTable;
+    char * currentSectionContent;
+    
+    for (int i=0; i<SectionsTables->nbSections; i++){
+        currentSectionTable = SectionsTables->TabAllSec[i];
+        currentSectionContent = malloc(currentSectionTable->sh_size);
+        fseek(file, currentSectionTable->sh_offset, SEEK_SET);
+        unused = fread(currentSectionContent, currentSectionTable->sh_size, 1, file);
+        SectionsTables->TabAllSecContent[i] = currentSectionContent;
+    }
+}
+
+void printContent(Elf32_AllSec *SectionsTables, int sectionSelected)
 {
+	printf("\nDump of section :\n");
 
-	if (sectionSelected == -1)
-	{
-		printf("\nDump of section %s :\n", nameOfSection);
-	}
-	else
-	{
-		printf("\nDump of section number %d :\n", sectionSelected);
-	}
+	int adressPrinted = SectionsTables->TabAllSec[sectionSelected]->sh_addr;
+    printf("\n0x%08x ", adressPrinted);
+    adressPrinted += 16;
 
-	printf("Starting at 0x%08x \n", SectionTable->sh_addr);
+    for(int i = 1;i<=SectionsTables->TabAllSec[sectionSelected]->sh_size;i++){
+        printf("%02x", (unsigned char)SectionsTables->TabAllSecContent[sectionSelected][i-1]);
+        if (i%16==0 && SectionsTables->TabAllSec[sectionSelected]->sh_size != i){
+            printf("\n0x%08x ", adressPrinted);
+            adressPrinted += 16;
+        }
+        else if (i%4==0) 
+            printf(" ");
+    }
+    printf("\n");
 
-	fseek(file, SectionTable->sh_offset, SEEK_SET);
 
-	int end = 0;
-	int adressPrinted = SectionTable->sh_addr;
-	int sizeToRead = 8;
-	uint32_t dumped = 0;
-	char buffer[8];
-
-	while (!end)
-	{
-
-		if ((SectionTable->sh_size - dumped) < 8)
-		{
-			/* End in sight */
-			sizeToRead = SectionTable->sh_size - dumped;
-			// printf("Size to read : %d", sizeToRead);
-		}
-		if (dumped % 16 == 0)
-		{
-			/* On revient à la ligne tous les 16 octets */
-			printf("\n");
-			printf("0x%08x ", adressPrinted);
-		}
-
-		unused = fread(buffer, sizeToRead, 1, file);
-		dumpOctet(buffer, sizeToRead);
-		dumped += sizeToRead;
-		adressPrinted += 8;
-
-		if (dumped == SectionTable->sh_size)
-		{
-			/* On a affiché toutes les données */
-			end = 1;
-			printf("\n");
-		}
-	}
 }

@@ -1,8 +1,6 @@
 //
-//  read_elf_section_content.c
+//  readelf_section_content.c
 //  Editeur-de-lien
-//
-//  Created by Bastien Levasseur on 26/12/2022.
 //
 
 #include <stdio.h>
@@ -45,17 +43,18 @@ int main(int argc, char **argv)
 
 	Elf32_Ehdr *Header = malloc(sizeof(Elf32_Ehdr));
 
-	getHeader(file, Header, 0);
+	getHeader(file, Header);
 
 	fseek(file, Header->e_shoff, SEEK_SET); // On oublie pas de pointer vers l'en-tête de la section
-
-	Elf32_Shdr *SectionTable = malloc(sizeof(Elf32_Shdr));
 
 	/* Pour vérifier si on cherche par Nom/Numéro, on strol(argv[2])
 		Si cela échoue, endPointer est le même pointeur que argv[2], donc argv[2] est un char on fait une recherche par nom
 		Si cela réussit, endPointer est toujours NULL donc argv[2] est un nombre on fait une recherche par numéro */
 	char *endPointer = NULL;
 	int sectionSelected = strtol(argv[2], &endPointer, 10);
+
+    Elf32_AllSec * AllSectionsTables = initSectionTable(Header->e_shnum);
+    getAllSectionsTables(file, Header, AllSectionsTables);
 
 	if (endPointer == argv[2])
 	{
@@ -64,12 +63,8 @@ int main(int argc, char **argv)
 		printf("Search by Name\n");
 
 		/* On vérifie qu'il y a une section avec le nom voulu */
-		if (getSectionName(file, Header, SectionTable, argv[2], 0) == -1)
-		{
-			printf("Section Found!\n");
-			printContent(file, SectionTable, -1, argv[2]);
-		}
-		else
+        sectionSelected = getSectionName(AllSectionsTables, argv[2]);
+		if (sectionSelected == -1)
 		{
 			printf("\nThere are no section called \"%s\".", argv[2]);
 			exit(0);
@@ -86,19 +81,18 @@ int main(int argc, char **argv)
 			printf("There are only %d sections.\n", Header->e_shnum);
 			exit(0);
 		}
+    }
 
-		getSectionTable(file, Header, SectionTable, sectionSelected, 0);
 
-		if (SectionTable->sh_size == 0)
-		{
-			/* Une section de taille de zéro n'a pas de data à afficher */
-			printf("There is no data to dump.\n");
-			exit(0);
-		}
+    if (AllSectionsTables->TabAllSec[sectionSelected]->sh_size == 0)
+    {
+        /* Une section de taille de zéro n'a pas de data à afficher */
+        printf("There is no data to dump.\n");
+        exit(0);
+    }
 
-		/* On a recupéré la table qu'on voulait, on affiche son contenu*/
-		printContent(file, SectionTable, sectionSelected, NULL);
-	}
+    getAllSectionsContent(file, AllSectionsTables);
+    printContent(AllSectionsTables, sectionSelected);
 
 	return 0;
 }
