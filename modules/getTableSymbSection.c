@@ -24,7 +24,7 @@ void decodeSymbType(Elf32_Sym * symtab){
 	switch ((symtab->st_info) & 0xf)
 		{
 			case 0:
-			printf("NO TYPE\t\t");
+			printf("NOTYPE\t\t");
 			break;
 			case 1:
 			printf("OBJECT\t\t");
@@ -72,8 +72,16 @@ void decodeSymbType(Elf32_Sym * symtab){
 		}
 }
 
+
+void decodeSymbOther(Elf32_Sym * symtab){
+	if (symtab->st_other==0){
+		printf("DEFAULT\t");
+	}
+}
+
+
 void printTableSymb(Elf32_Sym * symtab){
-	printOctet(&symtab->st_value, 4, 1);
+	dumpOctet(&symtab->st_value, 4);
 	printf("\t");
 
 
@@ -81,8 +89,7 @@ void printTableSymb(Elf32_Sym * symtab){
 
 	decodeSymbType(symtab);
 
-
-	printf("%d\t", symtab->st_other);
+	decodeSymbOther(symtab);
 
 	decodeSymbShndx(symtab);
 

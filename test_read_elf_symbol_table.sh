@@ -25,7 +25,7 @@ WarningTest() {
 #On vérifie qu'on dispose d'un fichier pour le test
 if [ $# -lt 1 ]; then
     echo "Missing file !"
-    echo "Usage: test_read_elf_section_table <File>"
+    echo "Usage: test_read_elf_symbol_table <File>"
     exit 1
 fi
 
@@ -70,38 +70,67 @@ else #Si errorReadelf = 0
 fi
 echo
 
-sectionNumber=0
-regexNumberDot="[0-9]+:"
-regex2Blanks="/[[:blank:]]{2,}/g"
+
+regex2Blanks="/[[:blank:]]{2,}/g" #Match tous les deux whitespaces ou plus e.g: "  ", "     "
 cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
 
     #On prend un système clé -> valeur, par exemple: 0: -> 00 00 00 00 	0	LOCAL	NO TYPE		0	0
     #On retire les espaces avant/après le texte et les Tabs
 
-    key=`echo $line | cut -d: -f1 | awk '{gsub(/^[ \t]+|[ \t]+$/, "", $1) ; print $1}'`
+    
+    key=`echo $line | cut -d: -f1 |  awk '{gsub(/^[ \t]+|[ \t]+$/, "", $1) ; print $1}'`
     key="${key}:"
-    value=`echo $line` #| awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2) ; print $2}'`
-
+    value=`echo $line | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2) ; print $2}'`
 
 
     case $key in
 
-        [0-9]*:)
-            echo "Key : <$key>"
-            echo "Value : $value"
+        [0-9]*:) #Match tous les nombres suivis de deux points e.g 0: 10: 100000:
+          echo "Key : <$key>"
+          echo "Value : $value"
 
+            
+            otherValue=`grep "^[[:blank:]]*$key" readelfCommand.output | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2) ; print $2}'`
+            otherValue=`echo $otherValue | awk '{gsub(/$regex2Blanks/, "", $0) ; print $0}'` #On enlève tous les deux whitespaces avec la Regex
+            #echo "Other Value : $otherValue"
+            
+            #Cas particulier pour la première ligne qui n'a aucun nom dans readelf et "==NO_NAME==" dans notre programme
+            #On vérifie si c'est le cas pour chaque ligne, si oui on aura un test particulier
+            alternativeTest=0
+            name=`echo $value | rev | cut -c -9 | rev` #On cherche "==NO_NAME==" en cut à la fin avec rev
 
-            otherValue=`grep "^     $key" readelfCommand.output | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2) ; print $2}'`
-            otherValue=`echo $otherValue | awk '{gsub(/$regex2Blanks/, "", $0) ; print $0}'`
-            echo "Other Value : $otherValue"
+            #TODO: Changer "TODO-NAME" en "==NO_NAME==" une fois les noms fixés
+            if [ "$name" == "TODO-NAME" ]
+            then
+                alternativeTest=1
+            fi
+            
+
+            #Si on est dans le cas d'une table sans nom, on coupe le "==NO_NAME==" de notre ligne pour la comparaison
+            if [ $alternativeTest -eq 1 ]
+            then
+                #TODO: changer 11- en 13- une fois les noms fixés
+                value=`echo $value | rev | cut -c 11- | rev`
+            fi
+
+            #Sinon on compare normalement
+            if [ "$value" == "$otherValue" ]
+            then
+                echo -e "SymbolTable : \033[48;5;2mOK TEST\033[0;0m" #Pass
+            else
+                printf "SymbolTable : "
+                #TODO: Changer en FailTest une fois les noms fixés
+                WarningTest "$otherValue" "$value" "$$" #Fail
+            fi
         ;;
-		##########TEMP DO DELETE AFTER NAME FIX##########
-			symbolName=`echo $otherValue | cut -d
-        if [ "$value" == "$otherValue" ]
-		then
 
-		fi
-		#################################################
     esac
-
+    #Pas d'autres cases, les lignes qui ne commencent par par " n: " ne sont pas à traiter
 done
+
+
+echo
+# Si tous les tests ont réussi, alors le test passe, on supprime les fichiers temporaires
+echo -e "Test $(basename "$1") \033[48;5;2mpassed\033[0;0m!"
+#rm -f MyReadelfCommand.output readelfCommand.output
+exit 0
