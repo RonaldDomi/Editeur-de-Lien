@@ -9,6 +9,7 @@
 #include "modules/readHeader.h"
 #include "modules/readSectionTable.h"
 #include "modules/getTableSymbSection.c"
+#include "modules/readContent.h"
 
 int main(int argc, char **argv)
 {
@@ -36,31 +37,23 @@ int main(int argc, char **argv)
 	Elf32_Ehdr *Header = malloc(sizeof(Elf32_Ehdr));
 	getHeader(file, Header);
 
-	fseek(file, Header->e_shoff, SEEK_SET); // On oublie pas de pointer vers l'en-tête de la section
+	fseek(file, Header->e_shoff, SEEK_SET);
 
     Elf32_AllSec * AllSectionsTables = initSectionTable(Header->e_shnum);
     getAllSectionsTables(file, Header, AllSectionsTables);
-
-	printf("\n");
-	printf("Adresses are given un hexadecimal format.\n");
-	printf("All values are given in bytes in decimal format.\n\n");
-	printf("Nb\tName\t\tValue\t\tSize\tBind\tType\t\tOther\tShndx\n");
-	printf("====================================================================");
-	printf("=====================================================================\n");
+    getAllSectionsContent(file, AllSectionsTables);
 
 	// on recupere le decalage de la table symbole puis on se decale
     int indexSymbSec = getSectionByType(AllSectionsTables, SHT_SYMTAB);
     Elf32_Shdr * SectionTable = AllSectionsTables->TabAllSec[indexSymbSec];
     Elf32_SecContent * SectionContent = AllSectionsTables->TabAllSecContent[indexSymbSec];
+
 	fseek(file, SectionTable->sh_offset, SEEK_SET);
 
-	Elf32_Sym *symTab = malloc(sizeof(Elf32_Sym));
-	for (int i = 0; i < SectionTable->sh_size / 16; i++)
-	{
-		printf("%d\t", i);
-		GetTableSymbPart(file, Header, SectionContent, symTab);
-		printf("\n");
-	}
+	Elf32_Sym * AllSymbolTables = malloc(sizeof(Elf32_Sym) * SectionTable->sh_size / 16);
+    
+	getAllTableSymb(file, Header, SectionContent, AllSymbolTables, SectionTable->sh_size / 16);
+    printAllTableSymb(AllSymbolTables, SectionTable->sh_size/16);
 
 	return 0;
 }
