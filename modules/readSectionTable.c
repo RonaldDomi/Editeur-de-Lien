@@ -337,12 +337,24 @@ void getAllSectionsTables(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec *Sections
 	}
 }
 
-int getSectionName(Elf32_AllSec *Sections, char *sectionName)
+int getSectionByName(Elf32_AllSec *Sections, char *sectionName)
 {
 	for (int i = 0; i < Sections->nbSections; i++)
 	{
-        //TODO voir si on peut comparer les pointeurs
-		if (!strcmp(Sections->TabAllSec[i]->sh_charname, sectionName))
+        // TODO refaire
+		// if (!strcmp(Sections->TabAllSec[i]->sh_charname, sectionName))
+		// {
+		return i;
+		// }
+	}
+	return -1;
+}
+
+int getSectionByType(Elf32_AllSec *Sections, int type)
+{
+	for (int i = 0; i < Sections->nbSections; i++)
+	{
+		if (Sections->TabAllSec[i]->sh_type == type)
 		{
 			return i;
 		}

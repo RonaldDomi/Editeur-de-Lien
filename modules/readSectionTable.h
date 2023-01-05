@@ -69,15 +69,26 @@ void getSectionTable(FILE *file, Elf32_Shdr *SectionTable);
  */
 void getAllSectionsTables(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec *Sections);
 
-/* Chereche si une fonction d'un certain nom existe et renvoie sont index
+/* Chereche si une fonction d'un certain nom existe et renvoit son index
  Paramètre:
  un pointeur Header de structure d'en-tête,
  un pointeur Sections de structure contenant l'ensemble des Tables de Sections
  un pointeur char désignant spécifiquement le nom de section à chercher
- Sortie : Renvoie i l'index de la section si elle à été trouvée
+ Sortie : Renvoie i l'index de la section si elle a été trouvée
 			-1 Sinon
  Effets de bords : Modifie la structure SectionTable, la remplie entièrement
  */
-int getSectionName(Elf32_AllSec *Sections, char *sectionName);
+int getSectionByName(Elf32_AllSec *Sections, char *sectionName);
+
+/* Chereche si une fonction d'un certain type existe et renvoit son index
+ Paramètre:
+ un pointeur Header de structure d'en-tête,
+ un pointeur Sections de structure contenant l'ensemble des Tables de Sections
+ un pointeur char désignant spécifiquement le nom de section à chercher
+ Sortie : Renvoie i l'index de la section si elle a été trouvée
+			-1 Sinon
+ Effets de bords : Modifie la structure SectionTable, la remplie entièrement
+ */
+int getSectionByType(Elf32_AllSec *Sections, int type);
 
 #endif /* readSectionTable_h */

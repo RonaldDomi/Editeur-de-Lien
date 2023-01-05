@@ -15,12 +15,12 @@ SUBDIRS=
 
 bin_PROGRAMS=
 bin_PROGRAMS+=Options_and_debug_example
-bin_PROGRAMS+=readelf_all
+#bin_PROGRAMS+=readelf_all
 bin_PROGRAMS+=readelf_header
 bin_PROGRAMS+=readelf_section_table
 bin_PROGRAMS+=readelf_section_content
 bin_PROGRAMS+=readelf_symbol_table
-bin_PROGRAMS+=readelf_relocation
+#bin_PROGRAMS+=readelf_relocation
 LDADD= -lm
 
 COMMON=debug.h debug.c util.h util.c

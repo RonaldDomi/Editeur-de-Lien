@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
             printf("Search by Name\n");
 
             /* On vérifie qu'il y a une section avec le nom voulu */
-            if (getSectionName(file, Header, SectionTable, argv[6], 0))
+            if (getSectionByName(file, Header, SectionTable, argv[6], 0))
             {
                 printf("Section Found!\n");
                 printContent(file, SectionTable, -1, argv[6]);

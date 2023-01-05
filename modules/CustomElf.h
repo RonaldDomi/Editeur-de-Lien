@@ -382,7 +382,6 @@ typedef struct
 typedef struct
 {
   Elf32_Word sh_name;      /* Section name (string tbl index) */
-  char *sh_charname;       /* Section name in char format */
   Elf32_Word sh_type;      /* Section type */
   Elf32_Word sh_flags;     /* Section flags */
   Elf32_Addr sh_addr;      /* Section virtual addr at execution */
@@ -407,15 +406,6 @@ typedef struct
   Elf64_Xword sh_addralign; /* Section alignment */
   Elf64_Xword sh_entsize;   /* Entry size if section holds table */
 } Elf64_Shdr;
-
-typedef char Elf32_SecContent;
-
-typedef struct {
-    int nbSections;
-    Elf32_Shdr * TabAllSec[50];
-    Elf32_SecContent * TabAllSecContent[50];
-
-} Elf32_AllSec;
 
 /* Special section indices.  */
 
@@ -3934,6 +3924,20 @@ enum
 #define R_NDS32_RELATIVE 42
 #define R_NDS32_TLS_TPOFF 102
 #define R_NDS32_TLS_DESC 119
+
+typedef char Elf32_SecContent;
+
+typedef struct {
+    int nbSections;
+    Elf32_Shdr * TabAllSec[50];
+    Elf32_SecContent * TabAllSecContent[50];
+} Elf32_AllSec;
+
+typedef struct {
+    Elf32_Ehdr Header;
+    Elf32_AllSec AllSections;
+    Elf32_Sym SymbolTable;
+} Elf32_Info;
 
 __END_DECLS
 

@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 		printf("Search by Name\n");
 
 		/* On vérifie qu'il y a une section avec le nom voulu */
-        sectionSelected = getSectionName(AllSectionsTables, argv[2]);
+        sectionSelected = getSectionByName(AllSectionsTables, argv[2]);
 		if (sectionSelected == -1)
 		{
 			printf("\nThere are no section called \"%s\".", argv[2]);
