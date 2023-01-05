@@ -321,9 +321,10 @@ void getSectionTable(FILE *file, Elf32_Shdr *SectionTable)
     unused = fread(&SectionTable->sh_entsize, 4, 1, file);
 }
 
-void printAllSectionsTables(Elf32_AllSec *Sections){
+void printAllSectionsTables(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * Header){
     for (int numero=0; numero<Sections->nbSections; numero++){
 		printNumber(Sections->nbSections, numero);
+        printf("%s" ,getString(file, Sections->TabAllSec[numero]->sh_name, Header, Sections));
         printSectionTable(Sections->TabAllSec[numero]);
 		printf("\n");
     }

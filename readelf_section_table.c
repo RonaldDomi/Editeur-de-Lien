@@ -59,7 +59,7 @@ int main(int argc, char **argv)
 	{
         Elf32_AllSec * AllSectionTable = initSectionTable(Header->e_shnum);
 		getAllSectionsTables(file, Header, AllSectionTable);
-        printAllSectionsTables(AllSectionTable);
+        printAllSectionsTables(file, AllSectionTable, Header);
 	}
 
 	return 0;

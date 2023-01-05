@@ -11,7 +11,7 @@
 
 Elf32_AllSec * initSectionTable(int nb);
 
-void printAllSectionsTables(Elf32_AllSec *Sections);
+void printAllSectionsTables(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * Header);
 
 /* Décode les octets des types de la section.
 
