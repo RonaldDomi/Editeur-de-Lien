@@ -26,20 +26,6 @@ Elf32_AllSec * initSectionTable(int nb){
 
 
 void DecodeSectionType(Elf32_Shdr * SectionTable){
-    if (SectionTable->sh_type >= SHT_LOOS && SectionTable->sh_type < SHT_HIOS)
-    {
-        printf("LOOS+0x%x\t", SectionTable->sh_type - SHT_LOOS);
-    }
-    else if (SectionTable->sh_type >= SHT_LOPROC && SectionTable->sh_type <= SHT_HIPROC)
-    {
-        printf("PROC+0x%x\t", SectionTable->sh_type - SHT_LOPROC);
-    }
-    else if (SectionTable->sh_type >= SHT_LOUSER && SectionTable->sh_type <= SHT_HIUSER)
-    {
-        printf("USER+0x%x\t", SectionTable->sh_type - SHT_LOUSER);
-    }
-    else
-    {
         switch (SectionTable->sh_type)
         { // Beaucoup de types à cause de firmware.elf pour éviter des =UNK=
         case (SHT_NULL):
@@ -91,10 +77,22 @@ void DecodeSectionType(Elf32_Shdr * SectionTable){
             printf("ARM_EXIDX\t");
             break;
         default:
-            printf("=UNK=\t\t");
+            if (SectionTable->sh_type >= SHT_LOOS && SectionTable->sh_type < SHT_HIOS)
+            {
+                printf("LOOS+0x%x\t", SectionTable->sh_type - SHT_LOOS);
+            }
+            else if (SectionTable->sh_type >= SHT_LOPROC && SectionTable->sh_type <= SHT_HIPROC)
+            {
+                printf("PROC+0x%x\t", SectionTable->sh_type - SHT_LOPROC);
+            }
+            else if (SectionTable->sh_type >= SHT_LOUSER && SectionTable->sh_type <= SHT_HIUSER)
+            {
+                printf("USER+0x%x\t", SectionTable->sh_type - SHT_LOUSER);
+            }
+            else
+                printf("=UNK=\t\t");
             break;
         }
-    }
 }
 
 void DecodeSectionFlags(Elf32_Shdr *SectionTable)
