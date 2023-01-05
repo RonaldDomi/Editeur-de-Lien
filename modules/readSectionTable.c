@@ -182,12 +182,8 @@ void DecodeSectionFlags(Elf32_Shdr *SectionTable)
 }
 
 void printSectionTable(Elf32_Shdr *SectionTable){
-    
-    // sectionName()
-    printf("TODO NOM\t\t");
 
     DecodeSectionType(SectionTable);
-    
 
     DecodeSectionFlags(SectionTable);
     printf("\t");
@@ -220,39 +216,21 @@ void printSectionTable(Elf32_Shdr *SectionTable){
     printf("\t");
 }
 
-//TODO Je suis perdu
-void sectionName(FILE *file, Elf32_Ehdr *Header, Elf32_Shdr *SectionTable, char nom)
-{
-	// if (nom)
-	// {
-	// 	char *mot = malloc(50);
-	// 	long position = ftell(file);
-	// 	getString(file, SectionTable->sh_name, Header, mot);
-	// 	fseek(file, position, 0);
-	// 	SectionTable->sh_charname = mot;
-	// 	// Printf("\nNom : %s\n",SectionTable->sh_charname);
-	// 	if (verbose)
-	// 	{
-
-	// 		int wordLength = strlen(mot);
-	// 		if (wordLength == 0)
-	// 		{
-	// 			printf("==NO_NAME==\t\t");
-	// 		}
-	// 		else if ((0 <= wordLength) && (8 > wordLength))
-	// 		{
-	// 			printf("%s\t\t\t", mot);
-	// 		}
-	// 		else if ((8 <= wordLength) && (16 > wordLength))
-	// 		{
-	// 			printf("%s\t\t", mot);
-	// 		}
-	// 		else
-	// 		{
-	// 			printf("%s\t", mot);
-	// 		}
-	// 	}
-	// }
+void sectionName(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * Header, int numero){
+    char * mot = getString(file, Sections->TabAllSec[numero]->sh_name, Header, Sections);
+    int wordLength = strlen(mot);
+    if (wordLength == 0){
+        printf("==NO_NAME==\t\t");
+    }
+    else if ((0 <= wordLength) && (8 > wordLength)){
+        printf("%s\t\t\t", mot);
+    }
+    else if ((8 <= wordLength) && (16 > wordLength)){
+        printf("%s\t\t", mot);
+    }
+    else{
+        printf("%s\t", mot);
+    }
     return ;
 }
 
@@ -324,7 +302,7 @@ void getSectionTable(FILE *file, Elf32_Shdr *SectionTable)
 void printAllSectionsTables(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * Header){
     for (int numero=0; numero<Sections->nbSections; numero++){
 		printNumber(Sections->nbSections, numero);
-        printf("%s" ,getString(file, Sections->TabAllSec[numero]->sh_name, Header, Sections));
+        sectionName(file, Sections, Header, numero);
         printSectionTable(Sections->TabAllSec[numero]);
 		printf("\n");
     }

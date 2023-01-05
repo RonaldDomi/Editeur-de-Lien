@@ -39,7 +39,7 @@ void printSectionTable(Elf32_Shdr *SectionTable);
  Sortie : Ne renvoie rien
  Effets de bords : Modifie la structure SectionTable, ajoute la valeur à sh_name
  */
-void sectionName(FILE *file, Elf32_Ehdr *Header, Elf32_Shdr *SectionTable, char nom);
+void sectionName(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * Header, int numero);
 
 /* Affiche le numéro de la section entre crochets aligné à droite
  Par exemple pour 101 sections à afficher: [  0] ... [ 10] ... [100]
