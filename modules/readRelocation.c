@@ -78,7 +78,7 @@ void get_relocation_rela(FILE *file, Elf32_Rela *rela, char verbose)
 }
 
 // ici on parcours les section et l'orsque l'on arrive sur un type rel ou rela on l'affiche
-void GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables, Elf32_Rel *rel, Elf32_Rela *rela, char verbose)
+void GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables, Elf32_Rel *rel, Elf32_Rela *rela)
 {
 	long position;
     for (int i = 0; i < SectionsTables->nbSections; i++)

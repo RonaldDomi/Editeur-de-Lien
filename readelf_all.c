@@ -4,11 +4,7 @@
 #include <string.h>
 
 #include "modules/CheckElf.h"
-#include "modules/CustomElf.h"
-#include "modules/readHeader.h"
-#include "modules/readSectionTable.h"
-#include "modules/readContent.h"
-#include "modules/getTableSymbSection.c"
+#include "modules/readAll.c"
 #include "modules/readRelocation.c"
 
 void usage(char *name)
@@ -104,9 +100,8 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    Elf32_Ehdr *Header = malloc(sizeof(Elf32_Ehdr));
-    Elf32_Shdr *SectionTable = malloc(sizeof(Elf32_Shdr));
-    Elf32_Sym *symTab = malloc(sizeof(Elf32_Sym));
+    Elf32_Info * ElfInfo = getAllInfo(file);
+
     Elf32_Rel *rel = malloc(sizeof(Elf32_Rel));
     Elf32_Rela *rela = malloc(sizeof(Elf32_Rela));
 
@@ -117,37 +112,14 @@ int main(int argc, char *argv[])
         printf("All sizes are written in bytes.\n");
         printf("ELF Header Reader : \n\n");
 
-        getHeader(file, Header, 1);
-    }
-    else
-    { 
-        // type != "h"
-        getHeader(file, Header, 0);
-        fseek(file, Header->e_shoff, SEEK_SET);
+        printHeader(ElfInfo->Header);
     }
 
     if (strcmp(type, "S") == 0)
     {
-        printf("\nAdresses  are given un hexadecimal format.\n");
-        printf("All values are given in bytes in decimal format.\n\n");
-        printf("Nb\tName\t\t\tType\t\tFlags\tExecutionAdresss\tOffset\t\tSectionSize\tLinkTo\tInfo\tAlign\tEntrySize\n");
-        printf("====================================================================");
-        printf("=============================================================================\n");
-
-        if (Header->e_shnum == 0)
-        {
-            printf("No section Table...\n");
-        }
-        else
-        {
-            for (int i = 0; i < Header->e_shnum; i++)
-            {
-                printNumber(Header, i);
-                getSectionTable(file, Header, SectionTable, -1, 1);
-                printf("\n");
-            }
-        }
+        getAllSectionsTables(file, ElfInfo->Header, ElfInfo->AllSections);
     }
+
     else if (strcmp(type, "x") == 0)
     {
         /* Pour vérifier si on cherche par Nom/Numéro, on strol(argv[2])
@@ -155,21 +127,17 @@ int main(int argc, char *argv[])
             Si cela réussit, endPointer est toujours NULL donc argv[2] est un nombre on fait une recherche par numéro */
         char *endPointer = NULL;
         int sectionSelected = strtol(argv[6], &endPointer, 10);
-        if (endPointer == argv[6])
+        if (endPointer == argv[2])
         {
 
             /* Search by Name */
             printf("Search by Name\n");
 
             /* On vérifie qu'il y a une section avec le nom voulu */
-            if (getSectionByName(file, Header, SectionTable, argv[6], 0))
+            sectionSelected = getSectionByName(ElfInfo->AllSections, argv[2]);
+            if (sectionSelected == -1)
             {
-                printf("Section Found!\n");
-                printContent(file, SectionTable, -1, argv[6]);
-            }
-            else
-            {
-                printf("\nThere are no section called \"%s\".", argv[6]);
+                printf("\nThere are no section called \"%s\".", argv[2]);
                 exit(0);
             }
         }
@@ -178,49 +146,24 @@ int main(int argc, char *argv[])
 
             /* Search by Number */
             printf("Search by Number\n");
-            if (sectionSelected > Header->e_shnum)
+            if (sectionSelected > ElfInfo->Header->e_shnum)
             {
                 printf("This section does not exist !\n");
-                printf("There are only %d sections.\n", Header->e_shnum);
+                printf("There are only %d sections.\n", ElfInfo->Header->e_shnum);
                 exit(0);
             }
-
-            getSectionTable(file, Header, SectionTable, sectionSelected, 0);
-
-            if (SectionTable->sh_size == 0)
-            {
-                /* Une section de taille de zéro n'a pas de data à afficher */
-                printf("There is no data to dump.\n");
-                exit(0);
-            }
-
-            /* On a recupéré la table qu'on voulait, on affiche son contenu*/
-            printContent(file, SectionTable, sectionSelected, NULL);
         }
     }
     else if (strcmp(type, "s") == 0)
     {
-        printf("\nAdresses are given un hexadecimal format.\n");
-        printf("All values are given in bytes in decimal format.\n\n");
-        printf("Nb\tName\t\tValue\t\tSize\tBind\tType\t\tOther\tShndx\n");
-        printf("====================================================================");
-        printf("=====================================================================\n");
-
-        GetTableSymbPart(file, Header, SectionTable, 0);
-        fseek(file, SectionTable->sh_offset, SEEK_SET);
-        for (int i = 0; i < SectionTable->sh_size / 16; i++)
-        {
-            printf("%d\t", i);
-            getTabSymb(file, Header, symTab, 1);
-            printf("\n");
-        }
+        printAllSectionsTables(file, ElfInfo->AllSections, ElfInfo->Header);
     }
     else if (strcmp(type, "r") == 0)
     {
         printf("\nAdresses are given un hexadecimal format.\n");
         printf("All values are given in bytes in decimal format.\n\n");
 
-        GetRelocationPart(file, Header, SectionTable, rel, rela, 0);
+        GetRelocationPart(file,  ElfInfo->Header, ElfInfo->AllSections, rel, rela);
         printf("\n");
     }
     

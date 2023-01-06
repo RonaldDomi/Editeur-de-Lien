@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 	printf("\n");
 	printf("Adresses are given un hexadecimal format.\n");
 	printf("All values are given in bytes in decimal format.\n\n");
-	GetRelocationPart(file, Header, AllSectionsTables, rel, rela, 0);
+	GetRelocationPart(file, Header, AllSectionsTables, rel, rela);
 	printf("\n");
 	return 0;
 }

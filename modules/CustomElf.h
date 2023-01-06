@@ -3934,8 +3934,8 @@ typedef struct {
 } Elf32_AllSec;
 
 typedef struct {
-    Elf32_Ehdr Header;
-    Elf32_AllSec AllSections;
+    Elf32_Ehdr * Header;
+    Elf32_AllSec * AllSections;
     Elf32_Sym * AllSymbol;
 } Elf32_Info;
 
