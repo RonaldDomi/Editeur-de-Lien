@@ -40,11 +40,15 @@ int main(int argc, char **argv)
 	/* Alloue de la mémoire pour une en-tête et la remplit
 		Alloue aussi de la mémoire pour une en-tête de section */
 	Elf32_Ehdr *Header = malloc(sizeof(Elf32_Ehdr));
-	Elf32_Shdr *SectionTable = malloc(sizeof(Elf32_Shdr));
 	Elf32_Rel *rel = malloc(sizeof(Elf32_Rel));
 	Elf32_Rela *rela = malloc(sizeof(Elf32_Rela));
 
-	getHeader(file, Header, 0);
+	getHeader(file, Header);
+
+    fseek(file, Header->e_shoff, SEEK_SET); 
+
+    Elf32_AllSec * AllSectionsTables = initSectionTable(Header->e_shnum);
+    getAllSectionsTables(file, Header, AllSectionsTables);
 
 	/* On va directement à l'adresse ou est contenue l'en-tête de la section et on la remplit
 		On affiche aussi un début de tableau pour l'affichage de l'étape 2 */
@@ -52,7 +56,7 @@ int main(int argc, char **argv)
 	printf("\n");
 	printf("Adresses are given un hexadecimal format.\n");
 	printf("All values are given in bytes in decimal format.\n\n");
-	GetRelocationPart(file, Header, SectionTable, rel, rela, 0);
+	GetRelocationPart(file, Header, AllSectionsTables, rel, rela, 0);
 	printf("\n");
 	return 0;
 }
