@@ -96,7 +96,11 @@ void printTableSymb(Elf32_Sym * symtab){
 	printf("TODO-NAME\t");
 }
 
-void printAllTableSymb(Elf32_Sym * AllSymbolTables, int nbTable){
+void printAllTableSymb(Elf32_Sym * AllSymbolTables, Elf32_AllSec * AllSectionsTables){
+
+    int indexSymbSec = getSectionByType(AllSectionsTables, SHT_SYMTAB);
+    Elf32_Shdr * SectionTable = AllSectionsTables->TabAllSec[indexSymbSec];
+    
 	printf("\n");
 	printf("Adresses are given un hexadecimal format.\n");
 	printf("All values are given in bytes in decimal format.\n\n");
@@ -104,14 +108,26 @@ void printAllTableSymb(Elf32_Sym * AllSymbolTables, int nbTable){
 	printf("====================================================================");
 	printf("=====================================================================\n");
 
-	for(int i=0; i<nbTable; i++){
+	for(int i=0; i<SectionTable->sh_size/16; i++){
 		printf("%d:\t", i);
 		printTableSymb(AllSymbolTables+i);
-		printf("\n");
-	}
+		// getString(FILE *file, Elf32_Word index, Elf32_Ehdr *Header, Elf32_AllSec *Sections));
+        printf("\n");
+    }
 }
 
-void GetTableSymbPart(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent * SectionContent, Elf32_Sym *symtab, int adrligne){
+// void getString(FILE *file, Elf32_Word index, Elf32_Ehdr *Header, Elf32_AllSec *Sections)
+// {
+// 	fseek(file, Sections->TabAllSec[Header->e_shstrndx]->sh_offset, SEEK_SET);
+// 	fseek(file, index, SEEK_CUR);
+
+//     char mot[50];
+
+//     return fgets(mot, 50, file);
+     
+// }
+
+void GetTableSymbPart(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionContent, Elf32_Sym *symtab, int adrligne){
 
 		// dump content
 		// for(int i=adrligne; i<adrligne+16; i++)
@@ -135,7 +151,7 @@ void GetTableSymbPart(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent * Section
 	unused = fread(&symtab->st_shndx, 2, 1, file);
 }
 
-void getAllTableSymb(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent * SectionContent, Elf32_Sym *AllSymbolTables, int nbTable){
+void getAllTableSymb(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionContent, Elf32_Sym *AllSymbolTables, int nbTable){
 	for (int i = 0; i < nbTable ; i++)
 		{
 		GetTableSymbPart(file, Header, SectionContent, AllSymbolTables+i, i*16);

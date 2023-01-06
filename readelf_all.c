@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
         usage(argv[0]);
         exit(0);
     }
-
     int opt;
     char *filename, *type, *arg;
 
@@ -100,6 +99,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
+
     Elf32_Info * ElfInfo = getAllInfo(file);
 
     Elf32_Rel *rel = malloc(sizeof(Elf32_Rel));
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
 
     if (strcmp(type, "S") == 0)
     {
-        getAllSectionsTables(file, ElfInfo->Header, ElfInfo->AllSections);
+        printAllTableSymb(ElfInfo->AllSymbol, ElfInfo->AllSections);
     }
 
     else if (strcmp(type, "x") == 0)
@@ -153,6 +153,7 @@ int main(int argc, char *argv[])
                 exit(0);
             }
         }
+        printContent(ElfInfo->AllSections, sectionSelected);
     }
     else if (strcmp(type, "s") == 0)
     {

@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 	Elf32_Sym * AllSymbolTables = malloc(sizeof(Elf32_Sym) * SectionTable->sh_size / 16);
     
 	getAllTableSymb(file, Header, SectionContent, AllSymbolTables, SectionTable->sh_size / 16);
-    printAllTableSymb(AllSymbolTables, SectionTable->sh_size/16);
+    printAllTableSymb(AllSymbolTables, AllSectionsTables);
 
 	return 0;
 }
