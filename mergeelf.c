@@ -9,11 +9,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "modules/CheckElf.h"
-#include "modules/CustomElf.h"
-#include "modules/readHeader.h"
-#include "modules/readSectionTable.h"
-#include "modules/readContent.h"
+#include "modules/readAll.c"
 #include "mergeelf.h"
+
 
 
 int main(int argc, char **argv){
@@ -42,10 +40,8 @@ int main(int argc, char **argv){
 		exit(1);
 	}
 
-
-	Elf32_Info * ELF1 = getAll(file1);
-	Elf32_Info * ELF2 = getAll(file2);
-
+	Elf32_Info * ELF1 = getAllInfo(file1);
+	Elf32_Info * ELF2 = getAllInfo(file2);
 
 	/* On initialise un tableau de flags pour chaque section de SectionTable2, si 1 alors la section a déjà été fusionnée avec
 	 une section de la partie 1, on doit donc l'ignorer */
@@ -61,27 +57,35 @@ int main(int argc, char **argv){
 	int nbSections=ELF1->Header->e_shnum + ELF2->Header->e_shnum;
 	printf("On a au pire %d sections\n", nbSections);
 
+	// printAllSectionsTables(file1, ELF1->AllSections, ELF1->Header);
 	/* On choisit de copier d'abord toute la SectionTable 1 et de fusionner quand on peut */
 	for (int i=0; i < ELF1->Header->e_shnum ; i++){
 		printf("===Section %d===\n", i);
-		printf("Pointeur à l'offset %lx\n", offset);
+		printf("Pointeur à l'offset %ld\n", offset);
 
-		char* nom1=getString(file, ELF1->AllSections->TabAllSec[i]->sh_name, ELF1->Header, ELF1->AllSections);
+		char nom1[50];
+		strcpy(nom1, getString(file1, ELF1->AllSections->TabAllSec[i]->sh_name, ELF1->Header, ELF1->AllSections));
+		
+		// char * nom1 = getString(file1, ELF1->AllSections->TabAllSec[i]->sh_name, ELF1->Header, ELF1->AllSections);
 
-		fwrite(ELF1->AllSections->TabAllSecContent[i], ELF1->AllSections->TabAllSec[i], 1, file3);
+		fwrite(ELF1->AllSections->TabAllSecContent[i], ELF1->AllSections->TabAllSec[i]->sh_size, 1, file3);
 		offset += ELF1->AllSections->TabAllSec[i]->sh_size;
 		copied++;
 
 		for (int j=0; j < ELF2->Header->e_shnum; j++){
 
-			char* nom2=getString(file, ELF2->AllSections->TabAllSec[j]->sh_name, ELF2->Header, ELF2->AllSections);
+			char nom2[50];
+			strcpy(nom2, getString(file2, ELF2->AllSections->TabAllSec[j]->sh_name, ELF2->Header, ELF2->AllSections));
 
+			// char * nom2 = getString(file2, ELF2->AllSections->TabAllSec[j]->sh_name, ELF2->Header, ELF2->AllSections);
+			// printf("Nom 1 : <%s> & Nom 2 : <%s>\n", nom1, nom2);
+			
 			/* Si les deux sections ont le même nom */
 			if (! strcmp(nom1, nom2)){
 				/* On choisit de concaténer la section 2 à la section 1 */
 				printf("Merge, une section en moins\n");
-				printf("Merge section %d avec section %d", i, j);
-				fwrite(ELF2->AllSections->TabAllSecContent[j], ELF2->AllSections->TabAllSec[j], 1, file3);
+				printf("Merge section %d avec section %d\n", i, j);
+				fwrite(ELF2->AllSections->TabAllSecContent[j], ELF2->AllSections->TabAllSec[j]->sh_size, 1, file3);
 
 				alreadyCopied[j]=1;
 
@@ -105,7 +109,7 @@ int main(int argc, char **argv){
 		printf("Pointeur à l'offset %lx\n",offset);
 
 		if (! alreadyCopied[i]){
-			fwrite(ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i], 1, file3);
+			fwrite(ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i]->sh_size, 1, file3);
 			printf("Ce sera la section %d\n", sectionNumber);
 
 			offset += ELF2->AllSections->TabAllSec[i]->sh_size;

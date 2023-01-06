@@ -20,6 +20,7 @@
 		58537C8329570C6B00C53137 /* simple.c in Sources */ = {isa = PBXBuildFile; fileRef = 58537C5229570C6B00C53137 /* simple.c */; };
 		58537C8429570C6B00C53137 /* i386.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 58537C5329570C6B00C53137 /* i386.o */; };
 		585E192F2959D63C00E53ED9 /* readContent.c in Sources */ = {isa = PBXBuildFile; fileRef = 585E192E2959D63C00E53ED9 /* readContent.c */; };
+		58764AE1296865CB00154837 /* readAll.c in Sources */ = {isa = PBXBuildFile; fileRef = 58764AE0296865CB00154837 /* readAll.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -70,6 +71,7 @@
 		585E192C2959CDEC00E53ED9 /* test_read_elf_header.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = test_read_elf_header.sh; sourceTree = "<group>"; };
 		585E192D2959D63C00E53ED9 /* readContent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = readContent.h; sourceTree = "<group>"; };
 		585E192E2959D63C00E53ED9 /* readContent.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = readContent.c; sourceTree = "<group>"; };
+		58764AE0296865CB00154837 /* readAll.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = readAll.c; sourceTree = "<group>"; };
 		589E6C64295C3DBF009FDD88 /* configure.ac */ = {isa = PBXFileReference; lastKnownFileType = text; path = configure.ac; sourceTree = "<group>"; };
 		589E6C66295C7A30009FDD88 /* INFO_ELF.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = INFO_ELF.md; sourceTree = "<group>"; };
 		589E6C67295C7A30009FDD88 /* test_read_elf_section_table.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test_read_elf_section_table.sh; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				58537C4029570C6B00C53137 /* CustomElf.h */,
+				58764AE0296865CB00154837 /* readAll.c */,
 				58537C3C29570C6B00C53137 /* CheckElf.h */,
 				58537C4429570C6B00C53137 /* CheckElf.c */,
 				5829A15A295DB0AF00134913 /* readStringTable.h */,
@@ -224,6 +227,7 @@
 				58537C7929570C6B00C53137 /* freadoctet.c in Sources */,
 				58537C7A29570C6B00C53137 /* readStringTable.c in Sources */,
 				58537C7529570C6B00C53137 /* readHeader.c in Sources */,
+				58764AE1296865CB00154837 /* readAll.c in Sources */,
 				5829A15C295DB0F300134913 /* readRelocation.c in Sources */,
 				58537C7B29570C6B00C53137 /* getTableSymbSection.c in Sources */,
 			);
