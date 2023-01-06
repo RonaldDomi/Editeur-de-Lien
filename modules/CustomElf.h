@@ -3925,12 +3925,12 @@ enum
 #define R_NDS32_TLS_TPOFF 102
 #define R_NDS32_TLS_DESC 119
 
-typedef char Elf32_SecContent;
+typedef char * Elf32_SecContent;
 
 typedef struct {
     int nbSections;
     Elf32_Shdr * TabAllSec[50];
-    Elf32_SecContent * TabAllSecContent[50];
+    Elf32_SecContent TabAllSecContent[50];
 } Elf32_AllSec;
 
 typedef struct {

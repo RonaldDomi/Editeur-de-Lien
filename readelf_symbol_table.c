@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 	// on recupere le decalage de la table symbole puis on se decale
     int indexSymbSec = getSectionByType(AllSectionsTables, SHT_SYMTAB);
     Elf32_Shdr * SectionTable = AllSectionsTables->TabAllSec[indexSymbSec];
-    Elf32_SecContent * SectionContent = AllSectionsTables->TabAllSecContent[indexSymbSec];
+    Elf32_SecContent SectionContent = AllSectionsTables->TabAllSecContent[indexSymbSec];
 
 	fseek(file, SectionTable->sh_offset, SEEK_SET);
 
