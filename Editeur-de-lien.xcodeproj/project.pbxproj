@@ -35,6 +35,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		582517F629685B5300CCBB87 /* readelf_header.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = readelf_header.c; sourceTree = "<group>"; };
+		582517F729685B5300CCBB87 /* mergeelf.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mergeelf.c; sourceTree = "<group>"; };
+		582517F829685B5300CCBB87 /* readelf_section_table.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = readelf_section_table.c; sourceTree = "<group>"; };
+		582517F929685B5300CCBB87 /* readelf_symbol_table.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = readelf_symbol_table.c; sourceTree = "<group>"; };
+		582517FA29685B5300CCBB87 /* readelf_section_content.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = readelf_section_content.c; sourceTree = "<group>"; };
+		582517FB29685B5300CCBB87 /* readelf_all.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = readelf_all.c; sourceTree = "<group>"; };
+		582517FC29685B5300CCBB87 /* mergeelf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mergeelf.h; sourceTree = "<group>"; };
+		582517FD29685B5300CCBB87 /* readelf_relocation.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = readelf_relocation.c; sourceTree = "<group>"; };
 		5829A15A295DB0AF00134913 /* readStringTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = readStringTable.h; sourceTree = "<group>"; };
 		5829A15B295DB0F300134913 /* readRelocation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = readRelocation.c; sourceTree = "<group>"; };
 		58537C2929570C2E00C53137 /* Editeur-de-lien */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Editeur-de-lien"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,7 +71,6 @@
 		585E192D2959D63C00E53ED9 /* readContent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = readContent.h; sourceTree = "<group>"; };
 		585E192E2959D63C00E53ED9 /* readContent.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = readContent.c; sourceTree = "<group>"; };
 		589E6C64295C3DBF009FDD88 /* configure.ac */ = {isa = PBXFileReference; lastKnownFileType = text; path = configure.ac; sourceTree = "<group>"; };
-		589E6C65295C3FC0009FDD88 /* Makefile.in */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		589E6C66295C7A30009FDD88 /* INFO_ELF.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = INFO_ELF.md; sourceTree = "<group>"; };
 		589E6C67295C7A30009FDD88 /* test_read_elf_section_table.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test_read_elf_section_table.sh; sourceTree = "<group>"; };
 		589E6C68295CC2ED009FDD88 /* test_read_elf_section_content.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = test_read_elf_section_content.sh; sourceTree = SOURCE_ROOT; };
@@ -90,13 +97,20 @@
 				58537C4B29570C6B00C53137 /* tests */,
 				58537C3929570C6B00C53137 /* modules */,
 				585E192A2959CD8B00E53ED9 /* Makefile.am */,
-				589E6C65295C3FC0009FDD88 /* Makefile.in */,
 				589E6C64295C3DBF009FDD88 /* configure.ac */,
 				58537C6E29570C6B00C53137 /* README.md */,
 				589E6C66295C7A30009FDD88 /* INFO_ELF.md */,
 				585E192C2959CDEC00E53ED9 /* test_read_elf_header.sh */,
 				589E6C67295C7A30009FDD88 /* test_read_elf_section_table.sh */,
 				589E6C68295CC2ED009FDD88 /* test_read_elf_section_content.sh */,
+				582517F729685B5300CCBB87 /* mergeelf.c */,
+				582517FC29685B5300CCBB87 /* mergeelf.h */,
+				582517FB29685B5300CCBB87 /* readelf_all.c */,
+				582517F629685B5300CCBB87 /* readelf_header.c */,
+				582517FD29685B5300CCBB87 /* readelf_relocation.c */,
+				582517FA29685B5300CCBB87 /* readelf_section_content.c */,
+				582517F829685B5300CCBB87 /* readelf_section_table.c */,
+				582517F929685B5300CCBB87 /* readelf_symbol_table.c */,
 				58537C2A29570C2E00C53137 /* Products */,
 			);
 			sourceTree = "<group>";

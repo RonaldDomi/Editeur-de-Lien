@@ -21,6 +21,7 @@ bin_PROGRAMS+=readelf_section_content
 bin_PROGRAMS+=readelf_symbol_table
 bin_PROGRAMS+=readelf_relocation
 bin_PROGRAMS+=readelf_all
+bin_PROGRAMS+=mergeelf
 LDADD= -lm
 
 COMMON=debug.h debug.c util.h util.c
@@ -36,5 +37,5 @@ readelf_section_table_SOURCES=$(COMMON) readelf_section_table.c
 readelf_section_content_SOURCES=$(COMMON) readelf_section_content.c
 readelf_symbol_table_SOURCES=$(COMMON) readelf_symbol_table.c
 readelf_relocation_SOURCES=$(COMMON) readelf_relocation.c
-
+mergeelf_SOURCES=$(COMMON) mergeelf.c
 EXTRA_DIST+=

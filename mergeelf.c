@@ -42,18 +42,15 @@ int main(int argc, char **argv){
 		exit(1);
 	}
 
-	Elf32_Ehdr* Header1 = malloc(sizeof(Elf32_Ehdr));
-	Elf32_Ehdr* Header2 = malloc(sizeof(Elf32_Ehdr));
-	Elf32_Shdr* SectionTable1 = malloc(sizeof(Elf32_Shdr));
-	Elf32_Shdr* SectionTable2 = malloc(sizeof(Elf32_Shdr));
 
-	getHeader(file1, Header1, 0);
-	getHeader(file2, Header2, 0);
+	Elf32_Info * ELF1 = getAll(file1);
+	Elf32_Info * ELF2 = getAll(file2);
+
 
 	/* On initialise un tableau de flags pour chaque section de SectionTable2, si 1 alors la section a déjà été fusionnée avec
 	 une section de la partie 1, on doit donc l'ignorer */
-	int alreadyCopied[Header2->e_shnum];
-	for (int i=0; i<Header2->e_shnum; i++){
+	int alreadyCopied[ELF2->Header->e_shnum];
+	for (int i=0; i<ELF2->Header->e_shnum; i++){
 		alreadyCopied[i]=0;
 	}
 
@@ -61,72 +58,63 @@ int main(int argc, char **argv){
 	int merged = 0;
 	int copied = 0;
 
-	int nbSections=Header1->e_shnum + Header2->e_shnum;
+	int nbSections=ELF1->Header->e_shnum + ELF2->Header->e_shnum;
 	printf("On a au pire %d sections\n", nbSections);
 
 	/* On choisit de copier d'abord toute la SectionTable 1 et de fusionner quand on peut */
-	for (int i=0; i < Header1->e_shnum ; i++){
+	for (int i=0; i < ELF1->Header->e_shnum ; i++){
 		printf("===Section %d===\n", i);
-		printf("Pointeur à l'offset %lx\n",offset);
-		/* On récupère une section de la table des deux fichiers */
-		if (i < Header1->e_shnum){
-			getSectionTable(file1, Header1, SectionTable1, i, 0);
-		}else{
-			printf("On a atteint la fin de la section 1, il reste la section 2 à copier!\n");
-		}
-		if (i < Header2->e_shnum){
-			getSectionTable(file2, Header2, SectionTable2, i, 0);
-		}else{
-			printf("On a atteint la fin de la section 2, il reste la section 1 à copier!\n");
-		}
+		printf("Pointeur à l'offset %lx\n", offset);
 
-		/* Si les deux sections sont de type PROGBITS */
-		if (SectionTable1->sh_type == SHT_PROGBITS && SectionTable2->sh_type == SHT_PROGBITS){
+		char* nom1=getString(file, ELF1->AllSections->TabAllSec[i]->sh_name, ELF1->Header, ELF1->AllSections);
+
+		fwrite(ELF1->AllSections->TabAllSecContent[i], ELF1->AllSections->TabAllSec[i], 1, file3);
+		offset += ELF1->AllSections->TabAllSec[i]->sh_size;
+		copied++;
+
+		for (int j=0; j < ELF2->Header->e_shnum; j++){
+
+			char* nom2=getString(file, ELF2->AllSections->TabAllSec[j]->sh_name, ELF2->Header, ELF2->AllSections);
+
 			/* Si les deux sections ont le même nom */
-			if (! strcmp(SectionTable1->sh_charname, SectionTable2->sh_charname)){
-				/* On choisit de concaténer la section2 à la section1 */
+			if (! strcmp(nom1, nom2)){
+				/* On choisit de concaténer la section 2 à la section 1 */
 				printf("Merge, une section en moins\n");
-				fwrite(getContent(file1, SectionTable1), SectionTable1->sh_size, 1, file3);
-				fwrite(getContent(file2, SectionTable2), SectionTable2->sh_size, 1, file3);
+				printf("Merge section %d avec section %d", i, j);
+				fwrite(ELF2->AllSections->TabAllSecContent[j], ELF2->AllSections->TabAllSec[j], 1, file3);
 
-				alreadyCopied[i]=1;
+				alreadyCopied[j]=1;
 
-				offset += SectionTable1->sh_size + SectionTable2->sh_size;
+				offset += ELF2->AllSections->TabAllSec[j]->sh_size;
 				nbSections--;
 				merged++;
+				break;
 			}
-		}else{
-		/* Sinon, on copie simplement la section de SectionTable1 */
-			fwrite(getContent(file1, SectionTable1), SectionTable1->sh_size, 1, file3);
-			offset += SectionTable1->sh_size;
-			copied++;
 		}
 
 		printf("On a maintenant au pire %d sections\n", nbSections);
 		printf("Section suivante...\n\n");
 	}
-
 	/* On copie maintenant la partie 2 et tout ce qui n'a pas été fusionné */
 	printf("=====Section table 2=====\n\n");
 
-	int sectionNumber=Header1->e_shnum;
+	int sectionNumber=ELF1->Header->e_shnum;
 
-	for (int i=0; i < Header2->e_shnum; i++){
+	for (int i=0; i < ELF2->Header->e_shnum; i++){
 		printf("===Section %d===\n", sectionNumber);
 		printf("Pointeur à l'offset %lx\n",offset);
-		if (! alreadyCopied[i]){
-			getSectionTable(file2, Header2, SectionTable2, i, 0);
-			fwrite(getContent(file2, SectionTable2), SectionTable2->sh_size, 1, file3);
-			printf("Ce sera la section %d\n",sectionNumber);
 
-			offset += SectionTable2->sh_size;
+		if (! alreadyCopied[i]){
+			fwrite(ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i], 1, file3);
+			printf("Ce sera la section %d\n", sectionNumber);
+
+			offset += ELF2->AllSections->TabAllSec[i]->sh_size;
 			copied++;
 			sectionNumber++;
 		}else{
 			printf("Section déjà copiée, pass\n");
 			/* Déjà copié, pass*/
 		}
-		printf("On a maintenant au pire %d sections\n", nbSections);
 		printf("Section suivante...\n\n");
 	}
 
