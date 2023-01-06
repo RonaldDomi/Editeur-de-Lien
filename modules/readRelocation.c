@@ -78,76 +78,45 @@ void get_relocation_rela(FILE *file, Elf32_Rela *rela, char verbose)
 }
 
 // ici on parcours les section et l'orsque l'on arrive sur un type rel ou rela on l'affiche
-void GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_Shdr *SectionTable, Elf32_Rel *rel, Elf32_Rela *rela, char verbose)
+void GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables, Elf32_Rel *rel, Elf32_Rela *rela)
 {
 	long position;
-	char *mot = malloc(50);
-	if (Header->e_shnum == 0)
-	{
-		if (verbose)
-		{
-			printf("No section Table...\n");
-		}
-	}
-	else
-	{
-		for (int i = 0; i < Header->e_shnum; i++)
-		{
-			if (verbose)
-			{
-				printf("[%d]\t", i);
-			}
-			sectionName(file, Header, SectionTable, verbose, 1);
-			sectionType(file, SectionTable, verbose);
-			sectionFlags(file, SectionTable, verbose);
-			sectionAdress(file, SectionTable, verbose);
-			sectionOffset(file, SectionTable, verbose);
-			sectionSize(file, SectionTable, verbose);
-			sectionLink(file, SectionTable, verbose);
-			sectionInfo(file, SectionTable, verbose);
-			sectionAdressAlign(file, SectionTable, verbose);
-			sectionEntrySize(file, SectionTable, verbose);
-
-			if (verbose)
-			{
-				printf("\n");
-			}
-			if (SectionTable->sh_type == SHT_REL)
-			{
-				position = ftell(file);
-				getString(file, SectionTable->sh_name, Header, mot);
-				fseek(file, position, 0);
-				printf("relocation section '%s'\n", mot);
-				printf("Offset\t\tsymb\t\tInfo\t\tType\n");
-				printf("====================================================================");
-				printf("=====================================================================\n");
-				position = ftell(file);
-				fseek(file, SectionTable->sh_offset, SEEK_SET);
-				for (int i = 0; i < SectionTable->sh_size / 8; i++)
-				{
-					get_relocation_rel(file, rel, 1);
-					printf("\n");
-				}
-				fseek(file, position, 0);
-			}
-			if (SectionTable->sh_type == SHT_RELA)
-			{
-				position = ftell(file);
-				getString(file, SectionTable->sh_name, Header, mot);
-				fseek(file, position, 0);
-				printf("relocation section '%s'\n", mot);
-				printf("Offset\t\tsymb\t\tInfo\t\tType\n");
-				printf("====================================================================");
-				printf("=====================================================================\n");
-				position = ftell(file);
-				fseek(file, SectionTable->sh_offset, SEEK_SET);
-				for (int i = 0; i < SectionTable->sh_size / 12; i++)
-				{
-					get_relocation_rela(file, rela, 1);
-					printf("\n");
-				}
-				fseek(file, position, 0);
-			}
-		}
-	}
+    for (int i = 0; i < SectionsTables->nbSections; i++)
+    {
+        Elf32_Shdr * currentSectionTable = SectionsTables->TabAllSec[i];
+        if (currentSectionTable->sh_type == SHT_REL)
+        {
+            position = ftell(file);
+            printf("Relocation section '%s'\n", getString(file, currentSectionTable->sh_name, Header, SectionsTables));
+            fseek(file, position, 0);
+            printf("Offset\t\tsymb\t\tInfo\t\tType\n");
+            printf("====================================================================");
+            printf("=====================================================================\n");
+            position = ftell(file);
+            fseek(file, currentSectionTable->sh_offset, SEEK_SET);
+            for (int i = 0; i < currentSectionTable->sh_size / 8; i++)
+            {
+                get_relocation_rel(file, rel, 1);
+                printf("\n");
+            }
+            fseek(file, position, 0);
+        }
+        if (currentSectionTable->sh_type == SHT_RELA)
+        {
+            position = ftell(file);
+            printf("Relocation section '%s'\n", getString(file, currentSectionTable->sh_name, Header, SectionsTables));
+            fseek(file, position, 0);
+            printf("Offset\t\tsymb\t\tInfo\t\tType\n");
+            printf("====================================================================");
+            printf("=====================================================================\n");
+            position = ftell(file);
+            fseek(file, currentSectionTable->sh_offset, SEEK_SET);
+            for (int i = 0; i < currentSectionTable->sh_size / 12; i++)
+            {
+                get_relocation_rela(file, rela, 1);
+                printf("\n");
+            }
+            fseek(file, position, 0);
+        }
+    }
 }
