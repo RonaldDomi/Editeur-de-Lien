@@ -81,7 +81,7 @@ void decodeSymbOther(Elf32_Sym * symtab){
 
 
 void printTableSymb(Elf32_Sym * symtab, Elf32_AllSec * Sections, Elf32_Ehdr * Header){
-	dumpOctet(&symtab->st_value, 4);
+	printAdress8(&symtab->st_value, 4, 1);
 	printf("\t");
 
 
