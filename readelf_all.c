@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
 
     if (strcmp(type, "S") == 0)
     {
-        printAllTableSymb(ElfInfo->AllSymbol, ElfInfo->AllSections);
+        printAllTableSymb(ElfInfo->AllSymbol, ElfInfo->AllSections,ElfInfo->Header);
     }
 
     else if (strcmp(type, "x") == 0)

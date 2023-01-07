@@ -64,7 +64,7 @@ int main(int argc, char **argv){
 		printf("Pointeur à l'offset %ld\n", offset);
 
 		char nom1[50];
-		strcpy(nom1, getString(file1, ELF1->AllSections->TabAllSec[i]->sh_name, ELF1->Header, ELF1->AllSections));
+		strcpy(nom1, getStringSection(/*file1, */ELF1->AllSections->TabAllSec[i]->sh_name, ELF1->Header, ELF1->AllSections));
 		
 		// char * nom1 = getString(file1, ELF1->AllSections->TabAllSec[i]->sh_name, ELF1->Header, ELF1->AllSections);
 
@@ -75,7 +75,7 @@ int main(int argc, char **argv){
 		for (int j=0; j < ELF2->Header->e_shnum; j++){
 
 			char nom2[50];
-			strcpy(nom2, getString(file2, ELF2->AllSections->TabAllSec[j]->sh_name, ELF2->Header, ELF2->AllSections));
+			strcpy(nom2, getStringSection(/*file2,*/ ELF2->AllSections->TabAllSec[j]->sh_name, ELF2->Header, ELF2->AllSections));
 
 			// char * nom2 = getString(file2, ELF2->AllSections->TabAllSec[j]->sh_name, ELF2->Header, ELF2->AllSections);
 			// printf("Nom 1 : <%s> & Nom 2 : <%s>\n", nom1, nom2);

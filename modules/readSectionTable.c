@@ -215,7 +215,7 @@ void printSectionTable(Elf32_Shdr *SectionTable){
 }
 
 void sectionName(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * Header, int numero){
-    char * mot = getString(file, Sections->TabAllSec[numero]->sh_name, Header, Sections);
+    char * mot = getStringSection(/*file,*/ Sections->TabAllSec[numero]->sh_name, Header, Sections);
     int wordLength = strlen(mot);
     if (wordLength == 0){
         printf("==NO_NAME==\t\t");

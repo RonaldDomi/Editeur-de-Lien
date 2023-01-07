@@ -80,7 +80,7 @@ void decodeSymbOther(Elf32_Sym * symtab){
 }
 
 
-void printTableSymb(Elf32_Sym * symtab){
+void printTableSymb(Elf32_Sym * symtab, Elf32_AllSec * Sections, Elf32_Ehdr * Header){
 	dumpOctet(&symtab->st_value, 4);
 	printf("\t");
 
@@ -93,10 +93,13 @@ void printTableSymb(Elf32_Sym * symtab){
 
 	decodeSymbShndx(symtab);
 
-	printf("TODO-NAME\t");
+	// printf("TODO-NAME\t");
+
+	printf("%s\t", getStringSymbol(symtab->st_name, Header, Sections));
+
 }
 
-void printAllTableSymb(Elf32_Sym * AllSymbolTables, Elf32_AllSec * AllSectionsTables){
+void printAllTableSymb(Elf32_Sym * AllSymbolTables, Elf32_AllSec * AllSectionsTables, Elf32_Ehdr * Header){
 
     int indexSymbSec = getSectionByType(AllSectionsTables, SHT_SYMTAB);
     Elf32_Shdr * SectionTable = AllSectionsTables->TabAllSec[indexSymbSec];
@@ -110,7 +113,7 @@ void printAllTableSymb(Elf32_Sym * AllSymbolTables, Elf32_AllSec * AllSectionsTa
 
 	for(int i=0; i<SectionTable->sh_size/16; i++){
 		printf("%d:\t", i);
-		printTableSymb(AllSymbolTables+i);
+		printTableSymb(AllSymbolTables+i, AllSectionsTables, Header);
 		// getString(FILE *file, Elf32_Word index, Elf32_Ehdr *Header, Elf32_AllSec *Sections));
         printf("\n");
     }
