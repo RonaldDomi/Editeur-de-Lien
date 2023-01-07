@@ -162,15 +162,15 @@ void getAllTableSymb(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionCon
 }
 	// ici ecrire les fonction de recuperation du tableSymbole entry
 
-void symTabName(FILE *file, Elf32_Ehdr *Header, Elf32_Sym *symtab, char verbose)
-{
-		// if (verbose)
-		// {
-		// 	char *mot = malloc(50);
-		// 	long position = ftell(file);
-		// 	getString(file, symtab->st_name, Header, mot);
-		// 	fseek(file, position, 0);
-		// 	printf("%s\t", mot);
-		// }
-	return;
-}
+// void symTabName(FILE *file, Elf32_Ehdr *Header, Elf32_Sym *symtab, char verbose)
+// {
+// 		// if (verbose)
+// 		// {
+// 		// 	char *mot = malloc(50);
+// 		// 	long position = ftell(file);
+// 		// 	getString(file, symtab->st_name, Header, mot);
+// 		// 	fseek(file, position, 0);
+// 		// 	printf("%s\t", mot);
+// 		// }
+// 	return;
+// }
