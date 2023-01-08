@@ -10,6 +10,7 @@
 #include "readHeader.h"
 #include "CustomElf.h"
 #include "freadoctet.h"
+#include "lecture.h"
 #include <string.h>
 #include <math.h>
 
@@ -295,6 +296,7 @@ void getSectionTable(FILE *file, Elf32_Shdr *SectionTable)
     unused = fread(&SectionTable->sh_info, 4, 1, file);
     unused = fread(&SectionTable->sh_addralign, 4, 1, file);
     unused = fread(&SectionTable->sh_entsize, 4, 1, file);
+
 }
 
 void printAllSectionsTables(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * Header){

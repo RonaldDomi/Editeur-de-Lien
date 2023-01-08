@@ -145,16 +145,20 @@ void GetTableSymbPart(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionCo
 		// sscanf(SectionContent+adrligne+12, "%c", &symtab->st_info);
 		// sscanf(SectionContent+adrligne+13, "%c", &symtab->st_other);
 		// sscanf(SectionContent+adrligne+14, "%hd", &symtab->st_shndx);
-		lecture(SectionContent+adrligne+0,  (int*)&symtab->st_name, 4);
-		printf("\nname = %d\n", symtab->st_name);
+		lecture(SectionContent+adrligne+0,  &symtab->st_name, 4);
+		lecture(SectionContent+adrligne+4, &symtab->st_value, 4);
+		lecture(SectionContent+adrligne+8, &symtab->st_size, 4);
+		lecture(SectionContent+adrligne+12, &symtab->st_info, 1);
+		lecture(SectionContent+adrligne+13, &symtab->st_other, 1);
+		lecture(SectionContent+adrligne+14, &symtab->st_shndx, 2);
 
 		// read from file
-	unused = fread(&symtab->st_name, 4, 1, file);
-	unused = fread(&symtab->st_value, 4, 1, file);
-	unused = fread(&symtab->st_size, 4, 1, file);
-	unused = fread(&symtab->st_info, 1, 1, file);
-	unused = fread(&symtab->st_other, 1, 1, file);
-	unused = fread(&symtab->st_shndx, 2, 1, file);
+	// unused = fread(&symtab->st_name, 4, 1, file);
+	// unused = fread(&symtab->st_value, 4, 1, file);
+	// unused = fread(&symtab->st_size, 4, 1, file);
+	// unused = fread(&symtab->st_info, 1, 1, file);
+	// unused = fread(&symtab->st_other, 1, 1, file);
+	// unused = fread(&symtab->st_shndx, 2, 1, file);
 }
 
 void getAllTableSymb(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionContent, Elf32_Sym *AllSymbolTables, int nbTable){
