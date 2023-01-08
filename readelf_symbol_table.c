@@ -44,16 +44,22 @@ int main(int argc, char **argv)
     getAllSectionsContent(file, AllSectionsTables);
 
 	// on recupere le decalage de la table symbole puis on se decale
-    int indexSymbSec = getSectionByType(AllSectionsTables, SHT_SYMTAB);
-    Elf32_Shdr * SectionTable = AllSectionsTables->TabAllSec[indexSymbSec];
-    Elf32_SecContent SectionContent = AllSectionsTables->TabAllSecContent[indexSymbSec];
+    // int indexSymbSec = getSectionByType(AllSectionsTables, SHT_SYMTAB);
+	for(int indexSymbSec = 0; indexSymbSec < AllSectionsTables->nbSections; indexSymbSec++)
+	{   
+		if(AllSectionsTables->TabAllSec[indexSymbSec]->sh_type == SHT_SYMTAB)
+		{	
+			Elf32_Shdr * SectionTable = AllSectionsTables->TabAllSec[indexSymbSec];
+			Elf32_SecContent SectionContent = AllSectionsTables->TabAllSecContent[indexSymbSec];
 
-	fseek(file, SectionTable->sh_offset, SEEK_SET);
+			fseek(file, SectionTable->sh_offset, SEEK_SET);
 
-	Elf32_Sym * AllSymbolTables = malloc(sizeof(Elf32_Sym) * SectionTable->sh_size / 16);
-    
-	getAllTableSymb(file, Header, SectionContent, AllSymbolTables, SectionTable->sh_size / 16);
-    printAllTableSymb(AllSymbolTables, AllSectionsTables);
+			Elf32_Sym * AllSymbolTables = malloc(sizeof(Elf32_Sym) * SectionTable->sh_size / 16);
+			
+			getAllTableSymb(file, Header, SectionContent, AllSymbolTables, SectionTable->sh_size / 16);
+			printAllTableSymb(AllSymbolTables, AllSectionsTables, Header);
+		}
+	}
 
 	return 0;
 }

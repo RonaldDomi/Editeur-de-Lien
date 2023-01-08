@@ -87,7 +87,7 @@ void GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTa
         if (currentSectionTable->sh_type == SHT_REL)
         {
             position = ftell(file);
-            printf("Relocation section '%s'\n", getString(file, currentSectionTable->sh_name, Header, SectionsTables));
+            printf("Relocation section '%s'\n", getStringSection(/*file,*/ currentSectionTable->sh_name, Header, SectionsTables));
             fseek(file, position, 0);
             printf("Offset\t\tsymb\t\tInfo\t\tType\n");
             printf("====================================================================");
@@ -104,7 +104,7 @@ void GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTa
         if (currentSectionTable->sh_type == SHT_RELA)
         {
             position = ftell(file);
-            printf("Relocation section '%s'\n", getString(file, currentSectionTable->sh_name, Header, SectionsTables));
+            printf("Relocation section '%s'\n", getStringSection(/*file, */currentSectionTable->sh_name, Header, SectionsTables));
             fseek(file, position, 0);
             printf("Offset\t\tsymb\t\tInfo\t\tType\n");
             printf("====================================================================");

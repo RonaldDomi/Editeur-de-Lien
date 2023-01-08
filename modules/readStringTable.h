@@ -8,7 +8,8 @@
 #ifndef readStringTable_h
 #define readStringTable_h
 
-char * getString(FILE *file, Elf32_Word index, Elf32_Ehdr *Header, Elf32_AllSec *Sections);
+char * getStringSection(/*FILE *file, */Elf32_Word index, Elf32_Ehdr *Header, Elf32_AllSec *Sections);
 
+char * getStringSymbol(/*FILE *file, */Elf32_Word index, Elf32_Ehdr *Header, Elf32_AllSec *Sections);
 
 #endif /* readStringTable_h */

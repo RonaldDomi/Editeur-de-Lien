@@ -8,6 +8,7 @@
 #include "modules/CheckElf.h"
 #include "modules/readHeader.h"
 #include "modules/readSectionTable.h"
+#include "modules/readContent.h"
 
 int main(int argc, char **argv)
 {
@@ -59,6 +60,7 @@ int main(int argc, char **argv)
 	{
         Elf32_AllSec * AllSectionTable = initSectionTable(Header->e_shnum);
 		getAllSectionsTables(file, Header, AllSectionTable);
+		getAllSectionsContent(file, AllSectionTable);
         printAllSectionsTables(file, AllSectionTable, Header);
 	}
 
