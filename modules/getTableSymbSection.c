@@ -8,6 +8,7 @@
 #include "readSectionTable.h"
 #include "freadoctet.h"
 #include "readStringTable.h"
+#include "lecture.h"
 
 int unused; // Var non utilisée pour les warnings lors du make
 
@@ -144,6 +145,8 @@ void GetTableSymbPart(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionCo
 		// sscanf(SectionContent+adrligne+12, "%c", &symtab->st_info);
 		// sscanf(SectionContent+adrligne+13, "%c", &symtab->st_other);
 		// sscanf(SectionContent+adrligne+14, "%hd", &symtab->st_shndx);
+		lecture(SectionContent+adrligne+0,  (int*)&symtab->st_name, 4);
+		printf("\nname = %d\n", symtab->st_name);
 
 		// read from file
 	unused = fread(&symtab->st_name, 4, 1, file);

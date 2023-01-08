@@ -27,7 +27,7 @@ LDADD= -lm
 COMMON=debug.h debug.c util.h util.c
 COMMON+=modules/freadoctet.h modules/freadoctet.c modules/CustomElf.h modules/CheckElf.h modules/CheckElf.c
 COMMON+=modules/readHeader.h modules/readHeader.c modules/readSectionTable.h modules/readSectionTable.c
-COMMON+=modules/readContent.h modules/readContent.c
+COMMON+=modules/readContent.h modules/readContent.c modules/lecture.h modules/lecture.c
 
 EXTRA_DIST=filtre.pl
 Options_and_debug_example_SOURCES=$(COMMON) Options_and_debug_example.c
