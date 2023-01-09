@@ -288,16 +288,9 @@ void getSectionTable(FILE *file, Elf32_Shdr *SectionTable)
 	unused = fread(&SectionTable->sh_offset, 4, 1, file);
 	unused = fread(&SectionTable->sh_size, 4, 1, file);
 	unused = fread(&SectionTable->sh_link, 4, 1, file);
-<<<<<<< HEAD
-    unused = fread(&SectionTable->sh_info, 4, 1, file);
-    unused = fread(&SectionTable->sh_addralign, 4, 1, file);
-    unused = fread(&SectionTable->sh_entsize, 4, 1, file);
-
-=======
 	unused = fread(&SectionTable->sh_info, 4, 1, file);
 	unused = fread(&SectionTable->sh_addralign, 4, 1, file);
 	unused = fread(&SectionTable->sh_entsize, 4, 1, file);
->>>>>>> main
 }
 
 void printAllSectionsTables(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * Header){

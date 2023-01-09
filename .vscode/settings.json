@@ -5,6 +5,8 @@
         "customelf.h": "c",
         "readsectiontable.h": "c",
         "lecture.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "readcontent.h": "c",
+        "gettablesymbsection.h": "c"
     }
 }
