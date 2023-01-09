@@ -12,7 +12,7 @@
 
 void GetRelocation_rel(FILE *file, Elf32_Rel *Rel);
 void GetRelocation_rela(FILE *file, Elf32_Rela *Rela);
-void GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables);
-void printRelocation(FILE *file, Elf32_Rel *Rel, Elf32_Rela *Rela);
+int GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables);
+void printRelocation(FILE *file, Elf32_AllSec * SectionsTables, int isReloc);
 
 #endif /* readRelocation_h */
