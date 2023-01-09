@@ -13,4 +13,6 @@
 #include "modules/CustomElf.h"
 #include "mergeelf.h"
 
+void mergeSymbol(FILE* file, Elf32_Ehdr *Header, Elf32_AllSec * AllSectionsTables, Elf32_SecContent SectionContent1, Elf32_SecContent SectionContent2, int nbTable1, int nbTable2);
+
 #endif /* mergeelf_h */

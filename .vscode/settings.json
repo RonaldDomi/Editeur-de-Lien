@@ -4,6 +4,7 @@
         "checkelf.h": "c",
         "customelf.h": "c",
         "readsectiontable.h": "c",
-        "lecture.h": "c"
+        "lecture.h": "c",
+        "stdio.h": "c"
     }
 }

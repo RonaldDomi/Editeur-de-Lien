@@ -12,7 +12,66 @@
 #include "modules/readAll.c"
 #include "mergeelf.h"
 
-
+/*fonction pas encore testee*/
+/*fonction qui s'utilise en l'appelant l'orsque on a une section SYMTAB
+cette fonction fait le merge de la SYMTAB donc plus besoin de concatener les section*/
+void mergeSymbol(FILE* file, Elf32_Ehdr *Header, Elf32_AllSec * AllSectionsTables, Elf32_SecContent SectionContent1, Elf32_SecContent SectionContent2, int nbTable1, int nbTable2){
+	int *alreadyCheck = malloc(4 * nbTable2);
+	for (int l = 0; l < nbTable2; l++) alreadyCheck[l] = 0;
+	char* nom1 = malloc(50);
+	char* nom2 = malloc(50);
+	Elf32_Sym* SymbolTables1 = malloc(sizeof(Elf32_Sym));
+	Elf32_Sym* SymbolTables2 = malloc(sizeof(Elf32_Sym));
+	for (int i = 0; i < nbTable1 ; i++)
+	{
+		GetTableSymbPart(SectionContent1, SymbolTables1, i*16);
+		strcpy(nom1, getStringSymbol(SymbolTables1->st_name, Header, AllSectionsTables));
+		/*cas symbol local*/
+		if (((SymbolTables1->st_info) >> 4) != 1)
+		{
+			fwrite(SectionContent1 + i*16, 16, 1, file);
+		}
+		/*cas symbol global*/
+		else
+		{
+			for (int j = 0; j < nbTable2; j++)
+			{
+				
+				GetTableSymbPart(SectionContent2, SymbolTables2, j*16);
+				strcpy(nom2, getStringSymbol(SymbolTables2->st_name, Header, AllSectionsTables));
+				// on verifie que les deux symbole ait le meme nom et qu il soit tout les deux global
+				if (!strcmp(nom1, nom2) && ((SymbolTables1->st_info) >> 4) == 1 && ((SymbolTables2->st_info) >> 4) == 1)
+				{
+					alreadyCheck[j] = 1;
+					/*ici il faut ecrire le symbole definie*/
+					if (SymbolTables1->st_shndx!=0){
+						/*ici on verifie le quels est indefini*/
+						if(SymbolTables2->st_shndx!=0){
+							printf("\n\n\nERREUR DEUX SYMBOL DEFINIE\n\n\n");
+						}
+						else
+						{
+							fwrite(SectionContent1 + i*16, 16, 1, file);
+						}
+					}
+					else
+					{
+						fwrite(SectionContent2 + j*16, 16, 1, file);
+					}
+				}
+			}
+		}
+	}
+	/*on imprime la partie 2 qui na pas etait merge*/
+	for (int i = 0; i < nbTable2; i++)
+	{
+		if (!alreadyCheck[i])
+		{
+			fwrite(SectionContent2 + i*16, 16, 1, file);
+		}
+		
+	}
+}
 
 int main(int argc, char **argv){
 

@@ -78,6 +78,7 @@ void decodeSymbOther(Elf32_Sym * symtab){
 	if (symtab->st_other==0){
 		printf("DEFAULT\t");
 	}
+	else printf("%d\t", symtab->st_other);
 }
 
 
@@ -131,7 +132,7 @@ void printAllTableSymb(Elf32_Sym * AllSymbolTables, Elf32_AllSec * AllSectionsTa
      
 // }
 
-void GetTableSymbPart(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionContent, Elf32_Sym *symtab, int adrligne){
+void GetTableSymbPart(Elf32_SecContent SectionContent, Elf32_Sym *symtab, int adrligne){
 
 		// dump content
 		// for(int i=adrligne; i<adrligne+16; i++)
@@ -163,9 +164,9 @@ void GetTableSymbPart(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionCo
 
 void getAllTableSymb(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionContent, Elf32_Sym *AllSymbolTables, int nbTable){
 	for (int i = 0; i < nbTable ; i++)
-		{
-		GetTableSymbPart(file, Header, SectionContent, AllSymbolTables+i, i*16);
-		}
+	{
+		GetTableSymbPart(SectionContent, AllSymbolTables+i, i*16);
+	}
 }
 	// ici ecrire les fonction de recuperation du tableSymbole entry
 
