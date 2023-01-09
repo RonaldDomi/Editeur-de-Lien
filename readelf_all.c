@@ -106,10 +106,7 @@ int main(int argc, char *argv[])
 
 
 	Elf32_Info * ElfInfo = getAllInfo(file);
-
-	Elf32_Rel *rel = malloc(sizeof(Elf32_Rel));
-	Elf32_Rela *rela = malloc(sizeof(Elf32_Rela));
-		// HEADER
+    // HEADER
 	if (strcmp(type, "h") == 0)
 		{
 		printf("\nAll values are in decimal format.\n");
@@ -163,7 +160,7 @@ int main(int argc, char *argv[])
 		}
 	else if (strcmp(type, "r") == 0)
 		{
-		GetRelocationPart(file,  ElfInfo->Header, ElfInfo->AllSections, rel, rela);
+		GetRelocationPart(file,  ElfInfo->Header, ElfInfo->AllSections);
 		printf("\n");
 		}
 
