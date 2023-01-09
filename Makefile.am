@@ -15,26 +15,29 @@ SUBDIRS=
 
 bin_PROGRAMS=
 bin_PROGRAMS+=Options_and_debug_example
-bin_PROGRAMS+=readelf_header
-bin_PROGRAMS+=readelf_section_table
-bin_PROGRAMS+=readelf_section_content
-bin_PROGRAMS+=readelf_symbol_table
-bin_PROGRAMS+=readelf_relocation
+#bin_PROGRAMS+=readelf_header
+#bin_PROGRAMS+=readelf_section_table
+#bin_PROGRAMS+=readelf_section_content
+#bin_PROGRAMS+=readelf_symbol_table
+#bin_PROGRAMS+=readelf_relocation
 bin_PROGRAMS+=readelf_all
+bin_PROGRAMS+=mergeelf
 LDADD= -lm
 
 COMMON=debug.h debug.c util.h util.c
 COMMON+=modules/freadoctet.h modules/freadoctet.c modules/CustomElf.h modules/CheckElf.h modules/CheckElf.c
 COMMON+=modules/readHeader.h modules/readHeader.c modules/readSectionTable.h modules/readSectionTable.c
-COMMON+=modules/readContent.h modules/readContent.c
+COMMON+=modules/readContent.h modules/readContent.c modules/readStringTable.h modules/readStringTable.c
+COMMON+=modules/getTableSymbSection.h modules/getTableSymbSection.c modules/readRelocation.h modules/readRelocation.c
+COMMON+=modules/readAll.h modules/readAll.c
 
 EXTRA_DIST=filtre.pl
 Options_and_debug_example_SOURCES=$(COMMON) Options_and_debug_example.c
-readelf_all_SOURCES=$(COMMON) readelf_all.c 
-readelf_header_SOURCES=$(COMMON) readelf_header.c 
-readelf_section_table_SOURCES=$(COMMON) readelf_section_table.c
-readelf_section_content_SOURCES=$(COMMON) readelf_section_content.c
-readelf_symbol_table_SOURCES=$(COMMON) readelf_symbol_table.c
-readelf_relocation_SOURCES=$(COMMON) readelf_relocation.c
-
+#readelf_header_SOURCES=$(COMMON) readelf_header.c
+#readelf_section_table_SOURCES=$(COMMON) readelf_section_table.c
+#readelf_section_content_SOURCES=$(COMMON) readelf_section_content.c
+#readelf_symbol_table_SOURCES=$(COMMON) readelf_symbol_table.c
+#readelf_relocation_SOURCES=$(COMMON) readelf_relocation.c
+readelf_all_SOURCES=$(COMMON) readelf_all.c
+mergeelf_SOURCES=$(COMMON) mergeelf.c
 EXTRA_DIST+=

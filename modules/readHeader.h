@@ -24,7 +24,7 @@ void decodeHeaderFlags(Elf32_Ehdr *Header);
  */
 void printHeader(Elf32_Ehdr *Header);
 
-/* Remplit la structure Header avec une fonction pour chaque membre
+/* Remplit la structure Header 
 
  Paramètre: un pointeur file de fichier, un pointeur Header de structure d'en-tête, un booléen verbose pour gérer l'affichage
  Sortie : Ne renvoie rien

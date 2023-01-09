@@ -1,5 +1,9 @@
+//
+//  freadoctet.h
+//  Editeur de Liens
+//
+
 #include <stdio.h>
-#include <stdlib.h>
 
 /* Affiche octet par octet au format décimal avec deux chiffres pour chaque octet
  Suivant le paramètre reverse, commence par le début ou la fin du tableau
