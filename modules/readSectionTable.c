@@ -5,6 +5,7 @@
 
 #include <string.h>
 #include <math.h>
+#include "lecture.h"
 #include "CustomElf.h"
 #include "freadoctet.h"
 #include "readSectionTable.h"
