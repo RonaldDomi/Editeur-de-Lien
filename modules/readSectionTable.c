@@ -213,7 +213,7 @@ void printSectionTable(Elf32_Shdr *SectionTable){
 }
 
 void sectionName(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * Header, int numero){
-    char * mot = getStringSection(/*file,*/ Sections->TabAllSec[numero]->sh_name, Header, Sections);
+    char * mot = getStringSection(Sections->TabAllSec[numero]->sh_name, Header, Sections);
     int wordLength = strlen(mot);
     if (wordLength == 0){
         printf("==NO_NAME==\t\t");
@@ -309,16 +309,15 @@ void getAllSectionsTables(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec *Sections
 	}
 }
 
-int getSectionByName(Elf32_AllSec *Sections, char *sectionName)
+int getSectionByName(Elf32_AllSec *Sections, Elf32_Ehdr *Header,char *sectionName)
 {
-	/* TODO: ==INOPERATIVE==*/
 	for (int i = 0; i < Sections->nbSections; i++)
 	{
-        // TODO refaire
-		// if (!strcmp(Sections->TabAllSec[i]->sh_charname, sectionName))
-		// {
-		return i;
-		// }
+		char * mot = getStringSection(Sections->TabAllSec[i]->sh_name, Header, Sections);
+		 if (!strcmp(mot, sectionName)){
+			return i;
+		 }
+		free(mot);
 	}
 	return -1;
 }
@@ -327,6 +326,7 @@ int getSectionByType(Elf32_AllSec *Sections, int type)
 {
 	for (int i = 0; i < Sections->nbSections; i++)
 	{
+
 		if (Sections->TabAllSec[i]->sh_type == type)
 		{
 			return i;

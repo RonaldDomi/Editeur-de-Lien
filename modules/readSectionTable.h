@@ -91,6 +91,7 @@ void printAllSectionsTables(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * H
 
 
 /* Remplit la structure Sections contenant l'ensemble des Tables de Sections
+ 
  Paramètre:
  un pointeur file de fichier,
  un pointeur Header de structure d'en-tête,
@@ -99,23 +100,25 @@ void printAllSectionsTables(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * H
  */
 void getAllSectionsTables(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec *Sections);
 
-/* TODO: ==INOPERATIVE==
+/*
  Cherche si une fonction d'un certain nom existe et renvoie son index
  Paramètre:
- un pointeur Header de structure d'en-tête,
  un pointeur Sections de structure contenant l'ensemble des Tables de Sections
+ un pointeur Header de structure d'en-tête,
  un pointeur char désignant spécifiquement le nom de section à chercher
+
  Sortie : Renvoie i l'index de la section si elle a été trouvée
 			-1 Sinon
  Effets de bords : Modifie la structure SectionTable, la remplie entièrement
  */
-int getSectionByName(Elf32_AllSec *Sections, char *sectionName);
+int getSectionByName(Elf32_AllSec *Sections, Elf32_Ehdr *Header,char *sectionName);
 
 /* Cherche si une fonction d'un certain type existe et renvoit son index
  Paramètre:
  un pointeur Header de structure d'en-tête,
  un pointeur Sections de structure contenant l'ensemble des Tables de Sections
  un pointeur char désignant spécifiquement le nom de section à chercher
+
  Sortie : Renvoie i l'index de la section si elle a été trouvée
 			-1 Sinon
  Effets de bords : Modifie la structure SectionTable, la remplie entièrement

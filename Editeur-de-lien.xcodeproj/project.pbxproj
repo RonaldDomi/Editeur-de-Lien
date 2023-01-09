@@ -76,6 +76,11 @@
 		589E6C66295C7A30009FDD88 /* INFO_ELF.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = INFO_ELF.md; sourceTree = "<group>"; };
 		589E6C67295C7A30009FDD88 /* test_read_elf_section_table.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test_read_elf_section_table.sh; sourceTree = "<group>"; };
 		589E6C68295CC2ED009FDD88 /* test_read_elf_section_content.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = test_read_elf_section_content.sh; sourceTree = SOURCE_ROOT; };
+		58CA2069296C16B300A5DD81 /* test_read_elf_relocation.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test_read_elf_relocation.sh; sourceTree = "<group>"; };
+		58CA206A296C16B300A5DD81 /* test_read_elf_symbol_table.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test_read_elf_symbol_table.sh; sourceTree = "<group>"; };
+		58CA206B296C1D0500A5DD81 /* getTableSymbSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = getTableSymbSection.h; sourceTree = "<group>"; };
+		58CA206C296C1D0500A5DD81 /* readRelocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = readRelocation.h; sourceTree = "<group>"; };
+		58CA206D296C1D0500A5DD81 /* readAll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = readAll.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,8 +110,10 @@
 				585E192C2959CDEC00E53ED9 /* test_read_elf_header.sh */,
 				589E6C67295C7A30009FDD88 /* test_read_elf_section_table.sh */,
 				589E6C68295CC2ED009FDD88 /* test_read_elf_section_content.sh */,
-				582517F729685B5300CCBB87 /* mergeelf.c */,
+				58CA206A296C16B300A5DD81 /* test_read_elf_symbol_table.sh */,
+				58CA2069296C16B300A5DD81 /* test_read_elf_relocation.sh */,
 				582517FC29685B5300CCBB87 /* mergeelf.h */,
+				582517F729685B5300CCBB87 /* mergeelf.c */,
 				582517FB29685B5300CCBB87 /* readelf_all.c */,
 				582517F629685B5300CCBB87 /* readelf_header.c */,
 				582517FD29685B5300CCBB87 /* readelf_relocation.c */,
@@ -136,6 +143,9 @@
 				58537C4229570C6B00C53137 /* readStringTable.c */,
 				58537C4329570C6B00C53137 /* getTableSymbSection.c */,
 				5829A15B295DB0F300134913 /* readRelocation.c */,
+				58CA206B296C1D0500A5DD81 /* getTableSymbSection.h */,
+				58CA206D296C1D0500A5DD81 /* readAll.h */,
+				58CA206C296C1D0500A5DD81 /* readRelocation.h */,
 				58537C4929570C6B00C53137 /* freadoctet.h */,
 				58537C4129570C6B00C53137 /* freadoctet.c */,
 				58537C4629570C6B00C53137 /* readHeader.h */,
