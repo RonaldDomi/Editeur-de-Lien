@@ -1,16 +1,17 @@
-	//
-	//  mergeelf.c
-	//  Editeur-de-lien
-	//
-	//  Created by Bastien Levasseur on 03/01/2023.
-	//
+//
+//  mergeelf.c
+//  Editeur-de-lien
+//
+
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "modules/CheckElf.h"
-#include "modules/readAll.c"
+#include "modules/readAll.h"
+#include "modules/readStringTable.h"
 #include "mergeelf.h"
+#include "modules/getTableSymbSection.h"
 
 /*fonction pas encore testee*/
 /*fonction qui s'utilise en l'appelant l'orsque on a une section SYMTAB

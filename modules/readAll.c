@@ -1,6 +1,14 @@
+//
+//  readAll.c
+//  Editeur de Liens
+//
+
+#include <stdlib.h>
+#include "CustomElf.h"
 #include "readHeader.h"
+#include "readSectionTable.h"
 #include "readContent.h"
-#include "getTableSymbSection.c"
+#include "getTableSymbSection.h"
 
 Elf32_Info * initElf32_Inf(){
     Elf32_Info * ElfInfo = malloc(sizeof(Elf32_Info));

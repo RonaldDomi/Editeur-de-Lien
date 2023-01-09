@@ -1,13 +1,15 @@
 //
 //  readContent.c
-//  Editeur-de-lien
+//  Editeur de Liens
 //
 
+#include <stdio.h>
+#include "CustomElf.h"
+#include "freadoctet.h"
 #include "readHeader.h"
 #include "readSectionTable.h"
 #include "readContent.h"
-#include "CustomElf.h"
-#include "freadoctet.h"
+
 
 int unused; // Var non utilisée pour les warnings lors du make
 

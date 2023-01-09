@@ -1,7 +1,8 @@
-	//
-	//  readTableSymbole.c
-	//  Editeur de Liens
-	//
+//
+//  getTableSymbSection.c
+//  Editeur de Liens
+//
+
 #include <stdio.h>
 #include <string.h>
 #include "CustomElf.h"
@@ -86,7 +87,6 @@ void printTableSymb(Elf32_Sym * symtab, Elf32_AllSec * Sections, Elf32_Ehdr * He
 	dumpOctet(&symtab->st_value, 4);
 	printf("\t");
 
-
 	printf("%d\t", symtab->st_size);
 
 	decodeSymbType(symtab);
@@ -95,10 +95,7 @@ void printTableSymb(Elf32_Sym * symtab, Elf32_AllSec * Sections, Elf32_Ehdr * He
 
 	decodeSymbShndx(symtab);
 
-	// printf("TODO-NAME\t");
-
 	printf("%s\t", getStringSymbol(symtab->st_name, Header, Sections));
-
 }
 
 void printAllTableSymb(Elf32_Sym * AllSymbolTables, Elf32_AllSec * AllSectionsTables, Elf32_Ehdr * Header){
@@ -116,24 +113,14 @@ void printAllTableSymb(Elf32_Sym * AllSymbolTables, Elf32_AllSec * AllSectionsTa
 	for(int i=0; i<SectionTable->sh_size/16; i++){
 		printf("%d:\t", i);
 		printTableSymb(AllSymbolTables+i, AllSectionsTables, Header);
-		// getString(FILE *file, Elf32_Word index, Elf32_Ehdr *Header, Elf32_AllSec *Sections));
         printf("\n");
     }
 }
 
-// void getString(FILE *file, Elf32_Word index, Elf32_Ehdr *Header, Elf32_AllSec *Sections)
-// {
-// 	fseek(file, Sections->TabAllSec[Header->e_shstrndx]->sh_offset, SEEK_SET);
-// 	fseek(file, index, SEEK_CUR);
-
-//     char mot[50];
-
-//     return fgets(mot, 50, file);
-     
-// }
 
 void GetTableSymbPart(Elf32_SecContent SectionContent, Elf32_Sym *symtab, int adrligne){
 
+/* TODO: 3 méthodes, en choisir une et supprimer les deux autres, fixer de préférence sscanf */
 		// dump content
 		// for(int i=adrligne; i<adrligne+16; i++)
 		//     printf("%02x", (unsigned char)SectionContent[i]);

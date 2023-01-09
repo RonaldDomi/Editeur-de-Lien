@@ -1,7 +1,8 @@
 //
-//  readTableSymbole.c
+//  readRelocation.c
 //  Editeur de Liens
 //
+
 #include <stdio.h>
 #include "CustomElf.h"
 #include "readSectionTable.h"
@@ -81,12 +82,16 @@ void get_relocation_rela(FILE *file, Elf32_Rela *rela, char verbose)
 void GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables, Elf32_Rel *rel, Elf32_Rela *rela)
 {
 	long position;
+	int isReloc=0;
     for (int i = 0; i < SectionsTables->nbSections; i++)
     {
+
         Elf32_Shdr * currentSectionTable = SectionsTables->TabAllSec[i];
         if (currentSectionTable->sh_type == SHT_REL)
         {
+			isReloc=1;
             position = ftell(file);
+
             printf("Relocation section '%s'\n", getStringSection(/*file,*/ currentSectionTable->sh_name, Header, SectionsTables));
             fseek(file, position, 0);
             printf("Offset\t\tsymb\t\tInfo\t\tType\n");
@@ -101,8 +106,10 @@ void GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTa
             }
             fseek(file, position, 0);
         }
-        if (currentSectionTable->sh_type == SHT_RELA)
+	
+        else if (currentSectionTable->sh_type == SHT_RELA)
         {
+		isReloc=1;
             position = ftell(file);
             printf("Relocation section '%s'\n", getStringSection(/*file, */currentSectionTable->sh_name, Header, SectionsTables));
             fseek(file, position, 0);
@@ -117,6 +124,9 @@ void GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTa
                 printf("\n");
             }
             fseek(file, position, 0);
-        }
+		}
     }
+	if (isReloc==0){
+		printf("There are no relocations in this file.");
+	}
 }
