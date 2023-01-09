@@ -3,11 +3,12 @@
 //  Editeur de Liens
 //
 
-#include "readHeader.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "CustomElf.h"
 #include "freadoctet.h"
+#include "readHeader.h"
+
 
 int unused; // Var non utilisée pour les warnings lors du make
 

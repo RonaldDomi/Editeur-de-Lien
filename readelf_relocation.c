@@ -2,14 +2,13 @@
 //  read_elf_section_table.c
 //  Editeur de Liens
 //
-//  Created by Bastien Levasseur on 18/12/2022.
-//
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "modules/CheckElf.h"
 #include "modules/readHeader.h"
-#include "modules/readRelocation.c"
+#include "modules/readSectionTable.h"
+#include "modules/readRelocation.h"
 
 int main(int argc, char **argv)
 {

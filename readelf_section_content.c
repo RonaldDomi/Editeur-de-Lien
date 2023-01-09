@@ -7,10 +7,11 @@
 #include <stdlib.h>
 
 #include "modules/CheckElf.h"
+#include "modules/freadoctet.h"
 #include "modules/readHeader.h"
 #include "modules/readSectionTable.h"
 #include "modules/readContent.h"
-#include "modules/freadoctet.h"
+
 
 int main(int argc, char **argv)
 {

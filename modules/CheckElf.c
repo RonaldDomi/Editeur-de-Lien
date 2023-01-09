@@ -1,3 +1,8 @@
+//
+//  CheckElf.c
+//  Editeur de Liens
+//
+
 #include <stdio.h>
 #include <stdlib.h>
 

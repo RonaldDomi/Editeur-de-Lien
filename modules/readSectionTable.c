@@ -3,15 +3,13 @@
 //  Editeur de Liens
 //
 
-#include <math.h>
 #include <string.h>
-#include "readSectionTable.h"
-#include "readStringTable.c"
-#include "readHeader.h"
+#include <math.h>
 #include "CustomElf.h"
 #include "freadoctet.h"
-#include <string.h>
-#include <math.h>
+#include "readSectionTable.h"
+#include "readStringTable.h"
+#include "readHeader.h"
 
 int unused; // Var non utilisée pour les warnings lors du make
 
@@ -235,10 +233,7 @@ void sectionName(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * Header, int 
 
 void printNumber(int nbSections, int sectionNumber)
 {
-	/* On calcule le nombre de caractères à imprimer entre les crochets,
-	 cela revient à savoir combien de caractères on a besoin pour afficher
-	 tous les numéros de table.
-	 On utilise le log10()+1 pour calculer le nombre de caractères, on prend le floor() */
+	/* On utilise le log10()+1 pour calculer le nombre de caractères, on prend le floor() */
 
 	/* Cas particulier si e_shnum=1, car log10(1-1) = -infinity */
 	int charactersToPrint;
@@ -316,6 +311,7 @@ void getAllSectionsTables(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec *Sections
 
 int getSectionByName(Elf32_AllSec *Sections, char *sectionName)
 {
+	/* TODO: ==INOPERATIVE==*/
 	for (int i = 0; i < Sections->nbSections; i++)
 	{
         // TODO refaire

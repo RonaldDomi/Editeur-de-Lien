@@ -4,8 +4,13 @@
 #include <string.h>
 
 #include "modules/CheckElf.h"
-#include "modules/readAll.c"
-#include "modules/readRelocation.c"
+#include "modules/readHeader.h"
+#include "modules/readSectionTable.h"
+#include "modules/readContent.h"
+#include "modules/getTableSymbSection.h"
+#include "modules/readRelocation.h"
+#include "modules/readAll.h"
+
 
 void usage(char *name)
 {

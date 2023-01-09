@@ -1,7 +1,8 @@
 //
-//  readTableSymbole.c
+//  readRelocation.c
 //  Editeur de Liens
 //
+
 #include <stdio.h>
 #include "CustomElf.h"
 #include "readSectionTable.h"

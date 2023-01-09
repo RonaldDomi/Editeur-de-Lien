@@ -8,7 +8,7 @@
 #include "modules/CheckElf.h"
 #include "modules/readHeader.h"
 #include "modules/readSectionTable.h"
-#include "modules/getTableSymbSection.c"
+#include "modules/getTableSymbSection.h"
 #include "modules/readContent.h"
 
 int main(int argc, char **argv)

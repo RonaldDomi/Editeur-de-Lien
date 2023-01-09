@@ -86,8 +86,8 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
     case $key in
 
         [0-9]*:) #Match tous les nombres suivis de deux points e.g 0: 10: 100000:
-          echo "Key : <$key>"
-          echo "Value : $value"
+#          echo "Key : <$key>"
+#          echo "Value : $value"
 
             
             otherValue=`grep "^[[:blank:]]*$key" readelfCommand.output | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2) ; print $2}'`
@@ -97,10 +97,10 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
             #Cas particulier pour la première ligne qui n'a aucun nom dans readelf et "==NO_NAME==" dans notre programme
             #On vérifie si c'est le cas pour chaque ligne, si oui on aura un test particulier
             alternativeTest=0
-            name=`echo $value | rev | cut -c -9 | rev` #On cherche "==NO_NAME==" en cut à la fin avec rev
+            name=`echo $value | rev | cut -c -11 | rev` #On cherche "==NO_NAME==" en cut à la fin avec rev
 
-            #TODO: Changer "TODO-NAME" en "==NO_NAME==" une fois les noms fixés
-            if [ "$name" == "TODO-NAME" ]
+
+            if [ "$name" == "==NO_NAME==" ]
             then
                 alternativeTest=1
             fi
@@ -109,18 +109,25 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
             #Si on est dans le cas d'une table sans nom, on coupe le "==NO_NAME==" de notre ligne pour la comparaison
             if [ $alternativeTest -eq 1 ]
             then
-                #TODO: changer 11- en 13- une fois les noms fixés
-                value=`echo $value | rev | cut -c 11- | rev`
+                value=`echo $value | rev | cut -c 13- | rev`
             fi
 
             #Sinon on compare normalement
-            if [ "$value" == "$otherValue" ]
+            if [ "$value" != "$otherValue" ]
             then
-                echo -e "SymbolTable : \033[48;5;2mOK TEST\033[0;0m" #Pass
-            else
-                printf "SymbolTable : "
-                #TODO: Changer en FailTest une fois les noms fixés
-                WarningTest "$otherValue" "$value" "$$" #Fail
+
+				# readelf tronque les longs noms avec des [...] ce qui peut faire échouer la comparaison
+				# On vérifie si le nom termine par [...] on ignore l'échec de la comparaison
+				# Ce ignore peut mener à des faux positifs si une ligne est fausse autre part que par le nom
+				# Mais avec un si grand nombre de lignes et plusieurs tests,
+				# il est très probable qu'une erreur apparaitrait sans un nom tronqué par "[...]"
+				longName=`echo $otherValue | rev | cut -c -5 | rev`
+				if [ "$longName" != "[...]" ]
+				then
+					printf "SymbolTable : "
+					#TODO: Changer en FailTest une fois les noms fixés pour le début des programmes
+					WarningTest "$otherValue" "$value" "$$" #Fail
+                fi
             fi
         ;;
 
@@ -132,5 +139,5 @@ done
 echo
 # Si tous les tests ont réussi, alors le test passe, on supprime les fichiers temporaires
 echo -e "Test $(basename "$1") \033[48;5;2mpassed\033[0;0m!"
-#rm -f MyReadelfCommand.output readelfCommand.output
+rm -f MyReadelfCommand.output readelfCommand.output
 exit 0
