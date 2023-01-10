@@ -3927,10 +3927,15 @@ enum
 
 typedef char * Elf32_SecContent;
 
+typedef Elf32_Rel ** RelData; 
+typedef Elf32_Rela ** RelaData; 
+
 typedef struct {
     int nbSections;
     Elf32_Shdr * TabAllSec[50];
     Elf32_SecContent TabAllSecContent[50];
+    RelData TabAllRel[50];
+    RelaData TabAllRela[50];
 } Elf32_AllSec;
 
 typedef struct {

@@ -8,125 +8,130 @@
 #include "readSectionTable.h"
 #include "freadoctet.h"
 #include "readStringTable.h"
+#include "lecture.h"
 
 int unused; // Var non utilisée pour les warnings lors du make
 
-void offset_rel(FILE *file, Elf32_Rel *rel, char verbose)
-{
-	unused = fread(&rel->r_offset, 4, 1, file);
-	if (verbose)
-	{
-		printOctet(&rel->r_offset, 4, 1);
-		printf("\t");
+
+void decodeRelType(Elf32_Word type){
+	switch(type){
+		case(R_ARM_NONE):
+			printf("R_ARM_NONE");
+			break;
+		case(R_ARM_ABS32):
+			printf("R_ARM_ABS32");
+			break;
+		case(R_ARM_TLS_DESC):
+			printf("R_ARM_TLS_DESC");
+			break;
+		case(R_ARM_COPY):
+			printf("R_ARM_COPY");
+			break;
+		case(R_ARM_RELATIVE):
+			printf("R_ARM_RELATIVE");
+			break;
+		case(R_ARM_PLT32):
+			printf("R_ARM_PLT32");
+			break;
+		case(R_ARM_PREL31):
+			printf("R_ARM_PREL31");
+			break;
+		case(R_ARM_CALL):
+			printf("R_ARM_CALL");
+			break;
+		default:
+			printf("==UKN, %d==", type);
+			break;
 	}
+	printf("\t");
 }
 
-void info_rel(FILE *file, Elf32_Rel *rel, char verbose)
-{
-	unused = fread(&rel->r_info, 4, 1, file);
-	if (verbose)
-	{
-		printOctet(&rel->r_info + 1, 4, 1);
-		printf("\t");
-		printOctet(&rel->r_info, 4, 1);
-		printf("\t%d\t\t", (char)rel->r_info);
-	}
+
+void GetRelocation_rel(Elf32_SecContent SectionContent, Elf32_Rel *Rel, int adrligne){
+	lecture(SectionContent+adrligne+0,  &Rel->r_offset, 4);
+	lecture(SectionContent+adrligne+4, &Rel->r_info, 4);
+	// unused = fread(&Rel->r_offset, 4, 1, file);
+	// unused = fread(&Rel->r_info, 4, 1, file);
 }
 
-void get_relocation_rel(FILE *file, Elf32_Rel *rel, char verbose)
-{
-	offset_rel(file, rel, verbose);
-	info_rel(file, rel, verbose);
+
+void GetRelocation_rela(Elf32_SecContent SectionContent, Elf32_Rela *Rela, int adrligne){
+	lecture(SectionContent+adrligne+0,  &Rela->r_offset, 4);
+	lecture(SectionContent+adrligne+4, &Rela->r_info, 4);
+	lecture(SectionContent+adrligne+8, &Rela->r_offset, 4);
+	// unused = fread(&Rela->r_offset, 4, 1, file);
+	// unused = fread(&Rela->r_info, 4, 1, file);
+	// unused = fread(&Rela->r_offset, 4, 1, file);
 }
 
-void offset_rela(FILE *file, Elf32_Rela *rel, char verbose)
-{
-	unused = fread(&rel->r_offset, 4, 1, file);
-	if (verbose)
-	{
-		printOctet(&rel->r_offset, 4, 1);
-		printf("\t");
-	}
-}
+	// ici on parcours les section et l'orsque l'on arrive sur un type rel ou rela on l'affiche
+int GetRelocationPart(Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables){
+	int isReloc = 0;
+	for (int i = 0; i < SectionsTables->nbSections; i++){
+		Elf32_Shdr * currentSectionTable = SectionsTables->TabAllSec[i];
+		if (currentSectionTable->sh_type == SHT_REL){
 
-void info_rela(FILE *file, Elf32_Rela *rel, char verbose)
-{
-	unused = fread(&rel->r_info, 4, 1, file);
-	if (verbose)
-	{
-		printOctet(&rel->r_info + 1, 4, 1);
-		printf("\t");
-		printOctet(&rel->r_info, 4, 1);
-		printf("\t%d\t\t", (char)rel->r_info);
-	}
-}
-
-void addend_rela(FILE *file, Elf32_Rela *rel, char verbose)
-{
-	unused = fread(&rel->r_offset, 4, 1, file);
-	if (verbose)
-	{
-		printOctet(&rel->r_offset, 4, 1);
-		printf("\t\t");
-	}
-}
-
-void get_relocation_rela(FILE *file, Elf32_Rela *rela, char verbose)
-{
-	offset_rela(file, rela, verbose);
-	info_rela(file, rela, verbose);
-	addend_rela(file, rela, verbose);
-}
-
-// ici on parcours les section et l'orsque l'on arrive sur un type rel ou rela on l'affiche
-void GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables, Elf32_Rel *rel, Elf32_Rela *rela)
-{
-	long position;
-	int isReloc=0;
-    for (int i = 0; i < SectionsTables->nbSections; i++)
-    {
-
-        Elf32_Shdr * currentSectionTable = SectionsTables->TabAllSec[i];
-        if (currentSectionTable->sh_type == SHT_REL)
-        {
-			isReloc=1;
-            position = ftell(file);
-
-            printf("Relocation section '%s'\n", getStringSection(/*file,*/ currentSectionTable->sh_name, Header, SectionsTables));
-            fseek(file, position, 0);
-            printf("Offset\t\tsymb\t\tInfo\t\tType\n");
-            printf("====================================================================");
-            printf("=====================================================================\n");
-            position = ftell(file);
-            fseek(file, currentSectionTable->sh_offset, SEEK_SET);
-            for (int i = 0; i < currentSectionTable->sh_size / 8; i++)
-            {
-                get_relocation_rel(file, rel, 1);
-                printf("\n");
-            }
-            fseek(file, position, 0);
+			isReloc = 1;
+			SectionsTables->TabAllRel[i] = malloc(sizeof(void*) * (currentSectionTable->sh_size / 8));
+			for (int j = 0; j < currentSectionTable->sh_size / 8; j++){
+				SectionsTables->TabAllRel[i][j] = malloc(sizeof(Elf32_Rel));
+				GetRelocation_rel(SectionsTables->TabAllSecContent[i], SectionsTables->TabAllRel[i][j], j*8);
+			}
         }
-	
-        else if (currentSectionTable->sh_type == SHT_RELA)
-        {
-		isReloc=1;
-            position = ftell(file);
-            printf("Relocation section '%s'\n", getStringSection(/*file, */currentSectionTable->sh_name, Header, SectionsTables));
-            fseek(file, position, 0);
-            printf("Offset\t\tsymb\t\tInfo\t\tType\n");
-            printf("====================================================================");
-            printf("=====================================================================\n");
-            position = ftell(file);
-            fseek(file, currentSectionTable->sh_offset, SEEK_SET);
-            for (int i = 0; i < currentSectionTable->sh_size / 12; i++)
-            {
-                get_relocation_rela(file, rela, 1);
-                printf("\n");
-            }
-            fseek(file, position, 0);
+        else if (currentSectionTable->sh_type == SHT_RELA){
+			isReloc = 1;
+			SectionsTables->TabAllRela[i] = malloc(sizeof(void*) * (currentSectionTable->sh_size / 12));
+			for (int j = 0; j < currentSectionTable->sh_size / 12; j++){
+				SectionsTables->TabAllRela[i][j] = malloc(sizeof(Elf32_Rela));
+				GetRelocation_rela(SectionsTables->TabAllSecContent[i], SectionsTables->TabAllRela[i][j], j*12);
+			}
 		}
-    }
+	}
+	return isReloc;
+}
+
+
+void printRelocation(Elf32_AllSec * SectionsTables, int isReloc, Elf32_Ehdr * Header){
 	if (isReloc==0){
 		printf("There are no relocations in this file.");
+		return;
+	}
+	for (int i = 0; i < SectionsTables->nbSections; i++){
+		if (SectionsTables->TabAllRel[i]!=NULL){
+
+            printf("Relocation section '%s' at offset 0x", getStringSection(SectionsTables->TabAllSec[i]->sh_name, Header, SectionsTables));
+            printf("%x", SectionsTables->TabAllSec[i]->sh_offset);
+            printf(" contains %d entries:\n", SectionsTables->TabAllSec[i]->sh_size / 8);
+
+			printf("=========================================================\n");
+			for (int j = 0; j < SectionsTables->TabAllSec[i]->sh_size / 8; j++){
+				dumpOctet(&SectionsTables->TabAllRel[i][j]->r_offset, 4);
+				printf("\t");
+				dumpOctet(&SectionsTables->TabAllRel[i][j]->r_info, 4);
+				printf("\t");
+				decodeRelType((char) SectionsTables->TabAllRel[i][j]->r_info);
+				dumpOctet(&SectionsTables->TabAllRel[i][j]->r_info + 1, 4);
+				printf("\n");
+			}
+			printf("\n");
+		}else if (SectionsTables->TabAllRela[i]!=NULL){
+
+            printf("Relocation section '%s' at offset 0x", getStringSection(SectionsTables->TabAllSec[i]->sh_name, Header, SectionsTables));
+            printf("%x", SectionsTables->TabAllSec[i]->sh_offset);
+            printf(" contains %d entries:\n", SectionsTables->TabAllSec[i]->sh_size / 12);
+
+			printf("Offset\t\tInfo\t\tType\tSymb\n");
+			printf("=================================================\n");
+			for (int j = 0; j < SectionsTables->TabAllSec[i]->sh_size / 12; j++){
+				dumpOctet(&SectionsTables->TabAllRela[i][j]->r_offset, 4);
+				printf("\t");
+				decodeRelType((char) SectionsTables->TabAllRel[i][j]->r_info);
+				dumpOctet(&SectionsTables->TabAllRela[i][j]->r_info + 1, 4);
+				printf("\t");
+				dumpOctet(&SectionsTables->TabAllRela[i][j]->r_offset, 4);
+				printf("\n");
+			}
+			printf("\n");
+		}
 	}
 }

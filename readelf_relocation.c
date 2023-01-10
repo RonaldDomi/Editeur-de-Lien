@@ -40,8 +40,6 @@ int main(int argc, char **argv)
 	/* Alloue de la mémoire pour une en-tête et la remplit
 		Alloue aussi de la mémoire pour une en-tête de section */
 	Elf32_Ehdr *Header = malloc(sizeof(Elf32_Ehdr));
-	Elf32_Rel *rel = malloc(sizeof(Elf32_Rel));
-	Elf32_Rela *rela = malloc(sizeof(Elf32_Rela));
 
 	getHeader(file, Header);
 
@@ -57,7 +55,7 @@ int main(int argc, char **argv)
 	printf("\n");
 	printf("Adresses are given un hexadecimal format.\n");
 	printf("All values are given in bytes in decimal format.\n\n");
-	GetRelocationPart(file, Header, AllSectionsTables, rel, rela);
+    printRelocation(file, AllSectionsTables, GetRelocationPart(file,  Header, AllSectionsTables));
 	printf("\n");
 	return 0;
 }
