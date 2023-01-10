@@ -8,19 +8,11 @@
 
 #include "CustomElf.h"
 
-void offset_rel(FILE *file, Elf32_Rel *rel, char verbose);
 
+void decodeRelType(Elf32_Word type);
+void GetRelocation_rel(Elf32_SecContent SectionContent, Elf32_Rel *Rel, int adrligne);
+void GetRelocation_rela(Elf32_SecContent SectionContent, Elf32_Rela *Rela, int adrligne);
+int GetRelocationPart(Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables);
+void printRelocation(Elf32_AllSec * SectionsTables, int isReloc, Elf32_Ehdr * Header);
 
-void info_rel(FILE *file, Elf32_Rel *rel, char verbose);
-
-
-void get_relocation_rel(FILE *file, Elf32_Rel *rel, char verbose);
-
-
-void offset_rela(FILE *file, Elf32_Rela *rel, char verbose);
-
-
-void offset_rela(FILE *file, Elf32_Rela *rel, char verbose);
-
-void GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables, Elf32_Rel *rel, Elf32_Rela *rela);
 #endif /* readRelocation_h */
