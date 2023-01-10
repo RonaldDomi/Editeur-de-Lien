@@ -78,7 +78,7 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
     #On retire les espaces avant/après le texte et les Tabs
 
     
-    key=`echo $line | cut -d: -f1 |  awk '{gsub(/^[ \t]+|[ \t]+$/, "", $1) ; print $1}'`
+    key=`echo $line | cut -d: -f1 | awk '{gsub(/^[ \t]+|[ \t]+$/, "", $1) ; print $1}'`
     key="${key}:"
     value=`echo $line | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2) ; print $2}'`
 
@@ -125,14 +125,13 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
 				if [ "$longName" != "[...]" ]
 				then
 					printf "SymbolTable : "
-					#TODO: Changer en FailTest une fois les noms fixés pour le début des programmes
 					WarningTest "$otherValue" "$value" "$$" #Fail
                 fi
             fi
         ;;
 
     esac
-    #Pas d'autres cases, les lignes qui ne commencent par par " n: " ne sont pas à traiter
+    #Pas d'autres cases, les lignes qui ne commencent pas par " n: " ne sont pas à traiter
 done
 
 
