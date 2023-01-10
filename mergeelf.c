@@ -405,18 +405,6 @@ int main(int argc, char **argv){
 			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size = ELF2->AllSections->TabAllSec[i]->sh_size;
 			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_type = ELF2->AllSections->TabAllSec[i]->sh_type;
 			/*--------------------------------------*/
-<<<<<<< HEAD
-        }
-		// 	ELF3->AllSections->nbSections++;
-		// 	offset += ELF2->AllSections->TabAllSec[i]->sh_size;
-		// 	copied++;
-		// 	sectionNumber++;
-		// }else{
-		// 	printf("Section déjà copiée, pass\n");
-		// 	/* Déjà copié, pass*/
-		// }
-		// printf("Section suivante...\n\n");
-=======
 
 			ELF3->AllSections->nbSections++;
 			offset += ELF2->AllSections->TabAllSec[i]->sh_size;
@@ -428,13 +416,12 @@ int main(int argc, char **argv){
 		}
 		printf("section taille = %d\n", ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-2]->sh_size);
 		printf("Section suivante...\n\n");
->>>>>>> main
 	}
-    ELF3->Header->e_shoff = offset + ELF2->AllSections->TabAllSec[ELF3->AllSections->nbSections-2]->sh_size;
+    ELF3->Header->e_shoff = offset + ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-2]->sh_size;
     ELF3->Header->e_shoff = arround((int*)&ELF3->Header->e_shoff);
     ELF3->Header->e_shnum = ELF3->AllSections->nbSections;
 
-    printHeader(ELF3->Header);
+    // printHeader(ELF3->Header);
 
 	fclose(file1);
 	fclose(file2);
