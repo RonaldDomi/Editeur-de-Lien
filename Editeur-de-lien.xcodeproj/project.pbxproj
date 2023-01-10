@@ -14,9 +14,7 @@
 		58537C7B29570C6B00C53137 /* getTableSymbSection.c in Sources */ = {isa = PBXBuildFile; fileRef = 58537C4329570C6B00C53137 /* getTableSymbSection.c */; };
 		58537C7C29570C6B00C53137 /* CheckElf.c in Sources */ = {isa = PBXBuildFile; fileRef = 58537C4429570C6B00C53137 /* CheckElf.c */; };
 		58537C7E29570C6B00C53137 /* readSectionTable.c in Sources */ = {isa = PBXBuildFile; fileRef = 58537C4729570C6B00C53137 /* readSectionTable.c */; };
-		58537C8029570C6B00C53137 /* simple.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 58537C4C29570C6B00C53137 /* simple.o */; };
 		58537C8129570C6B00C53137 /* ARM.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 58537C4D29570C6B00C53137 /* ARM.o */; };
-		58537C8229570C6B00C53137 /* notELF.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 58537C5129570C6B00C53137 /* notELF.o */; };
 		58537C8329570C6B00C53137 /* simple.c in Sources */ = {isa = PBXBuildFile; fileRef = 58537C5229570C6B00C53137 /* simple.c */; };
 		58537C8429570C6B00C53137 /* i386.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 58537C5329570C6B00C53137 /* i386.o */; };
 		585E192F2959D63C00E53ED9 /* readContent.c in Sources */ = {isa = PBXBuildFile; fileRef = 585E192E2959D63C00E53ED9 /* readContent.c */; };
@@ -58,12 +56,10 @@
 		58537C4629570C6B00C53137 /* readHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = readHeader.h; sourceTree = "<group>"; };
 		58537C4729570C6B00C53137 /* readSectionTable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = readSectionTable.c; sourceTree = "<group>"; };
 		58537C4929570C6B00C53137 /* freadoctet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = freadoctet.h; sourceTree = "<group>"; };
-		58537C4C29570C6B00C53137 /* simple.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = simple.o; sourceTree = "<group>"; };
 		58537C4D29570C6B00C53137 /* ARM.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = ARM.o; sourceTree = "<group>"; };
 		58537C4E29570C6B00C53137 /* firmware.elf */ = {isa = PBXFileReference; lastKnownFileType = file; path = firmware.elf; sourceTree = "<group>"; };
 		58537C4F29570C6B00C53137 /* 1bit.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1bit.dat; sourceTree = "<group>"; };
 		58537C5029570C6B00C53137 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		58537C5129570C6B00C53137 /* notELF.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = notELF.o; sourceTree = "<group>"; };
 		58537C5229570C6B00C53137 /* simple.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = simple.c; sourceTree = "<group>"; };
 		58537C5329570C6B00C53137 /* i386.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = i386.o; sourceTree = "<group>"; };
 		58537C6E29570C6B00C53137 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -90,8 +86,6 @@
 			files = (
 				58537C8129570C6B00C53137 /* ARM.o in Frameworks */,
 				58537C8429570C6B00C53137 /* i386.o in Frameworks */,
-				58537C8029570C6B00C53137 /* simple.o in Frameworks */,
-				58537C8229570C6B00C53137 /* notELF.o in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,14 +155,12 @@
 		58537C4B29570C6B00C53137 /* tests */ = {
 			isa = PBXGroup;
 			children = (
-				58537C4C29570C6B00C53137 /* simple.o */,
-				58537C4D29570C6B00C53137 /* ARM.o */,
+				58537C5229570C6B00C53137 /* simple.c */,
+				58537C5029570C6B00C53137 /* README.md */,
 				58537C4E29570C6B00C53137 /* firmware.elf */,
 				58537C4F29570C6B00C53137 /* 1bit.dat */,
-				58537C5029570C6B00C53137 /* README.md */,
-				58537C5129570C6B00C53137 /* notELF.o */,
-				58537C5229570C6B00C53137 /* simple.c */,
 				58537C5329570C6B00C53137 /* i386.o */,
+				58537C4D29570C6B00C53137 /* ARM.o */,
 			);
 			path = tests;
 			sourceTree = "<group>";

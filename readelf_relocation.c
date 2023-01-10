@@ -9,6 +9,7 @@
 #include "modules/readHeader.h"
 #include "modules/readSectionTable.h"
 #include "modules/readRelocation.h"
+#include "modules/readContent.h"
 
 int main(int argc, char **argv)
 {
@@ -46,6 +47,7 @@ int main(int argc, char **argv)
 
     Elf32_AllSec * AllSectionsTables = initSectionTable(Header->e_shnum);
     getAllSectionsTables(file, Header, AllSectionsTables);
+	getAllSectionsContent(file, AllSectionsTables);
 
 	/* On va directement à l'adresse ou est contenue l'en-tête de la section et on la remplit
 		On affiche aussi un début de tableau pour l'affichage de l'étape 2 */

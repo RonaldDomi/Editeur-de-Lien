@@ -9,6 +9,7 @@
 #include "readSectionTable.h"
 #include "freadoctet.h"
 #include "readStringTable.h"
+#include "lecture.h"
 
 int unused; // Var non utilisée pour les warnings lors du make
 
@@ -78,6 +79,7 @@ void decodeSymbOther(Elf32_Sym * symtab){
 	if (symtab->st_other==0){
 		printf("DEFAULT\t");
 	}
+	else printf("%d\t", symtab->st_other);
 }
 
 
@@ -116,7 +118,7 @@ void printAllTableSymb(Elf32_Sym * AllSymbolTables, Elf32_AllSec * AllSectionsTa
 }
 
 
-void GetTableSymbPart(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionContent, Elf32_Sym *symtab, int adrligne){
+void GetTableSymbPart(Elf32_SecContent SectionContent, Elf32_Sym *symtab, int adrligne){
 
 /* TODO: 3 méthodes, en choisir une et supprimer les deux autres, fixer de préférence sscanf */
 		// dump content
@@ -131,21 +133,27 @@ void GetTableSymbPart(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionCo
 		// sscanf(SectionContent+adrligne+12, "%c", &symtab->st_info);
 		// sscanf(SectionContent+adrligne+13, "%c", &symtab->st_other);
 		// sscanf(SectionContent+adrligne+14, "%hd", &symtab->st_shndx);
+		lecture(SectionContent+adrligne+0,  &symtab->st_name, 4);
+		lecture(SectionContent+adrligne+4, &symtab->st_value, 4);
+		lecture(SectionContent+adrligne+8, &symtab->st_size, 4);
+		lecture(SectionContent+adrligne+12, &symtab->st_info, 1);
+		lecture(SectionContent+adrligne+13, &symtab->st_other, 1);
+		lecture(SectionContent+adrligne+14, &symtab->st_shndx, 2);
 
 		// read from file
-	unused = fread(&symtab->st_name, 4, 1, file);
-	unused = fread(&symtab->st_value, 4, 1, file);
-	unused = fread(&symtab->st_size, 4, 1, file);
-	unused = fread(&symtab->st_info, 1, 1, file);
-	unused = fread(&symtab->st_other, 1, 1, file);
-	unused = fread(&symtab->st_shndx, 2, 1, file);
+	// unused = fread(&symtab->st_name, 4, 1, file);
+	// unused = fread(&symtab->st_value, 4, 1, file);
+	// unused = fread(&symtab->st_size, 4, 1, file);
+	// unused = fread(&symtab->st_info, 1, 1, file);
+	// unused = fread(&symtab->st_other, 1, 1, file);
+	// unused = fread(&symtab->st_shndx, 2, 1, file);
 }
 
 void getAllTableSymb(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionContent, Elf32_Sym *AllSymbolTables, int nbTable){
 	for (int i = 0; i < nbTable ; i++)
-		{
-		GetTableSymbPart(file, Header, SectionContent, AllSymbolTables+i, i*16);
-		}
+	{
+		GetTableSymbPart(SectionContent, AllSymbolTables+i, i*16);
+	}
 }
 	// ici ecrire les fonction de recuperation du tableSymbole entry
 

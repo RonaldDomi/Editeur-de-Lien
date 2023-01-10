@@ -73,7 +73,7 @@ void printAllTableSymb(Elf32_Sym * AllSymbolTables, Elf32_AllSec * AllSectionsTa
  Valeur de retour: Ne retourne rien
  Effets de bords : Ecrit toutes les informations décodées sur la sortie standard
  */
-void GetTableSymbPart(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionContent, Elf32_Sym *symtab, int adrligne);
+void GetTableSymbPart(Elf32_SecContent SectionContent, Elf32_Sym *symtab, int adrligne);
 
 
 /* Recupère toutes les informations les informations et remplit toutes les tables de symboles
