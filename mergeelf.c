@@ -150,6 +150,7 @@ int main(int argc, char **argv){
 	int offset = 52;
 	int merged = 0;
 	int copied = 0;
+	int taille = 0;
 	ELF3->AllSections->nbSections = 0;
 
 	int nbSections=ELF1->Header->e_shnum + ELF2->Header->e_shnum;
@@ -176,10 +177,12 @@ int main(int argc, char **argv){
 					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_link = ELF1->AllSections->TabAllSec[i]->sh_link;
 					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_name = ELF1->AllSections->TabAllSec[i]->sh_name;
 					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_offset = offset;
-					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_size = ELF1->AllSections->TabAllSec[i]->sh_size;
 					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_type = ELF1->AllSections->TabAllSec[i]->sh_type;					
 					/*------------------------------*/
-					mergeSymbol(file3,ELF1->Header, ELF2->Header, ELF1->AllSections, ELF2->AllSections, ELF1->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSecContent[k], ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections], ELF1->AllSections->TabAllSec[i]->sh_size/16, ELF2->AllSections->TabAllSec[k]->sh_size/16, &offset);
+					taille = mergeSymbol(file3,ELF1->Header, ELF2->Header, ELF1->AllSections, ELF2->AllSections, ELF1->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSecContent[k], ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections], ELF1->AllSections->TabAllSec[i]->sh_size/16, ELF2->AllSections->TabAllSec[k]->sh_size/16, &offset);
+
+					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_size = taille;
+
 					ELF3->AllSections->nbSections++;
 					printf("\n------------------------------\n");
 					alreadyCopied[k]=1;
@@ -188,6 +191,7 @@ int main(int argc, char **argv){
 					printf("Merge, une section en moins\n");
 					printf("Merge section %d avec section %d\n", i, k);
 					printf("On a maintenant au pire %d sections\n", nbSections);
+					printf("section taille = %d\n", ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size);
 					printf("Section suivante...\n\n");
 				}
 			}
@@ -244,7 +248,7 @@ int main(int argc, char **argv){
 					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_link = ELF2->AllSections->TabAllSec[j]->sh_link;
 					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_name = ELF2->AllSections->TabAllSec[j]->sh_name;
 					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_offset = offset;
-					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size = ELF2->AllSections->TabAllSec[j]->sh_size;
+					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size = ELF1->AllSections->TabAllSec[i]->sh_size + ELF2->AllSections->TabAllSec[j]->sh_size;
 					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_type = ELF2->AllSections->TabAllSec[j]->sh_type;
 					/*--------------------------------------------*/
 
@@ -258,6 +262,7 @@ int main(int argc, char **argv){
 			}
 
 			printf("On a maintenant au pire %d sections\n", nbSections);
+			printf("section taille = %d\n", ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size);
 			printf("Section suivante...\n\n");
 		}
 	}
@@ -297,6 +302,7 @@ int main(int argc, char **argv){
 			printf("Section déjà copiée, pass\n");
 			/* Déjà copié, pass*/
 		}
+		printf("section taille = %d\n", ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-2]->sh_size);
 		printf("Section suivante...\n\n");
 	}
 
