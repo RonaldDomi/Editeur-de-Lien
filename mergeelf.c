@@ -16,13 +16,14 @@
 /*fonction pas encore testee*/
 /*fonction qui s'utilise en l'appelant l'orsque on a une section SYMTAB
 cette fonction fait le merge de la SYMTAB donc plus besoin de concatener les section*/
-void mergeSymbol(FILE* file, Elf32_Ehdr *Header1, Elf32_Ehdr *Header2, Elf32_AllSec * AllSectionsTables1, Elf32_AllSec * AllSectionsTables2, Elf32_SecContent SectionContent1, Elf32_SecContent SectionContent2, int nbTable1, int nbTable2, int* offset){
+void mergeSymbol(FILE* file, Elf32_Ehdr *Header1, Elf32_Ehdr *Header2, Elf32_AllSec * AllSectionsTables1, Elf32_AllSec * AllSectionsTables2, Elf32_SecContent SectionContent1, Elf32_SecContent SectionContent2, Elf32_SecContent SectionContent3, int nbTable1, int nbTable2, int* offset){
 	int *alreadyCheck = malloc(4 * nbTable2);
 	for (int l = 0; l < nbTable2; l++) alreadyCheck[l] = 0;
 	char* nom1 = malloc(50);
 	char* nom2 = malloc(50);
 	Elf32_Sym* SymbolTables1 = malloc(sizeof(Elf32_Sym));
 	Elf32_Sym* SymbolTables2 = malloc(sizeof(Elf32_Sym));
+	int cur = 0;
 	for (int i = 0; i < nbTable1 ; i++)
 	{
 		GetTableSymbPart(SectionContent1, SymbolTables1, i*16);
@@ -31,7 +32,9 @@ void mergeSymbol(FILE* file, Elf32_Ehdr *Header1, Elf32_Ehdr *Header2, Elf32_All
 		if (((SymbolTables1->st_info) >> 4) != 1)
 		{
 			fwrite(SectionContent1 + i*16, 16, 1, file);
-			*offset += 16; 
+			memcpy(SectionContent3 + cur, SectionContent1 + i*16, 16);
+			*offset += 16;
+			cur+=16;
 		}
 		/*cas symbol global*/
 		else
@@ -59,6 +62,8 @@ void mergeSymbol(FILE* file, Elf32_Ehdr *Header1, Elf32_Ehdr *Header2, Elf32_All
 							{
 								printf("\non merge symbole1 : %d avec symbole2 : %d\n", i, j);
 								fwrite(SectionContent1 + i*16, 16, 1, file);
+								memcpy(SectionContent3 + cur, SectionContent1 + i*16, 16);
+								cur += 16;
 								*offset += 16;
 							}
 						}
@@ -66,6 +71,8 @@ void mergeSymbol(FILE* file, Elf32_Ehdr *Header1, Elf32_Ehdr *Header2, Elf32_All
 						{
 							printf("\non merge symbole2 : %d avec symbole1 : %d\n", j, i);
 							fwrite(SectionContent2 + j*16, 16, 1, file);
+							memcpy(SectionContent3 + cur, SectionContent2 + j*16, 16);
+							cur += 16;
 							*offset += 16;
 						}
 					}
@@ -81,6 +88,8 @@ void mergeSymbol(FILE* file, Elf32_Ehdr *Header1, Elf32_Ehdr *Header2, Elf32_All
 		if (!alreadyCheck[i] && (((SymbolTables2->st_info) >> 4) == 1 || SymbolTables2 ->st_name != 0))
 		{
 			fwrite(SectionContent2 + i*16, 16, 1, file);
+			memcpy(SectionContent3 + cur, SectionContent2 + i*16, 16);
+			cur += 16;
 			*offset += 16;
 		}
 		
@@ -115,6 +124,10 @@ int main(int argc, char **argv){
 
 	Elf32_Info * ELF1 = getAllInfo(file1);
 	Elf32_Info * ELF2 = getAllInfo(file2);
+	Elf32_Info * ELF3 = malloc(sizeof(Elf32_Info));
+	ELF3->Header = malloc(sizeof(Elf32_Ehdr));
+	ELF3->AllSections = malloc(sizeof(Elf32_AllSec));
+	ELF3->AllSymbol = malloc(sizeof(Elf32_Sym) * (ELF1->AllSymbol->st_size/16 + ELF2->AllSymbol->st_size/16));
 
 	/* On initialise un tableau de flags pour chaque section de SectionTable2, si 1 alors la section a déjà été fusionnée avec
 	 une section de la partie 1, on doit donc l'ignorer */
@@ -126,6 +139,7 @@ int main(int argc, char **argv){
 	int offset = 0;
 	int merged = 0;
 	int copied = 0;
+	ELF3->AllSections->nbSections = 0;
 
 	int nbSections=ELF1->Header->e_shnum + ELF2->Header->e_shnum;
 	printf("On a au pire %d sections\n", nbSections);
@@ -135,12 +149,14 @@ int main(int argc, char **argv){
 	for (int i=0; i < ELF1->Header->e_shnum ; i++){
 		printf("===Section %d===\n", i);
 		printf("Pointeur à l'offset %d\n", offset);
+		ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections] = malloc(10000);
 		if(ELF1->AllSections->TabAllSec[i]->sh_type == SHT_SYMTAB)
 		{
 			for (int k=0; k < ELF2->Header->e_shnum; k++){
 				if(ELF2->AllSections->TabAllSec[k]->sh_type == SHT_SYMTAB){
 					printf("\n--------SYMBOL TABLE----------\n");
-					mergeSymbol(file3,ELF1->Header, ELF2->Header, ELF1->AllSections, ELF2->AllSections, ELF1->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSecContent[k], ELF1->AllSections->TabAllSec[i]->sh_size/16, ELF2->AllSections->TabAllSec[k]->sh_size/16, &offset);
+					mergeSymbol(file3,ELF1->Header, ELF2->Header, ELF1->AllSections, ELF2->AllSections, ELF1->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSecContent[k], ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections], ELF1->AllSections->TabAllSec[i]->sh_size/16, ELF2->AllSections->TabAllSec[k]->sh_size/16, &offset);
+					ELF3->AllSections->nbSections++;
 					printf("\n------------------------------\n");
 					alreadyCopied[k]=1;
 					nbSections--;
@@ -160,8 +176,11 @@ int main(int argc, char **argv){
 			// char * nom1 = getString(file1, ELF1->AllSections->TabAllSec[i]->sh_name, ELF1->Header, ELF1->AllSections);
 
 			fwrite(ELF1->AllSections->TabAllSecContent[i], ELF1->AllSections->TabAllSec[i]->sh_size, 1, file3);
+			// on stock dans la structure
+			memcpy(ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections], ELF1->AllSections->TabAllSecContent[i], ELF1->AllSections->TabAllSec[i]->sh_size);
 			offset += ELF1->AllSections->TabAllSec[i]->sh_size;
 			copied++;
+			ELF3->AllSections->nbSections++;
 
 			for (int j=0; j < ELF2->Header->e_shnum; j++){
 				char nom2[50];
@@ -171,11 +190,14 @@ int main(int argc, char **argv){
 				// printf("Nom 1 : <%s> & Nom 2 : <%s>\n", nom1, nom2);
 				
 				/* Si les deux sections ont le même nom */
-				if (! strcmp(nom1, nom2)){
+				if (!strcmp(nom1, nom2)){
 					/* On choisit de concaténer la section 2 à la section 1 */
 					printf("Merge, une section en moins\n");
 					printf("Merge section %d avec section %d\n", i, j);
 					fwrite(ELF2->AllSections->TabAllSecContent[j], ELF2->AllSections->TabAllSec[j]->sh_size, 1, file3);
+					// on decale le pointeur de ce qu' on a copier pour copier la suite
+					// autrement dit on concatene
+					memcpy(ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections - 1] + ELF1->AllSections->TabAllSec[i]->sh_size, ELF2->AllSections->TabAllSecContent[j], ELF2->AllSections->TabAllSec[j]->sh_size);
 
 					alreadyCopied[j]=1;
 
@@ -202,7 +224,10 @@ int main(int argc, char **argv){
 		if (! alreadyCopied[i]){
 			fwrite(ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i]->sh_size, 1, file3);
 			printf("Ce sera la section %d\n", sectionNumber);
+			// on stock dans la structure
+			memcpy(ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections - 1], ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i]->sh_size);
 
+			ELF3->AllSections->nbSections++;
 			offset += ELF2->AllSections->TabAllSec[i]->sh_size;
 			copied++;
 			sectionNumber++;

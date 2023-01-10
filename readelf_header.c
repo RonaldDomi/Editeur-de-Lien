@@ -3,6 +3,7 @@
 #include "modules/CustomElf.h"
 #include "modules/CheckElf.h"
 #include "modules/readHeader.h"
+#include "modules/freadoctet.h"
 
 int main(int argc, char **argv)
 {
