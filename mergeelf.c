@@ -12,7 +12,106 @@
 #include "modules/readStringTable.h"
 #include "mergeelf.h"
 #include "modules/getTableSymbSection.h"
+#include "modules/readHeader.h"
 
+
+void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr * ELF3_Header){
+    
+    if(ELF1_Header->e_type == ELF2_Header->e_type){
+        ELF3_Header->e_type = ELF1_Header->e_type;
+    }
+    else{
+        printf("ERREUR : Les Fichiers ne sont pas de même type !");
+        exit(1);
+    }
+
+    if(ELF1_Header->e_machine == ELF2_Header->e_machine){
+        ELF3_Header->e_machine = ELF1_Header->e_machine;
+    }
+    else{
+        printf("ERREUR : Les Fichiers ne sont pas de même architecture !");
+        exit(1);
+    }
+
+    if(ELF1_Header->e_version == ELF2_Header->e_version){
+        ELF3_Header->e_version = ELF1_Header->e_version;
+    }
+    else{
+        printf("ERREUR : Les Fichiers ne sont pas de même version !");
+        exit(1);
+    }
+
+    if(ELF1_Header->e_flags == ELF2_Header->e_flags){
+        ELF3_Header->e_flags = ELF1_Header->e_flags;
+    }
+    else{
+        printf("ERREUR : Les Fichiers n'ont pas les mêmes flags !");
+        exit(1);
+    }
+
+    if(ELF1_Header->e_ehsize == ELF2_Header->e_ehsize){
+        ELF3_Header->e_ehsize = ELF1_Header->e_ehsize;
+    }
+    else{
+        printf("ERREUR : Les Fichiers n'ont pas la même taille de header !");
+        exit(1);
+    }
+
+    if(ELF1_Header->e_phoff == ELF2_Header->e_phoff){
+        ELF3_Header->e_phoff = ELF1_Header->e_phoff;
+    }
+    else{
+        printf("ERREUR : Header different (e_phoff)!");
+        exit(1);
+    }
+
+    if(ELF1_Header->e_phentsize == ELF2_Header->e_phentsize){
+        ELF3_Header->e_phentsize = ELF1_Header->e_phentsize;
+    }
+    else{
+        printf("ERREUR : Header different !");
+        exit(1);
+    }
+
+    if(ELF1_Header->e_phnum == ELF2_Header->e_phnum){
+        ELF3_Header->e_phnum = ELF1_Header->e_phnum;
+    }
+    else{
+        printf("ERREUR : Header different !");
+        exit(1);
+    }
+
+    if(ELF1_Header->e_shentsize == ELF2_Header->e_shentsize){
+        ELF3_Header->e_shentsize = ELF1_Header->e_shentsize;
+    }
+    else{
+        printf("ERREUR : Header different !");
+        exit(1);
+    }
+
+    //     typedef struct
+    // {
+    //   unsigned char e_ident[EI_NIDENT]; /* Magic number and other info */
+    //  = Elf32_Half e_type;                /* Object file type */
+    //  = Elf32_Half e_machine;             /* Architecture */
+    //  = Elf32_Word e_version;             /* Object file version */
+    //  1 Elf32_Addr e_entry;               /* Entry point virtual address */
+    //  = Elf32_Off e_phoff;                /* Program header table file offset */
+    // x  Elf32_Off e_shoff;                /* Section header table file offset */
+    //  = Elf32_Word e_flags;               /* Processor-specific flags */
+    //  = Elf32_Half e_ehsize;              /* ELF header size in bytes */
+    //  = Elf32_Half e_phentsize;           /* Program header table entry size */
+    //  = Elf32_Half e_phnum;               /* Program header table entry count */
+    //  = Elf32_Half e_shentsize;           /* Section header table entry size */
+    // x  Elf32_Half e_shnum;               /* Section header table entry count */
+    // ~1 Elf32_Half e_shstrndx;            /* Section header string table index */
+    // } Elf32_Ehdr;
+
+    
+    ELF3_Header->e_shstrndx = ELF1_Header->e_shstrndx;
+    ELF3_Header->e_entry = ELF1_Header->e_entry;
+
+}
 
 int arround(int* offset){
 	while (*offset % 4 != 0)
@@ -34,6 +133,7 @@ int mergeSymbol(FILE* file, Elf32_Ehdr *Header1, Elf32_Ehdr *Header2, Elf32_AllS
 	Elf32_Sym* SymbolTables1 = malloc(sizeof(Elf32_Sym));
 	Elf32_Sym* SymbolTables2 = malloc(sizeof(Elf32_Sym));
 	int cur = 0;
+
 	for (int i = 0; i < nbTable1 ; i++)
 	{
 		GetTableSymbPart(SectionContent1, SymbolTables1, i*16);
@@ -137,6 +237,8 @@ int main(int argc, char **argv){
 	Elf32_Info * ELF2 = getAllInfo(file2);
 	Elf32_Info * ELF3 = malloc(sizeof(Elf32_Info));
 	ELF3->Header = malloc(sizeof(Elf32_Ehdr));
+    mergeHeader(ELF1->Header, ELF2->Header, ELF3->Header);
+
 	ELF3->AllSections = malloc(sizeof(Elf32_AllSec));
 	ELF3->AllSymbol = malloc(sizeof(Elf32_Sym) * (ELF1->AllSymbol->st_size/16 + ELF2->AllSymbol->st_size/16));
 
@@ -271,7 +373,17 @@ int main(int argc, char **argv){
 
 	int sectionNumber=ELF1->Header->e_shnum;
 
-	for (int i=0; i < ELF2->Header->e_shnum; i++){
+	// for (int i=0; i < ELF2->Header->e_shnum; i++){
+	// 	printf("===Section %d===\n", sectionNumber);
+	// 	printf("Pointeur à l'offset %d\n",offset);
+
+		if (! alreadyCopied[0]){
+		// 	fwrite(ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i]->sh_size, 1, file3);
+		// 	printf("Ce sera la section %d\n", sectionNumber);
+		// 	// on stock dans la structure
+		// 	memcpy(ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections - 1], ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i]->sh_size);
+        }
+    for (int i=0; i < ELF2->Header->e_shnum; i++){
 		printf("===Section %d===\n", sectionNumber);
 		printf("Pointeur à l'offset %d\n",arround(&offset));
 		ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections - 1] = malloc(10000);
@@ -305,6 +417,11 @@ int main(int argc, char **argv){
 		printf("section taille = %d\n", ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-2]->sh_size);
 		printf("Section suivante...\n\n");
 	}
+    ELF3->Header->e_shoff = offset + ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-2]->sh_size;
+    ELF3->Header->e_shoff = arround((int*)&ELF3->Header->e_shoff);
+    ELF3->Header->e_shnum = ELF3->AllSections->nbSections;
+
+    // printHeader(ELF3->Header);
 
 	fclose(file1);
 	fclose(file2);
