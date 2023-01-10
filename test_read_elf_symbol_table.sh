@@ -78,7 +78,7 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
     #On retire les espaces avant/après le texte et les Tabs
 
     
-    key=`echo $line | cut -d: -f1 |  awk '{gsub(/^[ \t]+|[ \t]+$/, "", $1) ; print $1}'`
+    key=`echo $line | cut -d: -f1 | awk '{gsub(/^[ \t]+|[ \t]+$/, "", $1) ; print $1}'`
     key="${key}:"
     value=`echo $line | awk -F: '{gsub(/^[ \t]+|[ \t]+$/, "", $2) ; print $2}'`
 

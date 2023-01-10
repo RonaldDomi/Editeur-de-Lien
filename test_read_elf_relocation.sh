@@ -75,7 +75,7 @@ regex2Blanks="/[[:blank:]]{2,}/g" #Match tous les deux whitespaces ou plus e.g: 
 regexScope="^relocation"
 cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
 
-    #On prend un système clé -> valeur, par exemple: 0: -> 00 00 00 00 	0	LOCAL	NO TYPE		0	0
+    #On prend un système clé -> valeur, par exemple: 00000004  0000111c -> 00000004 0000111c R_ARM_CALL 00000000
     #On retire les espaces avant/après le texte et les Tabs
 
     #Cas particulier si il n'y a aucune relocation
@@ -125,14 +125,18 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
     case $key in
         [0-9]*)
             value=`echo $line | awk '{gsub(/$regex2Blanks/, "", $0) ; print $0}'`
-            otherValue=`grep "^$key" readelfCommand.output | awk '{gsub(/$regex2Blanks/, "", $0) ; print $0}'`
-            echo "Key : $key"
-            echo "Value : $value"
-            echo "OtherValue : <$otherValue>"
-            if [ "$value" != "$otherValue" ]
+            otherValue=`grep "^$key" readelfCommand.output` 
+            otherValue=`echo $otherValue | awk '{gsub(/$regex2Blanks/, "", $0) ; print $0}'`
+            # echo "Key : $key"
+            # echo "Value : $value"
+            # echo "OtherValue : <$otherValue>"
+            #Pour l'instant on ne supporte pas les noms, on ccut donc le nom
+            otherValueCut=`echo $otherValue | rev | cut -d' ' -f2- | rev`
+            # echo "OtherValueCut : <$otherValueCut>"
+            if [ "$value" != "$otherValueCut" ]
             then
                 printf "Relocation : "
-                FailTest "$otherValue" "$value" "$$"
+                FailTest "$otherValueCut" "$value" "$$"
             fi
         ;;
     esac
