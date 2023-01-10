@@ -7,17 +7,16 @@
 #include <stdlib.h>
 #include "util.h"
 
-int unused; // Var non utilisée pour les warnings lors du make
 
 void freadSwap(void * res, size_t size, size_t nbBlocs, FILE * file){
     int * buffer = malloc(size);
-    unused = fread(buffer, size, nbBlocs, file);
+    (void)fread(buffer, size, nbBlocs, file);
     // printf("chiffre : %x\n", *buffer);
 
     if (size == 1){
-        res = buffer;
+        *(int *)res = *buffer;
     }
-    if (size == 2){
+    else if (size == 2){
         *buffer = reverse_2(*buffer);
         *(int *)res = *buffer;
         // printf("chiffre2 : %x\n", *(int *)res);

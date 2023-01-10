@@ -133,12 +133,13 @@ void GetTableSymbPart(Elf32_SecContent SectionContent, Elf32_Sym *symtab, int ad
 		// sscanf(SectionContent+adrligne+12, "%c", &symtab->st_info);
 		// sscanf(SectionContent+adrligne+13, "%c", &symtab->st_other);
 		// sscanf(SectionContent+adrligne+14, "%hd", &symtab->st_shndx);
-		lecture(SectionContent+adrligne+0,  &symtab->st_name, 4);
-		lecture(SectionContent+adrligne+4, &symtab->st_value, 4);
-		lecture(SectionContent+adrligne+8, &symtab->st_size, 4);
-		lecture(SectionContent+adrligne+12, &symtab->st_info, 1);
-		lecture(SectionContent+adrligne+13, &symtab->st_other, 1);
-		lecture(SectionContent+adrligne+14, &symtab->st_shndx, 2);
+        
+		lectureRev(SectionContent+adrligne+0,  &symtab->st_name, 4);
+		lectureRev(SectionContent+adrligne+4, &symtab->st_value, 4);
+		lectureRev(SectionContent+adrligne+8, &symtab->st_size, 4);
+		lectureRev(SectionContent+adrligne+12, &symtab->st_info, 1);
+		lectureRev(SectionContent+adrligne+13, &symtab->st_other, 1);
+		lectureRev(SectionContent+adrligne+14, &symtab->st_shndx, 2);
 
 		// read from file
 	// unused = fread(&symtab->st_name, 4, 1, file);

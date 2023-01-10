@@ -5,4 +5,6 @@
 
 void lecture(Elf32_SecContent SectionContent, void* nbr, int length);
 
+void lectureRev(Elf32_SecContent SectionContent, void* res, int length);
+
 #endif

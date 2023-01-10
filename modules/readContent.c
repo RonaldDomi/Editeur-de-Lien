@@ -10,8 +10,7 @@
 #include "readSectionTable.h"
 #include "readContent.h"
 
-
-int unused; // Var non utilisée pour les warnings lors du make
+int unused;
 
 void getAllSectionsContent(FILE* file, Elf32_AllSec * SectionsTables){
     Elf32_Shdr * currentSectionTable;
@@ -22,6 +21,7 @@ void getAllSectionsContent(FILE* file, Elf32_AllSec * SectionsTables){
         currentSectionContent = malloc(currentSectionTable->sh_size);
         fseek(file, currentSectionTable->sh_offset, SEEK_SET);
         unused = fread(currentSectionContent, currentSectionTable->sh_size, 1, file);
+        // unused = fread(currentSectionContent, currentSectionTable->sh_size, 1, file);
         SectionsTables->TabAllSecContent[i] = currentSectionContent;
     }
 }

@@ -126,6 +126,7 @@ int main(int argc, char *argv[])
 		/* Pour vérifier si on cherche par Nom/Numéro, on strol(argv[6])
 		 Si cela échoue, endPointer est le même pointeur que argv[6], donc argv[6] est un char on fait une recherche par nom
 		 Si cela réussit, endPointer est toujours NULL donc argv[6] est un nombre on fait une recherche par numéro */
+
 		char *endPointer = NULL;
 		int sectionSelected = strtol(argv[6], &endPointer, 10);
 		if (endPointer == argv[6])

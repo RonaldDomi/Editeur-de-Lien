@@ -281,16 +281,29 @@ void printNumber(int nbSections, int sectionNumber)
 
 void getSectionTable(FILE *file, Elf32_Shdr *SectionTable)
 {
-	unused = fread(&SectionTable->sh_name, 4, 1, file);
-	unused = fread(&SectionTable->sh_type, 4, 1, file);
-	unused = fread(&SectionTable->sh_flags, 4, 1, file);
-	unused = fread(&SectionTable->sh_addr, 4, 1, file);
-	unused = fread(&SectionTable->sh_offset, 4, 1, file);
-	unused = fread(&SectionTable->sh_size, 4, 1, file);
-	unused = fread(&SectionTable->sh_link, 4, 1, file);
-	unused = fread(&SectionTable->sh_info, 4, 1, file);
-	unused = fread(&SectionTable->sh_addralign, 4, 1, file);
-	unused = fread(&SectionTable->sh_entsize, 4, 1, file);
+	// unused = fread(&SectionTable->sh_name, 4, 1, file);
+	// unused = fread(&SectionTable->sh_type, 4, 1, file);
+	// unused = fread(&SectionTable->sh_flags, 4, 1, file);
+	// unused = fread(&SectionTable->sh_addr, 4, 1, file);
+	// unused = fread(&SectionTable->sh_offset, 4, 1, file);
+	// unused = fread(&SectionTable->sh_size, 4, 1, file);
+	// unused = fread(&SectionTable->sh_link, 4, 1, file);
+	// unused = fread(&SectionTable->sh_info, 4, 1, file);
+	// unused = fread(&SectionTable->sh_addralign, 4, 1, file);
+	// unused = fread(&SectionTable->sh_entsize, 4, 1, file);
+	// unused = fread(&SectionTable->sh_name, 4, 1, file);
+
+
+	freadSwap(&SectionTable->sh_name, 4, 1, file);
+	freadSwap(&SectionTable->sh_type, 4, 1, file);
+	freadSwap(&SectionTable->sh_flags, 4, 1, file);
+	freadSwap(&SectionTable->sh_addr, 4, 1, file);
+	freadSwap(&SectionTable->sh_offset, 4, 1, file);
+	freadSwap(&SectionTable->sh_size, 4, 1, file);
+	freadSwap(&SectionTable->sh_link, 4, 1, file);
+	freadSwap(&SectionTable->sh_info, 4, 1, file);
+	freadSwap(&SectionTable->sh_addralign, 4, 1, file);
+	freadSwap(&SectionTable->sh_entsize, 4, 1, file);
 }
 
 void printAllSectionsTables(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * Header){
@@ -304,10 +317,9 @@ void printAllSectionsTables(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * H
 
 void getAllSectionsTables(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec *Sections)
 {
-	for (int i = 0; i < Header->e_shnum; i++)
-		{
+	for (int i = 0; i < Header->e_shnum; i++){
 		getSectionTable(file, Sections->TabAllSec[i]);
-		}
+	}
 }
 
 int getSectionByName(Elf32_AllSec *Sections, Elf32_Ehdr *Header,char *sectionName)
