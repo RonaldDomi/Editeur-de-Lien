@@ -94,14 +94,18 @@ int GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTab
 }
 
 
-void printRelocation(FILE *file, Elf32_AllSec * SectionsTables, int isReloc){
+void printRelocation(Elf32_AllSec * SectionsTables, int isReloc, Elf32_Ehdr * Header){
 	if (isReloc==0){
 		printf("There are no relocations in this file.");
 		return;
 	}
 	for (int i = 0; i < SectionsTables->nbSections; i++){
 		if (SectionsTables->TabAllRel[i]!=NULL){
-			printf("Offset\t\tInfo\t\tType\t\tSymb\n");
+
+            printf("Relocation section '%s' at offset 0x", getStringSection(SectionsTables->TabAllSec[i]->sh_name, Header, SectionsTables));
+            printf("%x", SectionsTables->TabAllSec[i]->sh_offset);
+            printf(" contains %d entries:\n", SectionsTables->TabAllSec[i]->sh_size / 8);
+
 			printf("=========================================================\n");
 			for (int j = 0; j < SectionsTables->TabAllSec[i]->sh_size / 8; j++){
 				dumpOctet(&SectionsTables->TabAllRel[i][j]->r_offset, 4);
@@ -114,6 +118,11 @@ void printRelocation(FILE *file, Elf32_AllSec * SectionsTables, int isReloc){
 			}
 			printf("\n");
 		}else if (SectionsTables->TabAllRela[i]!=NULL){
+
+            printf("Relocation section '%s' at offset 0x", getStringSection(SectionsTables->TabAllSec[i]->sh_name, Header, SectionsTables));
+            printf("%x", SectionsTables->TabAllSec[i]->sh_offset);
+            printf(" contains %d entries:\n", SectionsTables->TabAllSec[i]->sh_size / 12);
+
 			printf("Offset\t\tInfo\t\tType\tSymb\n");
 			printf("=================================================\n");
 			for (int j = 0; j < SectionsTables->TabAllSec[i]->sh_size / 12; j++){
