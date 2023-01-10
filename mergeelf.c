@@ -13,15 +13,18 @@
 #include "mergeelf.h"
 #include "modules/getTableSymbSection.h"
 #include "modules/readHeader.h"
+#include "modules/readSectionTable.h"
+#include "create_elf.h"
 
 
 void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr * ELF3_Header){
-    
+    // ELF3_Header->e_ident = ELF1_Header->e_ident;
+	memcpy(ELF3_Header->e_ident, ELF1_Header->e_ident, 16);
     if(ELF1_Header->e_type == ELF2_Header->e_type){
         ELF3_Header->e_type = ELF1_Header->e_type;
     }
     else{
-        printf("ERREUR : Les Fichiers ne sont pas de même type !");
+        // printf("ERREUR : Les Fichiers ne sont pas de même type !");
         exit(1);
     }
 
@@ -29,7 +32,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_machine = ELF1_Header->e_machine;
     }
     else{
-        printf("ERREUR : Les Fichiers ne sont pas de même architecture !");
+        // printf("ERREUR : Les Fichiers ne sont pas de même architecture !");
         exit(1);
     }
 
@@ -37,7 +40,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_version = ELF1_Header->e_version;
     }
     else{
-        printf("ERREUR : Les Fichiers ne sont pas de même version !");
+        // printf("ERREUR : Les Fichiers ne sont pas de même version !");
         exit(1);
     }
 
@@ -45,7 +48,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_flags = ELF1_Header->e_flags;
     }
     else{
-        printf("ERREUR : Les Fichiers n'ont pas les mêmes flags !");
+        // printf("ERREUR : Les Fichiers n'ont pas les mêmes flags !");
         exit(1);
     }
 
@@ -53,7 +56,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_ehsize = ELF1_Header->e_ehsize;
     }
     else{
-        printf("ERREUR : Les Fichiers n'ont pas la même taille de header !");
+        // printf("ERREUR : Les Fichiers n'ont pas la même taille de header !");
         exit(1);
     }
 
@@ -61,7 +64,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_phoff = ELF1_Header->e_phoff;
     }
     else{
-        printf("ERREUR : Header different (e_phoff)!");
+        // printf("ERREUR : Header different (e_phoff)!");
         exit(1);
     }
 
@@ -69,7 +72,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_phentsize = ELF1_Header->e_phentsize;
     }
     else{
-        printf("ERREUR : Header different !");
+        // printf("ERREUR : Header different !");
         exit(1);
     }
 
@@ -77,7 +80,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_phnum = ELF1_Header->e_phnum;
     }
     else{
-        printf("ERREUR : Header different !");
+        // printf("ERREUR : Header different !");
         exit(1);
     }
 
@@ -85,7 +88,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_shentsize = ELF1_Header->e_shentsize;
     }
     else{
-        printf("ERREUR : Header different !");
+        // printf("ERREUR : Header different !");
         exit(1);
     }
 
@@ -141,7 +144,7 @@ int mergeSymbol(FILE* file, Elf32_Ehdr *Header1, Elf32_Ehdr *Header2, Elf32_AllS
 		/*cas symbol local*/
 		if (((SymbolTables1->st_info) >> 4) != 1)
 		{
-			fwrite(SectionContent1 + i*16, 16, 1, file);
+			// fwrite(SectionContent1 + i*16, 16, 1, file);
 			memcpy(SectionContent3 + cur, SectionContent1 + i*16, 16);
 			*offset += 16;
 			cur+=16;
@@ -165,13 +168,13 @@ int mergeSymbol(FILE* file, Elf32_Ehdr *Header1, Elf32_Ehdr *Header2, Elf32_AllS
 						if (SymbolTables1->st_shndx!=0){
 							/*ici on verifie le quels est indefini*/
 							if(SymbolTables2->st_shndx!=0){
-								printf("\n\n\nERREUR DEUX SYMBOL DEFINIE\n\n\n");
+								// printf("\n\n\nERREUR DEUX SYMBOL DEFINIE\n\n\n");
 								return cur;
 							}
 							else
 							{
-								printf("\non merge symbole1 : %d avec symbole2 : %d\n", i, j);
-								fwrite(SectionContent1 + i*16, 16, 1, file);
+								// printf("\non merge symbole1 : %d avec symbole2 : %d\n", i, j);
+								// fwrite(SectionContent1 + i*16, 16, 1, file);
 								memcpy(SectionContent3 + cur, SectionContent1 + i*16, 16);
 								cur += 16;
 								*offset += 16;
@@ -179,8 +182,8 @@ int mergeSymbol(FILE* file, Elf32_Ehdr *Header1, Elf32_Ehdr *Header2, Elf32_AllS
 						}
 						else
 						{
-							printf("\non merge symbole2 : %d avec symbole1 : %d\n", j, i);
-							fwrite(SectionContent2 + j*16, 16, 1, file);
+							// printf("\non merge symbole2 : %d avec symbole1 : %d\n", j, i);
+							// fwrite(SectionContent2 + j*16, 16, 1, file);
 							memcpy(SectionContent3 + cur, SectionContent2 + j*16, 16);
 							cur += 16;
 							*offset += 16;
@@ -197,7 +200,7 @@ int mergeSymbol(FILE* file, Elf32_Ehdr *Header1, Elf32_Ehdr *Header2, Elf32_AllS
 									/*soit c'est globale soit ca a un nom*/
 		if (!alreadyCheck[i] && (((SymbolTables2->st_info) >> 4) == 1 || SymbolTables2 ->st_name != 0))
 		{
-			fwrite(SectionContent2 + i*16, 16, 1, file);
+			// fwrite(SectionContent2 + i*16, 16, 1, file);
 			memcpy(SectionContent3 + cur, SectionContent2 + i*16, 16);
 			cur += 16;
 			*offset += 16;
@@ -210,7 +213,7 @@ int mergeSymbol(FILE* file, Elf32_Ehdr *Header1, Elf32_Ehdr *Header2, Elf32_AllS
 int main(int argc, char **argv){
 
 	if (argc<3){
-		printf("Usage : ./mergeelf <File1> <File2>\n");
+		// printf("Usage : ./mergeelf <File1> <File2>\n");
 		exit(1);
 	}
 
@@ -219,17 +222,17 @@ int main(int argc, char **argv){
 	FILE *file3 = fopen("resMerge","w+");
 
 	if (file1==NULL){
-		printf("ERROR : %s no such file.\n", argv[1]);
+		// printf("ERROR : %s no such file.\n", argv[1]);
 		exit(1);
 	}
 	if (file2==NULL){
-		printf("ERROR : %s no such file.\n", argv[2]);
+		// printf("ERROR : %s no such file.\n", argv[2]);
 		exit(1);
 	}
 
 	if (!checkELF(file1) && !checkELF(file2)){
-		printf("Not a ELF file !\n");
-		printf("Does not have magic bytes 0x7F454C46 at the start.\n");
+		// printf("Not a ELF file !\n");
+		// printf("Does not have magic bytes 0x7F454C46 at the start.\n");
 		exit(1);
 	}
 
@@ -256,19 +259,19 @@ int main(int argc, char **argv){
 	ELF3->AllSections->nbSections = 0;
 
 	int nbSections=ELF1->Header->e_shnum + ELF2->Header->e_shnum;
-	printf("On a au pire %d sections\n", nbSections);
+	// printf("On a au pire %d sections\n", nbSections);
 
 	// printAllSectionsTables(file1, ELF1->AllSections, ELF1->Header);
 	/* On choisit de copier d'abord toute la SectionTable 1 et de fusionner quand on peut */
 	for (int i=0; i < ELF1->Header->e_shnum ; i++){
-		printf("===Section %d===\n", i);
-		printf("Pointeur à l'offset %d\n", arround(&offset));
+		// printf("===Section %d===\n", i);
+		// printf("Pointeur à l'offset %d\n", arround(&offset));
 		ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections] = malloc(10000);
 		if(ELF1->AllSections->TabAllSec[i]->sh_type == SHT_SYMTAB)
 		{
 			for (int k=0; k < ELF2->Header->e_shnum; k++){
 				if(ELF2->AllSections->TabAllSec[k]->sh_type == SHT_SYMTAB){
-					printf("\n--------SYMBOL TABLE----------\n");
+					// printf("\n--------SYMBOL TABLE----------\n");
 					/*on rempli la structure section*/
 					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections] = malloc(sizeof(Elf32_Shdr));
 					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_addr = ELF1->AllSections->TabAllSec[i]->sh_addr;
@@ -286,15 +289,15 @@ int main(int argc, char **argv){
 					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_size = taille;
 
 					ELF3->AllSections->nbSections++;
-					printf("\n------------------------------\n");
+					// printf("\n------------------------------\n");
 					alreadyCopied[k]=1;
 					nbSections--;
 					merged++;
-					printf("Merge, une section en moins\n");
-					printf("Merge section %d avec section %d\n", i, k);
-					printf("On a maintenant au pire %d sections\n", nbSections);
-					printf("section taille = %d\n", ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size);
-					printf("Section suivante...\n\n");
+					// printf("Merge, une section en moins\n");
+					// printf("Merge section %d avec section %d\n", i, k);
+					// printf("On a maintenant au pire %d sections\n", nbSections);
+					// printf("section taille = %d\n", ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size);
+					// printf("Section suivante...\n\n");
 				}
 			}
 		}
@@ -305,7 +308,7 @@ int main(int argc, char **argv){
 			
 			// char * nom1 = getString(file1, ELF1->AllSections->TabAllSec[i]->sh_name, ELF1->Header, ELF1->AllSections);
 
-			fwrite(ELF1->AllSections->TabAllSecContent[i], ELF1->AllSections->TabAllSec[i]->sh_size, 1, file3);
+			// fwrite(ELF1->AllSections->TabAllSecContent[i], ELF1->AllSections->TabAllSec[i]->sh_size, 1, file3);
 			// on stock dans la structure
 			memcpy(ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections], ELF1->AllSections->TabAllSecContent[i], ELF1->AllSections->TabAllSec[i]->sh_size);
 			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections] = malloc(sizeof(Elf32_Shdr));
@@ -329,14 +332,14 @@ int main(int argc, char **argv){
 				strcpy(nom2, getStringSection(/*file2,*/ ELF2->AllSections->TabAllSec[j]->sh_name, ELF2->Header, ELF2->AllSections));
 
 				// char * nom2 = getString(file2, ELF2->AllSections->TabAllSec[j]->sh_name, ELF2->Header, ELF2->AllSections);
-				// printf("Nom 1 : <%s> & Nom 2 : <%s>\n", nom1, nom2);
+				// // printf("Nom 1 : <%s> & Nom 2 : <%s>\n", nom1, nom2);
 				
 				/* Si les deux sections ont le même nom */
 				if (!strcmp(nom1, nom2)){
 					/* On choisit de concaténer la section 2 à la section 1 */
-					printf("Merge, une section en moins\n");
-					printf("Merge section %d avec section %d\n", i, j);
-					fwrite(ELF2->AllSections->TabAllSecContent[j], ELF2->AllSections->TabAllSec[j]->sh_size, 1, file3);
+					// printf("Merge, une section en moins\n");
+					// printf("Merge section %d avec section %d\n", i, j);
+					// fwrite(ELF2->AllSections->TabAllSecContent[j], ELF2->AllSections->TabAllSec[j]->sh_size, 1, file3);
 					// on decale le pointeur de ce qu' on a copier pour copier la suite
 					// autrement dit on concatene
 					memcpy(ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections - 1] + ELF1->AllSections->TabAllSec[i]->sh_size, ELF2->AllSections->TabAllSecContent[j], ELF2->AllSections->TabAllSec[j]->sh_size);
@@ -363,72 +366,75 @@ int main(int argc, char **argv){
 				}
 			}
 
-			printf("On a maintenant au pire %d sections\n", nbSections);
-			printf("section taille = %d\n", ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size);
-			printf("Section suivante...\n\n");
+			// printf("On a maintenant au pire %d sections\n", nbSections);
+			// printf("section taille = %d\n", ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size);
+			// printf("Section suivante...\n\n");
 		}
 	}
 	/* On copie maintenant la partie 2 et tout ce qui n'a pas été fusionné */
-	printf("=====Section table 2=====\n\n");
+	// printf("=====Section table 2=====\n\n");
 
 	int sectionNumber=ELF1->Header->e_shnum;
 
 	// for (int i=0; i < ELF2->Header->e_shnum; i++){
-	// 	printf("===Section %d===\n", sectionNumber);
-	// 	printf("Pointeur à l'offset %d\n",offset);
+	// 	// printf("===Section %d===\n", sectionNumber);
+	// 	// printf("Pointeur à l'offset %d\n",offset);
 
 		if (! alreadyCopied[0]){
-		// 	fwrite(ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i]->sh_size, 1, file3);
-		// 	printf("Ce sera la section %d\n", sectionNumber);
+		// 	// fwrite(ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i]->sh_size, 1, file3);
+		// 	// printf("Ce sera la section %d\n", sectionNumber);
 		// 	// on stock dans la structure
 		// 	memcpy(ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections - 1], ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i]->sh_size);
         }
     for (int i=0; i < ELF2->Header->e_shnum; i++){
-		printf("===Section %d===\n", sectionNumber);
-		printf("Pointeur à l'offset %d\n",arround(&offset));
-		ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections - 1] = malloc(10000);
+		// printf("===Section %d===\n", sectionNumber);
+		// printf("Pointeur à l'offset %d\n",arround(&offset));
+		ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections] = malloc(10000);
 		if (! alreadyCopied[i]){
-			fwrite(ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i]->sh_size, 1, file3);
-			printf("Ce sera la section %d\n", sectionNumber);
+			// fwrite(ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i]->sh_size, 1, file3);
+			// printf("Ce sera la section %d\n", sectionNumber);
 			// on stock dans la structure
-			memcpy(ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections - 1], ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i]->sh_size);
+			memcpy(ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections], ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i]->sh_size);
+			offset += ELF2->AllSections->TabAllSec[i]->sh_size;
 			/*--------------------------------------*/
-			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1] = malloc(sizeof(Elf32_Shdr));
-			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_addr = ELF2->AllSections->TabAllSec[i]->sh_addr;
-			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_addralign = ELF2->AllSections->TabAllSec[i]->sh_addralign;
-			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_entsize = ELF2->AllSections->TabAllSec[i]->sh_entsize;
-			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_flags = ELF2->AllSections->TabAllSec[i]->sh_flags;
-			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_info = ELF2->AllSections->TabAllSec[i]->sh_info;
-			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_link = ELF2->AllSections->TabAllSec[i]->sh_link;
-			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_name = ELF2->AllSections->TabAllSec[i]->sh_name;
-			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_offset = offset;
-			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size = ELF2->AllSections->TabAllSec[i]->sh_size;
-			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_type = ELF2->AllSections->TabAllSec[i]->sh_type;
+			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections] = malloc(sizeof(Elf32_Shdr));
+			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_addr = ELF2->AllSections->TabAllSec[i]->sh_addr;
+			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_addralign = ELF2->AllSections->TabAllSec[i]->sh_addralign;
+			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_entsize = ELF2->AllSections->TabAllSec[i]->sh_entsize;
+			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_flags = ELF2->AllSections->TabAllSec[i]->sh_flags;
+			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_info = ELF2->AllSections->TabAllSec[i]->sh_info;
+			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_link = ELF2->AllSections->TabAllSec[i]->sh_link;
+			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_name = ELF2->AllSections->TabAllSec[i]->sh_name;
+			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_offset = offset;
+			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_size = ELF2->AllSections->TabAllSec[i]->sh_size;
+			ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections]->sh_type = ELF2->AllSections->TabAllSec[i]->sh_type;
 			/*--------------------------------------*/
 
 			ELF3->AllSections->nbSections++;
-			offset += ELF2->AllSections->TabAllSec[i]->sh_size;
 			copied++;
 			sectionNumber++;
 		}else{
-			printf("Section déjà copiée, pass\n");
+			// printf("Section déjà copiée, pass\n");
 			/* Déjà copié, pass*/
 		}
-		printf("section taille = %d\n", ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-2]->sh_size);
-		printf("Section suivante...\n\n");
+		// printf("section taille = %d\n", ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size);
+		// printf("Section suivante...\n\n");
 	}
-    ELF3->Header->e_shoff = offset + ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-2]->sh_size;
+    ELF3->Header->e_shoff = offset + ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size;
     ELF3->Header->e_shoff = arround((int*)&ELF3->Header->e_shoff);
     ELF3->Header->e_shnum = ELF3->AllSections->nbSections;
 
     // printHeader(ELF3->Header);
-
+	// printf("Last sec offset %d: ", ELF3->AllSections->TabAllSec[24]->sh_size);
+	write_to_file(ELF3, file3);
+	printHeader(ELF3->Header);
+	printAllSectionsTables(file1, ELF3->AllSections, ELF3->Header);
 	fclose(file1);
 	fclose(file2);
 	fclose(file3);
-	printf("Au total %d merges\n", merged);
-	printf("Plus %d copies\n", copied);
-	printf("On a donc au total %d sections\n", nbSections);
-	printf("on a %d Sections\n", ELF3->AllSections->nbSections);
+	// printf("Au total %d merges\n", merged);
+	// printf("Plus %d copies\n", copied);
+	// printf("On a donc au total %d sections\n", nbSections);
+	// printf("on a %d Sections\n", ELF3->AllSections->nbSections);
 	printf("End\n");
 }

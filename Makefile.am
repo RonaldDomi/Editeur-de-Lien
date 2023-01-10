@@ -22,7 +22,6 @@ bin_PROGRAMS+=readelf_symbol_table
 bin_PROGRAMS+=readelf_relocation
 bin_PROGRAMS+=readelf_all
 bin_PROGRAMS+=mergeelf
-bin_PROGRAMS+=create_elf
 LDADD= -lm
 
 COMMON=debug.h debug.c util.h util.c
@@ -33,7 +32,7 @@ COMMON+=modules/readHeader.h modules/readHeader.c modules/readSectionTable.h mod
 COMMON+= modules/lecture.h modules/lecture.c
 COMMON+=modules/readContent.h modules/readContent.c modules/readStringTable.h modules/readStringTable.c
 COMMON+=modules/getTableSymbSection.h modules/getTableSymbSection.c modules/readRelocation.h modules/readRelocation.c
-COMMON+=modules/readAll.h modules/readAll.c 
+COMMON+=modules/readAll.h modules/readAll.c create_elf.c create_elf.h
 
 EXTRA_DIST=filtre.pl
 Options_and_debug_example_SOURCES=$(COMMON) Options_and_debug_example.c
@@ -44,5 +43,4 @@ readelf_symbol_table_SOURCES=$(COMMON) readelf_symbol_table.c
 readelf_relocation_SOURCES=$(COMMON) readelf_relocation.c
 readelf_all_SOURCES=$(COMMON) readelf_all.c
 mergeelf_SOURCES=$(COMMON) mergeelf.c
-create_elf_SOURCES=$(COMMON) create_elf.c
 EXTRA_DIST+=

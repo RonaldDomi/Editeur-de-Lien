@@ -3,60 +3,45 @@
 #include "modules/CheckElf.h"
 #include "modules/readAll.h"
 #include "modules/freadoctet.h"
+#include "create_elf.h"
 
-void write_to_file(Elf32_Info*, FILE*);
-void write_header(Elf32_Ehdr*, FILE*);
-void write_sections(Elf32_AllSec*, FILE*);
-void write_section_header(Elf32_AllSec*, FILE*);
+// void write_to_file(Elf32_Info*, FILE*);
+// void write_header(Elf32_Ehdr*, FILE*);
+// void write_sections(Elf32_AllSec*, FILE*);
+// void write_section_header(Elf32_AllSec*, FILE*);
 
 
-int main(int argc, char **argv){
+// int main(int argc, char **argv){
 
-	if (argc<2){
-		printf("Usage : ./create_elf <File1>\n");
-		exit(1);
-	}
+// 	if (argc<2){
+// 		printf("Usage : ./create_elf <File1>\n");
+// 		exit(1);
+// 	}
 
-	FILE *file1 = fopen(argv[1],"rb");
-	// FILE *file2 = fopen(argv[2],"rb");
-	FILE *file2 = fopen("creation.o","w+");
+// 	FILE *file1 = fopen(argv[1],"rb");
+// 	// FILE *file2 = fopen(argv[2],"rb");
+// 	FILE *file2 = fopen("creation.o","w+");
 
-	if (file1==NULL){
-		printf("ERROR : %s no such file.\n", argv[1]);
-		exit(1);
-	}
+// 	if (file1==NULL){
+// 		printf("ERROR : %s no such file.\n", argv[1]);
+// 		exit(1);
+// 	}
 
-	if (!checkELF(file1)){
-		printf("Not a ELF file !\n");
-		printf("Does not have magic bytes 0x7F454C46 at the start.\n");
-		exit(1);
-	}
+// 	if (!checkELF(file1)){
+// 		printf("Not a ELF file !\n");
+// 		printf("Does not have magic bytes 0x7F454C46 at the start.\n");
+// 		exit(1);
+// 	}
 
-	Elf32_Info * ELF1 = getAllInfo(file1);
+// 	Elf32_Info * ELF1 = getAllInfo(file1);
 
-    write_to_file(ELF1, file2);
+//     write_to_file(ELF1, file2);
     
-	fclose(file1);
-	fclose(file2);
-}
-
-void write_to_file(Elf32_Info* ELF1, FILE* file){
-    write_header(ELF1->Header, file);
-    write_sections(ELF1->AllSections, file);
-    
-    // complete resting 0
-    long current_pos = ftell(file);
-    while(current_pos < ELF1->Header->e_shoff){
-
-        int output[2] = {0, 0};
-        fwrite(output, 1, 1, file);
-        // printf("adding one 0 ");
-        current_pos = ftell(file);
-    }
+// 	fclose(file1);
+// 	fclose(file2);
+// }
 
 
-    write_section_header(ELF1->AllSections, file);
-}
 
 void write_header(Elf32_Ehdr* Header, FILE* file){
     printf("################## WRITING HEADER BYTES ##############\n\n");
@@ -135,7 +120,9 @@ void write_header(Elf32_Ehdr* Header, FILE* file){
 
 void write_sections(Elf32_AllSec* Sections, FILE* file){
     printf("\n################## WRITING SECTION BYTES ##############\n\n");
-
+    // printf("NB sECTIONS %d\n", Sections->nbSections);
+    // printf("offset of Sections->TabAllSec[23]->sh_offset %d\n", Sections->TabAllSec[23]->sh_offset);
+    // fprintf(stderr,"offset of Sections->TabAllSec[24]->sh_offset %d\n", Sections->TabAllSec[24]->sh_size);
     // get the write order of sections to write into order
     int present[Sections->nbSections];
     int order[Sections->nbSections];
@@ -150,11 +137,15 @@ void write_sections(Elf32_AllSec* Sections, FILE* file){
         min = 1000000;
         min_pos = i;
         for(int j=0; j<Sections->nbSections; j++){
+            // fprintf(stderr, "Hello2 %d %d\n", Sections->nbSections, j);
+            // fprintf(stderr, "offset: %d\n\n", Sections->TabAllSec[j]->sh_offset);
             if(Sections->TabAllSec[j]->sh_offset < min){
+                // fprintf(stderr, "Hello3");
                 // si il est pas present
                 if(present[j] == 0){
                     min = Sections->TabAllSec[j]->sh_offset;
                     min_pos = j;
+                    // fprintf(stderr, "Hello3");
                 }
             }
         }
@@ -162,7 +153,6 @@ void write_sections(Elf32_AllSec* Sections, FILE* file){
         order[i] = min_pos;
     }
 
-    
     for(int i = 0; i<Sections->nbSections; i++){
         int size = Sections->TabAllSec[order[i]]->sh_size;
         
@@ -239,4 +229,22 @@ void write_section_header(Elf32_AllSec* Sections, FILE* file){
         // printf("\n");
     }
 
+}
+
+void write_to_file(Elf32_Info* ELF1, FILE* file){
+    write_header(ELF1->Header, file);
+    write_sections(ELF1->AllSections, file);
+    
+    // complete resting 0
+    long current_pos = ftell(file);
+    while(current_pos < ELF1->Header->e_shoff){
+
+        int output[2] = {0, 0};
+        fwrite(output, 1, 1, file);
+        // printf("adding one 0 ");
+        current_pos = ftell(file);
+    }
+
+
+    write_section_header(ELF1->AllSections, file);
 }
