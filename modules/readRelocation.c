@@ -8,6 +8,7 @@
 #include "readSectionTable.h"
 #include "freadoctet.h"
 #include "readStringTable.h"
+#include "lecture.h"
 
 int unused; // Var non utilisée pour les warnings lors du make
 
@@ -46,49 +47,45 @@ void decodeRelType(Elf32_Word type){
 }
 
 
-void GetRelocation_rel(FILE *file, Elf32_Rel *Rel){
-	unused = fread(&Rel->r_offset, 4, 1, file);
-	unused = fread(&Rel->r_info, 4, 1, file);
+void GetRelocation_rel(Elf32_SecContent SectionContent, Elf32_Rel *Rel, int adrligne){
+	lecture(SectionContent+adrligne+0,  &Rel->r_offset, 4);
+	lecture(SectionContent+adrligne+4, &Rel->r_info, 4);
+	// unused = fread(&Rel->r_offset, 4, 1, file);
+	// unused = fread(&Rel->r_info, 4, 1, file);
 }
 
 
-void GetRelocation_rela(FILE *file, Elf32_Rela *Rela){
-	unused = fread(&Rela->r_offset, 4, 1, file);
-	unused = fread(&Rela->r_info, 4, 1, file);
-	unused = fread(&Rela->r_offset, 4, 1, file);
+void GetRelocation_rela(Elf32_SecContent SectionContent, Elf32_Rela *Rela, int adrligne){
+	lecture(SectionContent+adrligne+0,  &Rela->r_offset, 4);
+	lecture(SectionContent+adrligne+4, &Rela->r_info, 4);
+	lecture(SectionContent+adrligne+8, &Rela->r_offset, 4);
+	// unused = fread(&Rela->r_offset, 4, 1, file);
+	// unused = fread(&Rela->r_info, 4, 1, file);
+	// unused = fread(&Rela->r_offset, 4, 1, file);
 }
 
 	// ici on parcours les section et l'orsque l'on arrive sur un type rel ou rela on l'affiche
-int GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables){
-	long position;
+int GetRelocationPart(Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables){
 	int isReloc = 0;
 	for (int i = 0; i < SectionsTables->nbSections; i++){
 		Elf32_Shdr * currentSectionTable = SectionsTables->TabAllSec[i];
 		if (currentSectionTable->sh_type == SHT_REL){
 
 			isReloc = 1;
-			position = ftell(file);
-			fseek(file, currentSectionTable->sh_offset, SEEK_SET);
 			SectionsTables->TabAllRel[i] = malloc(sizeof(void*) * (currentSectionTable->sh_size / 8));
 			for (int j = 0; j < currentSectionTable->sh_size / 8; j++){
 				SectionsTables->TabAllRel[i][j] = malloc(sizeof(Elf32_Rel));
-				GetRelocation_rel(file, SectionsTables->TabAllRel[i][j]);
+				GetRelocation_rel(SectionsTables->TabAllSecContent[i], SectionsTables->TabAllRel[i][j], j*8);
 			}
-			fseek(file, position, 0);
-
-		}else if (currentSectionTable->sh_type == SHT_RELA){
-
+        }
+        else if (currentSectionTable->sh_type == SHT_RELA){
 			isReloc = 1;
-			position = ftell(file);
-			fseek(file, currentSectionTable->sh_offset, SEEK_SET);
 			SectionsTables->TabAllRela[i] = malloc(sizeof(void*) * (currentSectionTable->sh_size / 12));
 			for (int j = 0; j < currentSectionTable->sh_size / 12; j++){
 				SectionsTables->TabAllRela[i][j] = malloc(sizeof(Elf32_Rela));
-				GetRelocation_rela(file, SectionsTables->TabAllRela[i][j]);
+				GetRelocation_rela(SectionsTables->TabAllSecContent[i], SectionsTables->TabAllRela[i][j], j*12);
 			}
-			fseek(file, position, 0);
 		}
-
 	}
 	return isReloc;
 }

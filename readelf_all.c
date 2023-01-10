@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
 		}
 	else if (strcmp(type, "r") == 0)
 		{
-        printRelocation(ElfInfo->AllSections, GetRelocationPart(file,  ElfInfo->Header, ElfInfo->AllSections), ElfInfo->Header);
+        printRelocation(ElfInfo->AllSections, GetRelocationPart(ElfInfo->Header, ElfInfo->AllSections), ElfInfo->Header);
 		printf("\n");
 		}
 

@@ -10,9 +10,9 @@
 
 
 void decodeRelType(Elf32_Word type);
-void GetRelocation_rel(FILE *file, Elf32_Rel *Rel);
-void GetRelocation_rela(FILE *file, Elf32_Rela *Rela);
-int GetRelocationPart(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables);
+void GetRelocation_rel(Elf32_SecContent SectionContent, Elf32_Rel *Rel, int adrligne);
+void GetRelocation_rela(Elf32_SecContent SectionContent, Elf32_Rela *Rela, int adrligne);
+int GetRelocationPart(Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables);
 void printRelocation(Elf32_AllSec * SectionsTables, int isReloc, Elf32_Ehdr * Header);
 
 #endif /* readRelocation_h */
