@@ -268,7 +268,7 @@ int main(int argc, char **argv){
 
 	for (int i=0; i < ELF2->Header->e_shnum; i++){
 		printf("===Section %d===\n", sectionNumber);
-		printf("Pointeur à l'offset %d\n",offset);
+		printf("Pointeur à l'offset %d\n",arround(&offset));
 		ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections - 1] = malloc(10000);
 		if (! alreadyCopied[i]){
 			fwrite(ELF2->AllSections->TabAllSecContent[i], ELF2->AllSections->TabAllSec[i]->sh_size, 1, file3);
