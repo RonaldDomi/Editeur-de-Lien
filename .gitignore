@@ -38,6 +38,7 @@ readelf_section_content
 readelf_section_table
 readelf_symbol_table
 readelf_all
+create_elf 
 
 *.2
 autom4te.cache/output.0

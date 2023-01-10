@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "CustomElf.h"
+#include "readSectionTable.h"
 
 char * getStringSection(Elf32_Word index, Elf32_Ehdr *Header, Elf32_AllSec *Sections)
 {
@@ -31,9 +32,10 @@ char * getStringSymbol(Elf32_Word index, Elf32_Ehdr *Header, Elf32_AllSec *Secti
 	// fseek(file, index, SEEK_CUR);
 	char *mot = malloc(50);
 	int i = index;
+	int temp = getSectionByName(Sections, Header, ".strtab");
 	while (Sections->TabAllSecContent[Header->e_shstrndx-1][i] != 0)
 	{
-		mot[i-index] = Sections->TabAllSecContent[Header->e_shstrndx-1][i];
+		mot[i-index] = Sections->TabAllSecContent[temp][i];
 		i++;
 	}
 	mot[i-index] = Sections->TabAllSecContent[Header->e_shstrndx-1][i];

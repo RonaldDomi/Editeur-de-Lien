@@ -22,6 +22,7 @@ bin_PROGRAMS+=readelf_symbol_table
 #bin_PROGRAMS+=readelf_relocation
 bin_PROGRAMS+=readelf_all
 bin_PROGRAMS+=mergeelf
+bin_PROGRAMS+=create_elf
 LDADD= -lm
 
 COMMON=debug.h debug.c util.h util.c
@@ -43,4 +44,5 @@ readelf_symbol_table_SOURCES=$(COMMON) readelf_symbol_table.c
 #readelf_relocation_SOURCES=$(COMMON) readelf_relocation.c
 readelf_all_SOURCES=$(COMMON) readelf_all.c
 mergeelf_SOURCES=$(COMMON) mergeelf.c
+create_elf_SOURCES=$(COMMON) create_elf.c
 EXTRA_DIST+=
