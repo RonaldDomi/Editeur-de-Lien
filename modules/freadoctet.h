@@ -5,6 +5,9 @@
 
 #include <stdio.h>
 
+
+void freadSwap(void * res, size_t size, size_t nbBlocs, FILE * file);
+
 /* Affiche octet par octet au format décimal avec deux chiffres pour chaque octet
  Suivant le paramètre reverse, commence par le début ou la fin du tableau
  Cela permet de prendre en compte le Big Endian où non.

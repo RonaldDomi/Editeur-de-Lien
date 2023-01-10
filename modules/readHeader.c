@@ -209,17 +209,32 @@ void printHeader(Elf32_Ehdr *Header){
 void getHeader(FILE *file, Elf32_Ehdr *Header)
 {
 	unused = fread(&Header->e_ident, 16, 1, file);
-	unused = fread(&Header->e_type, 2, 1, file);
-	unused = fread(&Header->e_machine, 2, 1, file);
-	unused = fread(&Header->e_version, 4, 1, file);
-	unused = fread(&Header->e_entry, 4, 1, file);
-	unused = fread(&Header->e_phoff, 4, 1, file);
-	unused = fread(&Header->e_shoff, 4, 1, file);
-	unused = fread(&Header->e_flags, 4, 1, file);
-	unused = fread(&Header->e_ehsize, 2, 1, file);
-	unused = fread(&Header->e_phentsize, 2, 1, file);
-	unused = fread(&Header->e_phnum, 2, 1, file);
-	unused = fread(&Header->e_shentsize, 2, 1, file);
-	unused = fread(&Header->e_shnum, 2, 1, file);
-	unused = fread(&Header->e_shstrndx, 2, 1, file);
+	// unused = fread(&Header->e_type, 2, 1, file);
+	// unused = fread(&Header->e_machine, 2, 1, file);
+	// unused = fread(&Header->e_version, 4, 1, file);
+	// unused = fread(&Header->e_entry, 4, 1, file);
+	// unused = fread(&Header->e_phoff, 4, 1, file);
+	// unused = fread(&Header->e_shoff, 4, 1, file);
+	// unused = fread(&Header->e_flags, 4, 1, file);
+	// unused = fread(&Header->e_ehsize, 2, 1, file);
+	// unused = fread(&Header->e_phentsize, 2, 1, file);
+	// unused = fread(&Header->e_phnum, 2, 1, file);
+	// unused = fread(&Header->e_shentsize, 2, 1, file);
+	// unused = fread(&Header->e_shnum, 2, 1, file);
+	// unused = fread(&Header->e_shstrndx, 2, 1, file);
+
+	// freadSwap(&Header->e_ident, 16, 1, file);
+	freadSwap(&Header->e_type, 2, 1, file);
+	freadSwap(&Header->e_machine, 2, 1, file);
+	freadSwap(&Header->e_version, 4, 1, file);
+	freadSwap(&Header->e_entry, 4, 1, file);
+	freadSwap(&Header->e_phoff, 4, 1, file);
+	freadSwap(&Header->e_shoff, 4, 1, file);
+	freadSwap(&Header->e_flags, 4, 1, file);
+	freadSwap(&Header->e_ehsize, 2, 1, file);
+	freadSwap(&Header->e_phentsize, 2, 1, file);
+	freadSwap(&Header->e_phnum, 2, 1, file);
+	freadSwap(&Header->e_shentsize, 2, 1, file);
+	freadSwap(&Header->e_shnum, 2, 1, file);
+	freadSwap(&Header->e_shstrndx, 2, 1, file);
 }
