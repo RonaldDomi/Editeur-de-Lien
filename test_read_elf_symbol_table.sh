@@ -131,7 +131,7 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         ;;
 
     esac
-    #Pas d'autres cases, les lignes qui ne commencent par par " n: " ne sont pas à traiter
+    #Pas d'autres cases, les lignes qui ne commencent pas par " n: " ne sont pas à traiter
 done
 
 

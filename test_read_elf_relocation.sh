@@ -49,6 +49,7 @@ errorMyReadelf=$?
 # On vérfie que les codes d'erreurs correspondent
 if [ $errorReadelf -eq 1 ]; then
     if [ $errorMyReadelf -eq 1 ]; then
+        echo "Not a ELF File?"
         echo -e "Error code : \033[48;5;2mOK TEST\033[0;0m" #Pass
         echo
         echo -e "Test $(basename "$1") \033[48;5;2mpassed\033[0;0m!"
@@ -72,7 +73,7 @@ echo
 
 endOfCommand=0
 regex2Blanks="/[[:blank:]]{2,}/g" #Match tous les deux whitespaces ou plus e.g: "  ", "     ", ...
-regexScope="^Relocation"
+regexScope="^Relocation" #Match toutes les lignes commencant par "Relocation"
 cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
 
     #On prend un système clé -> valeur, par exemple: 00000004  0000111c -> 00000004 0000111c R_ARM_CALL 00000000
@@ -87,17 +88,14 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         if [ "$line" == "$otherValue" ]
         then
             echo -e "No relocations : \033[48;5;2mOK TEST\033[0;0m" #Pass
-            echo
-            echo -e "Test $(basename "$1") \033[48;5;2mpassed\033[0;0m!"
-            rm -f MyReadelfCommand.output readelfCommand.output
-            exit 0
         else
-            printf "No relocations"
+            printf "No relocations : "
             FailTest "$otherValue" "$line" "$$"
         fi
     fi
 
-    #On doit déterminer le scope 
+    # On doit déterminer le scope c'est à dire sur quelle sections les relocations sont présentes
+	# Tout scope commence par "Relocation"
     if [[ "$line" =~ $regexScope ]]
     then
         scopeKey=1
@@ -105,6 +103,8 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         scopeKey=0
     fi
 
+	# Cas où on doit comparer le scope
+	# On compare avec le nom dans les singles quotes ('')
     if [[ scopeKey -eq 1 ]]
     then
         scopeName=`echo $line | cut -d\' -f2 | awk '{gsub(/^[ \t]+|[ \t]+$/, "", $1) ; print $1}'`
@@ -130,16 +130,21 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
             # echo "Key : $key"
             # echo "Value : $value"
             # echo "OtherValue : <$otherValue>"
-            #Pour l'instant on ne supporte pas les noms, on ccut donc le nom
+
+            #On ne supporte pas les noms des relocations, on cut donc le nom
+            #Le nom est le dernier champ de la ligne donc on le cut avec le délimiteur whitespace
             otherValueCut=`echo $otherValue | rev | cut -d' ' -f2- | rev`
             # echo "OtherValueCut : <$otherValueCut>"
+
             if [ "$value" != "$otherValueCut" ]
             then
                 printf "Relocation : "
                 FailTest "$otherValueCut" "$value" "$$"
             fi
+            # On affiche rien si le test passe, trop de relocations rendent la sortie standard ilisible
         ;;
     esac
+    #Pas d'autres cases, les lignes qui ne commencent pas par deux hexadécimaux ne sont pas à traiter, sauf le case qui est traité avant
 done
 
 echo
