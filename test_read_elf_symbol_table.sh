@@ -125,7 +125,6 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
 				if [ "$longName" != "[...]" ]
 				then
 					printf "SymbolTable : "
-					#TODO: Changer en FailTest une fois les noms fixés pour le début des programmes
 					WarningTest "$otherValue" "$value" "$$" #Fail
                 fi
             fi

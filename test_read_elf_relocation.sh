@@ -71,7 +71,7 @@ fi
 echo
 
 endOfCommand=0
-regex2Blanks="/[[:blank:]]{2,}/g" #Match tous les deux whitespaces ou plus e.g: "  ", "     "
+regex2Blanks="/[[:blank:]]{2,}/g" #Match tous les deux whitespaces ou plus e.g: "  ", "     ", ...
 regexScope="^relocation"
 cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
 
@@ -79,11 +79,10 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
     #On retire les espaces avant/après le texte et les Tabs
 
     #Cas particulier si il n'y a aucune relocation
-    
     noReloc="There are no relocations in this file."
     if [ "$line" == "$noReloc" ]
     then
-        otherValue=grep "^There are no relocations"
+        otherValue=`grep "^There are no relocations" readelfCommand.output`
 
         if [ "$line" == "$otherValue" ]
         then
@@ -98,6 +97,7 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         fi
     fi
 
+    #On doit déterminer le scope 
     if [[ "$line" =~ $regexScope ]]
     then
         scopeKey=1
@@ -114,26 +114,32 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
         then
             echo -e "Scope : \033[48;5;2mOK TEST\033[0;0m" #Pass
         else
-            printf "Scope"
+            printf "Scope : "
             FailTest "$otherScopeName" "$scopeName" "$$"
         fi
     fi
 
     key=`echo $line | awk '{gsub(/$regex2Blanks/, "", $0) ; print $0}' | cut -c -18`
-    value=`echo $line | awk '{gsub(/$regex2Blanks/, "", $0) ; print $0}'`
-    otherValue=`grep "^$key" readelfCommand.output | awk '{gsub(/$regex2Blanks/, "", $0) ; print $0}'`
+    key=`echo $key | sed '{s/ /  /;}'`
 
     case $key in
-
         [0-9]*)
+            value=`echo $line | awk '{gsub(/$regex2Blanks/, "", $0) ; print $0}'`
+            otherValue=`grep "^$key" readelfCommand.output | awk '{gsub(/$regex2Blanks/, "", $0) ; print $0}'`
             echo "Key : $key"
             echo "Value : $value"
-            echo "OtherValue : $otherValue"
+            echo "OtherValue : <$otherValue>"
             if [ "$value" != "$otherValue" ]
             then
-                printf "Relocation"
+                printf "Relocation : "
                 FailTest "$otherValue" "$value" "$$"
             fi
         ;;
     esac
 done
+
+echo
+# Si tous les tests ont réussi, alors le test passe, on supprime les fichiers temporaires
+echo -e "Test $(basename "$1") \033[48;5;2mpassed\033[0;0m!"
+rm -f MyReadelfCommand.output readelfCommand.output
+exit 0
