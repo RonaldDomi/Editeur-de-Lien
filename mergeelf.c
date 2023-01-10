@@ -344,17 +344,8 @@ int main(int argc, char **argv){
 					// autrement dit on concatene
 					memcpy(ELF3->AllSections->TabAllSecContent[ELF3->AllSections->nbSections - 1] + ELF1->AllSections->TabAllSec[i]->sh_size, ELF2->AllSections->TabAllSecContent[j], ELF2->AllSections->TabAllSec[j]->sh_size);
 					/*--------------------------------------------*/
-					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1] = malloc(sizeof(Elf32_Shdr));
-					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_addr = ELF2->AllSections->TabAllSec[j]->sh_addr;
-					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_addralign = ELF2->AllSections->TabAllSec[j]->sh_addralign;
-					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_entsize = ELF2->AllSections->TabAllSec[j]->sh_entsize;
-					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_flags = ELF2->AllSections->TabAllSec[j]->sh_flags;
-					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_info = ELF2->AllSections->TabAllSec[j]->sh_info;
-					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_link = ELF2->AllSections->TabAllSec[j]->sh_link;
-					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_name = ELF2->AllSections->TabAllSec[j]->sh_name;
-					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_offset = offset;
-					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size = ELF1->AllSections->TabAllSec[i]->sh_size + ELF2->AllSections->TabAllSec[j]->sh_size;
-					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_type = ELF2->AllSections->TabAllSec[j]->sh_type;
+					ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_size += ELF2->AllSections->TabAllSec[j]->sh_size;
+                    printf("====link : %d\n", ELF3->AllSections->TabAllSec[ELF3->AllSections->nbSections-1]->sh_link);
 					/*--------------------------------------------*/
 
 					alreadyCopied[j]=1;

@@ -156,6 +156,9 @@ int main(int argc, char *argv[])
 		}
 	else if (strcmp(type, "s") == 0)
 		{
+        printf("Nb\tName\t\t\tType\t\tFlags\tExecutionAdresss\tOffset\t\tSectionSize\tLinkTo\tInfo\tAlign\tEntrySize\n");
+        printf("====================================================================");
+        printf("=============================================================================\n");
 		printAllSectionsTables(file, ElfInfo->AllSections, ElfInfo->Header);
 		}
 	else if (strcmp(type, "r") == 0)
