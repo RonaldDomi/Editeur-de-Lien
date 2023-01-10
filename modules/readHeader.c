@@ -208,7 +208,7 @@ void printHeader(Elf32_Ehdr *Header){
 
 void getHeader(FILE *file, Elf32_Ehdr *Header)
 {
-	unused = fread(Header->e_ident, 16, 1, file);
+	unused = fread(&Header->e_ident, 16, 1, file);
 	unused = fread(&Header->e_type, 2, 1, file);
 	unused = fread(&Header->e_machine, 2, 1, file);
 	unused = fread(&Header->e_version, 4, 1, file);
