@@ -42,7 +42,7 @@ fi
 #On vérifie aussi les codes d'erreurs
 readelf -r $1 &>readelfCommand.output
 errorReadelf=$?
-./readelf_relocation $1 &>MyReadelfCommand.output
+./readelf_all --file $1 --type r &>MyReadelfCommand.output
 errorMyReadelf=$?
 
 # readelf renvoie 1 si le fichier n'est pas un fichier ELF, même comportement pour notre programme
@@ -72,7 +72,7 @@ echo
 
 endOfCommand=0
 regex2Blanks="/[[:blank:]]{2,}/g" #Match tous les deux whitespaces ou plus e.g: "  ", "     ", ...
-regexScope="^relocation"
+regexScope="^Relocation"
 cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
 
     #On prend un système clé -> valeur, par exemple: 00000004  0000111c -> 00000004 0000111c R_ARM_CALL 00000000
