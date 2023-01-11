@@ -25,10 +25,6 @@ stamp-h1
 build-aux/
 build-aux/compile
 confdefs.h
-
-*.o
-!tests/ARM.o
-!tests/i386.o
 *.Po
 
 Options_and_debug_example

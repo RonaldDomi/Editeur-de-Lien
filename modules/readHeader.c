@@ -9,9 +9,6 @@
 #include "freadoctet.h"
 #include "readHeader.h"
 
-
-int unused; // Var non utilisée pour les warnings lors du make
-
 void decodeHeaderFlags(Elf32_Ehdr *Header)
 {
 	if (Header->e_flags & EF_ARM_EABI_VER5)
@@ -88,8 +85,6 @@ void decodeHeaderFlags(Elf32_Ehdr *Header)
 		printf(", Maverick Float");
 	}else if (Header->e_flags == 0){
 		printf(", ==NO_FLAGS==");
-	}else{
-		printf(", ==UNK== %02x", Header->e_flags);
 	}
 }
 
@@ -208,18 +203,18 @@ void printHeader(Elf32_Ehdr *Header){
 
 void getHeader(FILE *file, Elf32_Ehdr *Header)
 {
-	unused = fread(&Header->e_ident, 16, 1, file);
-	unused = fread(&Header->e_type, 2, 1, file);
-	unused = fread(&Header->e_machine, 2, 1, file);
-	unused = fread(&Header->e_version, 4, 1, file);
-	unused = fread(&Header->e_entry, 4, 1, file);
-	unused = fread(&Header->e_phoff, 4, 1, file);
-	unused = fread(&Header->e_shoff, 4, 1, file);
-	unused = fread(&Header->e_flags, 4, 1, file);
-	unused = fread(&Header->e_ehsize, 2, 1, file);
-	unused = fread(&Header->e_phentsize, 2, 1, file);
-	unused = fread(&Header->e_phnum, 2, 1, file);
-	unused = fread(&Header->e_shentsize, 2, 1, file);
-	unused = fread(&Header->e_shnum, 2, 1, file);
-	unused = fread(&Header->e_shstrndx, 2, 1, file);
+	(void) fread(&Header->e_ident, 16, 1, file);
+	(void) fread(&Header->e_type, 2, 1, file);
+	(void) fread(&Header->e_machine, 2, 1, file);
+	(void) fread(&Header->e_version, 4, 1, file);
+	(void) fread(&Header->e_entry, 4, 1, file);
+	(void) fread(&Header->e_phoff, 4, 1, file);
+	(void) fread(&Header->e_shoff, 4, 1, file);
+	(void) fread(&Header->e_flags, 4, 1, file);
+	(void) fread(&Header->e_ehsize, 2, 1, file);
+	(void) fread(&Header->e_phentsize, 2, 1, file);
+	(void) fread(&Header->e_phnum, 2, 1, file);
+	(void) fread(&Header->e_shentsize, 2, 1, file);
+	(void) fread(&Header->e_shnum, 2, 1, file);
+	(void) fread(&Header->e_shstrndx, 2, 1, file);
 }

@@ -9,6 +9,7 @@
 #include "readSectionTable.h"
 #include "readContent.h"
 #include "getTableSymbSection.h"
+#include "readRelocation.h"
 
 Elf32_Info * initElf32_Inf(){
     Elf32_Info * ElfInfo = malloc(sizeof(Elf32_Info));
@@ -41,5 +42,6 @@ Elf32_Info * getAllInfo(FILE * file){
 
     ElfInfo->AllSymbol = AllSymbolTables;
 
+	GetRelocationPart(ElfInfo->Header, ElfInfo->AllSections);
     return ElfInfo;
 }
