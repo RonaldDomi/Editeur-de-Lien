@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 		On affiche aussi un début de tableau pour l'affichage de l'étape 2 */
 	fseek(file, Header->e_shoff, SEEK_SET);
 	printf("\n");
-	printf("Adresses are given un hexadecimal format.\n");
+	printf("Adresses are given in hexadecimal format.\n");
 	printf("All values are given in bytes in decimal format.\n\n");
     printRelocation(file, AllSectionsTables, GetRelocationPart(file,  Header, AllSectionsTables));
 	printf("\n");

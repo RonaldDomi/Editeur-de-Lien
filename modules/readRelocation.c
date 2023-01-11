@@ -10,8 +10,6 @@
 #include "readStringTable.h"
 #include "lecture.h"
 
-int unused; // Var non utilisée pour les warnings lors du make
-
 
 void decodeRelType(Elf32_Word type){
 	switch(type){
@@ -39,6 +37,9 @@ void decodeRelType(Elf32_Word type){
 		case(R_ARM_CALL):
 			printf("R_ARM_CALL");
 			break;
+		case(R_ARM_V4BX):
+			printf("R_ARM_V4BX");
+			break;
 		default:
 			printf("==UKN, %d==", type);
 			break;
@@ -50,8 +51,8 @@ void decodeRelType(Elf32_Word type){
 void GetRelocation_rel(Elf32_SecContent SectionContent, Elf32_Rel *Rel, int adrligne){
 	lecture(SectionContent+adrligne+0,  &Rel->r_offset, 4);
 	lecture(SectionContent+adrligne+4, &Rel->r_info, 4);
-	// unused = fread(&Rel->r_offset, 4, 1, file);
-	// unused = fread(&Rel->r_info, 4, 1, file);
+	// (void) fread(&Rel->r_offset, 4, 1, file);
+	// (void) fread(&Rel->r_info, 4, 1, file);
 }
 
 
@@ -59,9 +60,9 @@ void GetRelocation_rela(Elf32_SecContent SectionContent, Elf32_Rela *Rela, int a
 	lecture(SectionContent+adrligne+0,  &Rela->r_offset, 4);
 	lecture(SectionContent+adrligne+4, &Rela->r_info, 4);
 	lecture(SectionContent+adrligne+8, &Rela->r_offset, 4);
-	// unused = fread(&Rela->r_offset, 4, 1, file);
-	// unused = fread(&Rela->r_info, 4, 1, file);
-	// unused = fread(&Rela->r_offset, 4, 1, file);
+	// (void) fread(&Rela->r_offset, 4, 1, file);
+	// (void) fread(&Rela->r_info, 4, 1, file);
+	// (void) fread(&Rela->r_offset, 4, 1, file);
 }
 
 	// ici on parcours les section et l'orsque l'on arrive sur un type rel ou rela on l'affiche

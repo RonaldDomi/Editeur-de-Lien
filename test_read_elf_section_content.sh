@@ -15,14 +15,16 @@ FailTest() {
 }
 
 #On vérifie qu'on dispose d'un fichier pour le test
-if [ $# -lt 2 ]; then
+if [ $# -lt 2 ]
+then
     echo "Missing argument(s) !"
-    echo "Usage: test_read_elf_section_content <File> Name | Number"
+    echo "Usage: test_read_elf_section_content <File> <Name | Number>"
     exit 1
 fi
 
 #On vérifie que le fichier existe
-if [ ! -f $1 ]; then
+if [ ! -f $1 ]
+then
     echo "No such file !"
     exit 1
 fi
@@ -34,13 +36,15 @@ fi
 #On vérifie aussi les codes d'erreurs
 readelf -x $2 $1 &>readelfCommand.output
 errorReadelf=$?
-./readelf_section_content $1 $2 &>MyReadelfCommand.output
+./readelf_all --file $1 --type x --arg $2 &>MyReadelfCommand.output
 errorMyReadelf=$?
 
 # readelf renvoie 1 si le fichier n'est pas un fichier ELF, même comportement pour notre programme
 # On vérfie que les codes d'erreurs correspondent
-if [ $errorReadelf -eq 1 ]; then
-    if [ $errorMyReadelf -eq 1 ]; then
+if [ $errorReadelf -eq 1 ]
+then
+    if [ $errorMyReadelf -eq 1 ]
+    then
         echo -e "Error code : \033[48;5;2mOK TEST\033[0;0m" #Pass
         echo
         echo -e "Test $(basename "$1") \033[48;5;2mpassed\033[0;0m!"

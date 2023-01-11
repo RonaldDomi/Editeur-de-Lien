@@ -6,8 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int unused; // Var non utilisée pour les warnings lors du make
-
 void printOctet(void *buffer, int length, char reverse)
 {
 	/* On met le type unsigned char pour éviter un comportement étrange
@@ -92,6 +90,6 @@ void dumpOctet(void *buffer, int length)
 void *readOctet(FILE *file, int nbOctet)
 {
 	void *buffer = malloc(sizeof(char) * nbOctet);
-	unused = fread(buffer, sizeof(char) * nbOctet, 1, file);
+	(void) fread(buffer, sizeof(char) * nbOctet, 1, file);
 	return buffer;
 }
