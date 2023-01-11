@@ -37,6 +37,9 @@ void decodeRelType(Elf32_Word type){
 		case(R_ARM_CALL):
 			printf("R_ARM_CALL");
 			break;
+		case(R_ARM_V4BX):
+			printf("R_ARM_V4BX");
+			break;
 		default:
 			printf("==UKN, %d==", type);
 			break;

@@ -84,7 +84,7 @@
 		588197F2296DF096007F0012 /* sansInclude.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sansInclude.c; sourceTree = "<group>"; };
 		588197FD296DF107007F0012 /* notELF.elf */ = {isa = PBXFileReference; lastKnownFileType = file; path = notELF.elf; sourceTree = "<group>"; };
 		589E6C64295C3DBF009FDD88 /* configure.ac */ = {isa = PBXFileReference; lastKnownFileType = text; path = configure.ac; sourceTree = "<group>"; };
-		589E6C66295C7A30009FDD88 /* INFO_ELF.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = INFO_ELF.md; sourceTree = "<group>"; };
+		589E6C66295C7A30009FDD88 /* INFO_Elf.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = INFO_Elf.md; sourceTree = "<group>"; };
 		589E6C67295C7A30009FDD88 /* test_read_elf_section_table.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test_read_elf_section_table.sh; sourceTree = "<group>"; };
 		589E6C68295CC2ED009FDD88 /* test_read_elf_section_content.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = test_read_elf_section_content.sh; sourceTree = SOURCE_ROOT; };
 		58CA2069296C16B300A5DD81 /* test_read_elf_relocation.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test_read_elf_relocation.sh; sourceTree = "<group>"; };
@@ -99,6 +99,7 @@
 		58E36A37296EABB50015BDDA /* salut1.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = salut1.o; sourceTree = "<group>"; };
 		58E36A38296EABB50015BDDA /* salut2.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = salut2.o; sourceTree = "<group>"; };
 		58E36A39296EABB50015BDDA /* simple.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = simple.o; sourceTree = "<group>"; };
+		58E36A40296EADB60015BDDA /* Presentation.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Presentation.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,7 +128,8 @@
 				585E192A2959CD8B00E53ED9 /* Makefile.am */,
 				589E6C64295C3DBF009FDD88 /* configure.ac */,
 				58537C6E29570C6B00C53137 /* README.md */,
-				589E6C66295C7A30009FDD88 /* INFO_ELF.md */,
+				58E36A40296EADB60015BDDA /* Presentation.md */,
+				589E6C66295C7A30009FDD88 /* INFO_Elf.md */,
 				585E192C2959CDEC00E53ED9 /* test_read_elf_header.sh */,
 				589E6C67295C7A30009FDD88 /* test_read_elf_section_table.sh */,
 				589E6C68295CC2ED009FDD88 /* test_read_elf_section_content.sh */,
@@ -157,16 +159,16 @@
 			isa = PBXGroup;
 			children = (
 				58537C4029570C6B00C53137 /* CustomElf.h */,
-				58764AE0296865CB00154837 /* readAll.c */,
 				58537C3C29570C6B00C53137 /* CheckElf.h */,
 				58537C4429570C6B00C53137 /* CheckElf.c */,
 				5829A15A295DB0AF00134913 /* readStringTable.h */,
 				58537C4229570C6B00C53137 /* readStringTable.c */,
-				58537C4329570C6B00C53137 /* getTableSymbSection.c */,
 				58CA206C296C1D0500A5DD81 /* readRelocation.h */,
 				5829A15B295DB0F300134913 /* readRelocation.c */,
+				58537C4329570C6B00C53137 /* getTableSymbSection.c */,
 				58CA206B296C1D0500A5DD81 /* getTableSymbSection.h */,
 				58CA206D296C1D0500A5DD81 /* readAll.h */,
+				58764AE0296865CB00154837 /* readAll.c */,
 				58537C4929570C6B00C53137 /* freadoctet.h */,
 				58537C4129570C6B00C53137 /* freadoctet.c */,
 				58537C4629570C6B00C53137 /* readHeader.h */,

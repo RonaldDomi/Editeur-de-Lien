@@ -17,7 +17,7 @@ FailTest() {
 #On vérifie qu'on dispose d'un fichier pour le test
 if [ $# -lt 2 ]; then
     echo "Missing argument(s) !"
-    echo "Usage: test_read_elf_section_content <File> Name | Number"
+    echo "Usage: test_read_elf_section_content <File> <Name | Number>"
     exit 1
 fi
 

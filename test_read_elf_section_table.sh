@@ -177,7 +177,6 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
                 echo -e "Nom : \033[48;5;2mOK TEST\033[0;0m" #Pass
             else
                 # Pour l'instant vu que les noms ne correspondent pas à readelf -S on met juste un Warning
-                # On dit que le test passe avec X warnings
                 printf "Nom : "
                 WarningTest "$otherName" "$name"
             fi
