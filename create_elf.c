@@ -137,15 +137,11 @@ void write_sections(Elf32_AllSec* Sections, FILE* file){
         min = 1000000;
         min_pos = i;
         for(int j=0; j<Sections->nbSections; j++){
-            // fprintf(stderr, "Hello2 %d %d\n", Sections->nbSections, j);
-            // fprintf(stderr, "offset: %d\n\n", Sections->TabAllSec[j]->sh_offset);
             if(Sections->TabAllSec[j]->sh_offset < min){
-                // fprintf(stderr, "Hello3");
                 // si il est pas present
                 if(present[j] == 0){
                     min = Sections->TabAllSec[j]->sh_offset;
                     min_pos = j;
-                    // fprintf(stderr, "Hello3");
                 }
             }
         }
@@ -156,20 +152,22 @@ void write_sections(Elf32_AllSec* Sections, FILE* file){
     for(int i = 0; i<Sections->nbSections; i++){
         int size = Sections->TabAllSec[order[i]]->sh_size;
         
+        // printf("\nSize of section %d, %d\n", i, Sections->TabAllSec[order[i]]->sh_size);
         if(size != 0){
+            // printOctet(Sections->TabAllSecContent[order[i]], size, 0);
             fwrite(Sections->TabAllSecContent[order[i]], 1, size, file);
-            if(i+2 <= Sections->nbSections){
-                // difference is to know if we need buffer 0 so that the alignments match
-                int difference = Sections->TabAllSec[order[i+1]]->sh_offset - (Sections->TabAllSec[order[i]]->sh_offset + Sections->TabAllSec[order[i]]->sh_size);
-                if(difference > 0){
-                    // complete with additional 0
-                    while(difference > 0){
-                        int output[2] = {0, 0};
-                        fwrite(output, 1, 1, file);
-                        difference = difference - 1;
-                    }
-                }
-            }
+            // if(i+2 <= Sections->nbSections){
+            //     // difference is to know if we need buffer 0 so that the alignments match
+            //     int difference = Sections->TabAllSec[order[i+1]]->sh_offset - (Sections->TabAllSec[order[i]]->sh_offset + Sections->TabAllSec[order[i]]->sh_size);
+            //     if(difference > 0){
+            //         // complete with additional 0
+            //         while(difference > 0){
+            //             int output[2] = {0, 0};
+            //             fwrite(output, 1, 1, file);
+            //             difference = difference - 1;
+            //         }
+            //     }
+            // }
         }
     }
 }
