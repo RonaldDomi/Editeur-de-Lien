@@ -26,3 +26,5 @@ Elf32_Info * initElf32_Inf();
  Sortie : Retourne un pointeur vers la structure
  */
 Elf32_Info * getAllInfo(FILE * file);
+
+void freeElf32_Inf(Elf32_Info * ELFInfo);

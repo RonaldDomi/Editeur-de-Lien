@@ -429,6 +429,11 @@ int main(int argc, char **argv){
 	write_to_file(ELF3, file3);
 	printHeader(ELF3->Header);
 	printAllSectionsTables(file1, ELF3->AllSections, ELF3->Header);
+
+	freeElf32_Inf(ELF1);
+    freeElf32_Inf(ELF2);
+    freeElf32_Inf(ELF3);
+	
 	fclose(file1);
 	fclose(file2);
 	fclose(file3);

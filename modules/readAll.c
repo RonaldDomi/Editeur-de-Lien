@@ -15,7 +15,26 @@ Elf32_Info * initElf32_Inf(){
     ElfInfo->Header = malloc(sizeof(Elf32_Ehdr));
     return ElfInfo;
 }
+void freeElf32_Inf(Elf32_Info * ELFInfo){
+    free(ELFInfo->Header);
+    free(ELFInfo->AllSymbol);
 
+    for(int i = 0; i < ELFInfo->AllSections->nbSections; i++){
+        free(ELFInfo->AllSections->TabAllSec[i]);
+        free(ELFInfo->AllSections->TabAllSecContent[i]);
+        
+        if (ELFInfo->AllSections->TabAllRel[i]!=NULL){
+            free(ELFInfo->AllSections->TabAllRel[i]);
+        }
+        else if (ELFInfo->AllSections->TabAllRela[i]!=NULL){
+            free(ELFInfo->AllSections->TabAllRela[i]);
+        }
+    }
+    // free(ELFInfo->AllSections->TabAllSec);
+    // free(ELFInfo->AllSections->TabAllSecContent);
+    // free(ELFInfo->AllSections->TabAllRel);
+    // free(ELFInfo->AllSections->TabAllRela);
+}
 Elf32_Info * getAllInfo(FILE * file){
 
     Elf32_Info * ElfInfo = initElf32_Inf();
