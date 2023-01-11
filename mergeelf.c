@@ -24,7 +24,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_type = ELF1_Header->e_type;
     }
     else{
-        // printf("ERREUR : Les Fichiers ne sont pas de même type !");
+		printf("ERREUR : Les Fichiers ne sont pas de même type !");
         exit(1);
     }
 
@@ -32,7 +32,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_machine = ELF1_Header->e_machine;
     }
     else{
-        // printf("ERREUR : Les Fichiers ne sont pas de même architecture !");
+         printf("ERREUR : Les Fichiers ne sont pas de même architecture !");
         exit(1);
     }
 
@@ -40,7 +40,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_version = ELF1_Header->e_version;
     }
     else{
-        // printf("ERREUR : Les Fichiers ne sont pas de même version !");
+         printf("ERREUR : Les Fichiers ne sont pas de même version !");
         exit(1);
     }
 
@@ -48,7 +48,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_flags = ELF1_Header->e_flags;
     }
     else{
-        // printf("ERREUR : Les Fichiers n'ont pas les mêmes flags !");
+         printf("ERREUR : Les Fichiers n'ont pas les mêmes flags !");
         exit(1);
     }
 
@@ -56,7 +56,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_ehsize = ELF1_Header->e_ehsize;
     }
     else{
-        // printf("ERREUR : Les Fichiers n'ont pas la même taille de header !");
+         printf("ERREUR : Les Fichiers n'ont pas la même taille de header !");
         exit(1);
     }
 
@@ -64,7 +64,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_phoff = ELF1_Header->e_phoff;
     }
     else{
-        // printf("ERREUR : Header different (e_phoff)!");
+         printf("ERREUR : Header different (e_phoff)!");
         exit(1);
     }
 
@@ -72,7 +72,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_phentsize = ELF1_Header->e_phentsize;
     }
     else{
-        // printf("ERREUR : Header different !");
+         printf("ERREUR : Header different !");
         exit(1);
     }
 
@@ -80,7 +80,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_phnum = ELF1_Header->e_phnum;
     }
     else{
-        // printf("ERREUR : Header different !");
+         printf("ERREUR : Header different !");
         exit(1);
     }
 
@@ -88,7 +88,7 @@ void mergeHeader(Elf32_Ehdr * ELF1_Header, Elf32_Ehdr * ELF2_Header, Elf32_Ehdr 
         ELF3_Header->e_shentsize = ELF1_Header->e_shentsize;
     }
     else{
-        // printf("ERREUR : Header different !");
+         printf("ERREUR : Header different !");
         exit(1);
     }
 
