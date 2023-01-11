@@ -23,14 +23,16 @@ WarningTest() {
 }
 
 #On vérifie qu'on dispose d'un fichier pour le test
-if [ $# -lt 1 ]; then
+if [ $# -lt 1 ]
+then
     echo "Missing file !"
     echo "Usage: test_read_elf_section_table <File>"
     exit 1
 fi
 
 #On vérifie que le fichier existe
-if [ ! -f $1 ]; then
+if [ ! -f $1 ]
+then
     echo "No such file !"
     exit 1
 fi
@@ -47,8 +49,10 @@ errorMyReadelf=$?
 
 # readelf renvoie 1 si le fichier n'est pas un fichier ELF, même comportement pour notre programme
 # On vérfie que les codes d'erreurs correspondent
-if [ $errorReadelf -eq 1 ]; then
-    if [ $errorMyReadelf -eq 1 ]; then
+if [ $errorReadelf -eq 1 ]
+then
+    if [ $errorMyReadelf -eq 1 ]
+    then
         echo -e "Error code : \033[48;5;2mOK TEST\033[0;0m" #Pass
         echo
         echo -e "Test $(basename "$1") \033[48;5;2mpassed\033[0;0m!"
@@ -184,7 +188,8 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
 
         #On poursuit en vérifiant le Type :
 
-        if [ "$type" == "$otherType" ]; then
+        if [ "$type" == "$otherType" ]
+        then
             echo -e "Type :  \033[48;5;2mOK TEST\033[0;0m" #Pass
         else
             printf "Type : "

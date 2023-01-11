@@ -84,7 +84,6 @@
 		588197F2296DF096007F0012 /* sansInclude.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sansInclude.c; sourceTree = "<group>"; };
 		588197FD296DF107007F0012 /* notELF.elf */ = {isa = PBXFileReference; lastKnownFileType = file; path = notELF.elf; sourceTree = "<group>"; };
 		589E6C64295C3DBF009FDD88 /* configure.ac */ = {isa = PBXFileReference; lastKnownFileType = text; path = configure.ac; sourceTree = "<group>"; };
-		589E6C66295C7A30009FDD88 /* INFO_Elf.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = INFO_Elf.md; sourceTree = "<group>"; };
 		589E6C67295C7A30009FDD88 /* test_read_elf_section_table.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test_read_elf_section_table.sh; sourceTree = "<group>"; };
 		589E6C68295CC2ED009FDD88 /* test_read_elf_section_content.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = test_read_elf_section_content.sh; sourceTree = SOURCE_ROOT; };
 		58CA2069296C16B300A5DD81 /* test_read_elf_relocation.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test_read_elf_relocation.sh; sourceTree = "<group>"; };
@@ -129,7 +128,6 @@
 				589E6C64295C3DBF009FDD88 /* configure.ac */,
 				58537C6E29570C6B00C53137 /* README.md */,
 				58E36A40296EADB60015BDDA /* Presentation.md */,
-				589E6C66295C7A30009FDD88 /* INFO_Elf.md */,
 				585E192C2959CDEC00E53ED9 /* test_read_elf_header.sh */,
 				589E6C67295C7A30009FDD88 /* test_read_elf_section_table.sh */,
 				589E6C68295CC2ED009FDD88 /* test_read_elf_section_content.sh */,

@@ -6,6 +6,11 @@
 • Marmey Loïc  
 • Régnier Léo  
 
+# Documentation supplémentaire : 
+
+Une documentation décrivant la structure du code, les fonctionnalitées, les bugs est disponible sous le fichier Presentation.md à la racine du projet.
+
+<br>
 
 # Éditeur de Lien :
 
@@ -22,22 +27,15 @@ Concrètement, on cherche à fusionner 2 fichiers relocatables.
 
 <br>
 
-# Documentation supplémentaire : 
-
-Une documentation décrivant la structure du code, les fonctionnalitées, les bugs est disponible sous le fichier Presentation.md à la racine du projet.
-
-Une documentation pour la Partie 1 est disponible sous le fichier INFO_Elf.md à la racine du projet. Cette documentation a été écrite au début du projet pour comprendre le contexte et les fichiers ELF.
-<br>
-
 # Getting Started :
 ## Instructions de compilation :
-Pour lancer le projet il faut premièrement générer le Makefile :
-`autoreconf -vif`
-`./configure`  
-`make`  
+Pour lancer le projet il faut premièrement générer le Makefile :  
+`autoreconf -vif`  
+`./configure`    
+`make`    
 
-On peut générer des tests supplémentaires dans le répertoire Examples_fusion :
-`cd Examples_fusion`
+On peut générer des tests supplémentaires dans le répertoire Examples_fusion :   
+`cd Examples_fusion`  
 `make`
 
 Tous les programmes sont centralisés dans un seul programme : readelf_all
@@ -71,6 +69,9 @@ Chaque étape teste l'affichage de notre programme et le compare avec la fonctio
 
 À noter que les tests utilisent le programme *readelf_all* et non pas les programmes individuels.
 Les tests comparent ligne par ligne et omettent certains détails comme l'affichage des flags par exemple: "Version5 EABI" pour readelf contre "EABI Version 5" pour notre programme.
+
+Pour lancer un test, exécuter le Script Bash associé suivi d'un fichier test, par exemple :  
+`./test_read_elf_header.sh tests/ARM.o` pour tester la partie 1 avec le test ARM.o  
 
 <br>
 
