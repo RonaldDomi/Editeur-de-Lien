@@ -68,7 +68,6 @@ void printAllTableSymb(Elf32_Sym * AllSymbolTables, Elf32_AllSec * AllSectionsTa
 			Un pointeur Header vers l'en-tête
 			Un pointeur SectionContent vers le contenu d'une section
 			Un pointeur symtab vers une table de symboles
-	TODO: Enlever si sscanf inutilisé Un entier adrligne indiquant la ligne à lire
 
  Valeur de retour: Ne retourne rien
  Effets de bords : Ecrit toutes les informations décodées sur la sortie standard
