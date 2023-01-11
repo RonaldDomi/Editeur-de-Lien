@@ -12,8 +12,6 @@
 #include "readStringTable.h"
 #include "readHeader.h"
 
-int unused; // Var non utilisée pour les warnings lors du make
-
 Elf32_AllSec * initSectionTable(int nb){
 	Elf32_AllSec * Sections = malloc(sizeof(Elf32_AllSec));
 	Sections->nbSections = nb;
@@ -281,25 +279,36 @@ void printNumber(int nbSections, int sectionNumber)
 
 void getSectionTable(FILE *file, Elf32_Shdr *SectionTable)
 {
-	unused = fread(&SectionTable->sh_name, 4, 1, file);
-	unused = fread(&SectionTable->sh_type, 4, 1, file);
-	unused = fread(&SectionTable->sh_flags, 4, 1, file);
-	unused = fread(&SectionTable->sh_addr, 4, 1, file);
-	unused = fread(&SectionTable->sh_offset, 4, 1, file);
-	unused = fread(&SectionTable->sh_size, 4, 1, file);
-	unused = fread(&SectionTable->sh_link, 4, 1, file);
-	unused = fread(&SectionTable->sh_info, 4, 1, file);
-	unused = fread(&SectionTable->sh_addralign, 4, 1, file);
-	unused = fread(&SectionTable->sh_entsize, 4, 1, file);
+	(void) fread(&SectionTable->sh_name, 4, 1, file);
+	(void) fread(&SectionTable->sh_type, 4, 1, file);
+	(void) fread(&SectionTable->sh_flags, 4, 1, file);
+	(void) fread(&SectionTable->sh_addr, 4, 1, file);
+	(void) fread(&SectionTable->sh_offset, 4, 1, file);
+	(void) fread(&SectionTable->sh_size, 4, 1, file);
+	(void) fread(&SectionTable->sh_link, 4, 1, file);
+	(void) fread(&SectionTable->sh_info, 4, 1, file);
+	(void) fread(&SectionTable->sh_addralign, 4, 1, file);
+	(void) fread(&SectionTable->sh_entsize, 4, 1, file);
 }
 
 void printAllSectionsTables(FILE * file, Elf32_AllSec * Sections, Elf32_Ehdr * Header){
+	printf("\n");
+	printf("Adresses are given in hexadecimal format.\n");
+	printf("All values are given in bytes in decimal format.\n\n");
+	printf("Nb\tName\t\t\tType\t\tFlags\tExecutionAdresss\tOffset\t\tSectionSize\tLinkTo\tInfo\tAlign\tEntrySize\n");
+	printf("====================================================================");
+	printf("=============================================================================\n");
 	for (int numero=0; numero<Sections->nbSections; numero++){
 		printNumber(Sections->nbSections, numero);
 		sectionName(file, Sections, Header, numero);
 		printSectionTable(Sections->TabAllSec[numero]);
 		printf("\n");
 	}
+	printf("\nKey to Flags:\n");
+	printf("  W (write), A (alloc), X (execute), M (merge), S (strings), I (info)\n");
+	printf("  L (link order), O (extra OS processing required), G (group), T (TLS),\n");
+	printf("  C (compressed), x (unknown), o (OS specific), E (exclude),\n");
+	printf("  D (mbind), y (purecode), p (processor specific)\n");
 }
 
 void getAllSectionsTables(FILE *file, Elf32_Ehdr *Header, Elf32_AllSec *Sections)

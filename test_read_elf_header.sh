@@ -57,7 +57,7 @@ fi
 #On vérifie aussi les codes d'erreurs
 readelf -h $1 &>readelfCommand.output
 errorReadelf=$?
-./readelf_header $1 &>MyReadelfCommand.output
+./readelf_all --file $1 --type h &>MyReadelfCommand.output
 errorMyReadelf=$?
 
 # readelf renvoie 1 si le fichier n'est pas un fichier ELF, même comportement pour notre programme

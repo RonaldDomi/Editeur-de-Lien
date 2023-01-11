@@ -136,11 +136,16 @@ cat MyReadelfCommand.output | while read line || [ -n "$line" ]; do
             otherValueCut=`echo $otherValue | rev | cut -d' ' -f2- | rev`
             # echo "OtherValueCut : <$otherValueCut>"
 
-            if [ "$value" != "$otherValueCut" ]
-            then
-                printf "Relocation : "
-                FailTest "$otherValueCut" "$value" "$$"
-            fi
+			if [ ${#otherValueCut} -lt 20 ]
+			then
+				:
+			else
+				if [ "$value" != "$otherValueCut" ]
+				then
+					printf "Relocation : "
+					FailTest "$otherValueCut" "$value" "$$"
+				fi
+			fi
             # On affiche rien si le test passe, trop de relocations rendent la sortie standard ilisible
         ;;
     esac

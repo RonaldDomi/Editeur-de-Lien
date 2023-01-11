@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 		printHeader(ElfInfo->Header);
 		}
 
-	if (strcmp(type, "S") == 0)
+	if (strcmp(type, "s") == 0)
 		{
 		printAllTableSymb(ElfInfo->AllSymbol, ElfInfo->AllSections,ElfInfo->Header);
 		}
@@ -145,16 +145,16 @@ int main(int argc, char *argv[])
 			{
 			/* Search by Number */
 			printf("Search by Number\n");
-			if (sectionSelected > ElfInfo->Header->e_shnum)
+			if (sectionSelected > ElfInfo->Header->e_shnum-1)
 				{
 				printf("This section does not exist !\n");
-				printf("There are only %d sections.\n", ElfInfo->Header->e_shnum);
-				exit(0);
+				printf("There are only %d sections starting from 0.\n", ElfInfo->Header->e_shnum-1);
+				exit(1);
 				}
 			}
 		printContent(ElfInfo->AllSections, sectionSelected);
 		}
-	else if (strcmp(type, "s") == 0)
+	else if (strcmp(type, "S") == 0)
 		{
 		printAllSectionsTables(file, ElfInfo->AllSections, ElfInfo->Header);
 		}

@@ -34,7 +34,7 @@ fi
 #On vérifie aussi les codes d'erreurs
 readelf -x $2 $1 &>readelfCommand.output
 errorReadelf=$?
-./readelf_section_content $1 $2 &>MyReadelfCommand.output
+./readelf_all --file $1 --type x --arg $2 &>MyReadelfCommand.output
 errorMyReadelf=$?
 
 # readelf renvoie 1 si le fichier n'est pas un fichier ELF, même comportement pour notre programme

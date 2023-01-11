@@ -1,7 +1,7 @@
-//
-//  getTableSymbSection.c
-//  Editeur de Liens
-//
+	//
+	//  getTableSymbSection.c
+	//  Editeur de Liens
+	//
 
 #include <stdio.h>
 #include <string.h>
@@ -10,8 +10,6 @@
 #include "freadoctet.h"
 #include "readStringTable.h"
 #include "lecture.h"
-
-int unused; // Var non utilisée pour les warnings lors du make
 
 void decodeSymbShndx(Elf32_Sym * symtab){
 	if (symtab->st_shndx==0)
@@ -100,72 +98,35 @@ void printTableSymb(Elf32_Sym * symtab, Elf32_AllSec * Sections, Elf32_Ehdr * He
 
 void printAllTableSymb(Elf32_Sym * AllSymbolTables, Elf32_AllSec * AllSectionsTables, Elf32_Ehdr * Header){
 
-    int indexSymbSec = getSectionByType(AllSectionsTables, SHT_SYMTAB);
-    Elf32_Shdr * SectionTable = AllSectionsTables->TabAllSec[indexSymbSec];
-    
+	int indexSymbSec = getSectionByType(AllSectionsTables, SHT_SYMTAB);
+	Elf32_Shdr * SectionTable = AllSectionsTables->TabAllSec[indexSymbSec];
+
 	printf("\n");
-	printf("Adresses are given un hexadecimal format.\n");
+	printf("Adresses are given in hexadecimal format.\n");
 	printf("All values are given in bytes in decimal format.\n\n");
 	printf("Nb\tValue\t\tSize\tType\t\tBind\tOther\tShndx\tName\n");
-	printf("====================================================================");
-	printf("=====================================================================\n");
+	printf("===================================================================================\n");
 
 	for(int i=0; i<SectionTable->sh_size/16; i++){
 		printf("%d:\t", i);
 		printTableSymb(AllSymbolTables+i, AllSectionsTables, Header);
-        printf("\n");
-    }
+		printf("\n");
+	}
 }
 
 
 void GetTableSymbPart(Elf32_SecContent SectionContent, Elf32_Sym *symtab, int adrligne){
-
-/* TODO: 3 méthodes, en choisir une et supprimer les deux autres, fixer de préférence sscanf */
-		// dump content
-		// for(int i=adrligne; i<adrligne+16; i++)
-		//     printf("%02x", (unsigned char)SectionContent[i]);
-		// printf(" : ");
-
-		// read from sectionContent
-		// sscanf(SectionContent+adrligne+0, "%d", &symtab->st_name);
-		// sscanf(SectionContent+adrligne+4, "%d", &symtab->st_value);
-		// sscanf(SectionContent+adrligne+8, "%d", &symtab->st_size);
-		// sscanf(SectionContent+adrligne+12, "%c", &symtab->st_info);
-		// sscanf(SectionContent+adrligne+13, "%c", &symtab->st_other);
-		// sscanf(SectionContent+adrligne+14, "%hd", &symtab->st_shndx);
-		lecture(SectionContent+adrligne+0,  &symtab->st_name, 4);
-		lecture(SectionContent+adrligne+4, &symtab->st_value, 4);
-		lecture(SectionContent+adrligne+8, &symtab->st_size, 4);
-		lecture(SectionContent+adrligne+12, &symtab->st_info, 1);
-		lecture(SectionContent+adrligne+13, &symtab->st_other, 1);
-		lecture(SectionContent+adrligne+14, &symtab->st_shndx, 2);
-
-		// read from file
-	// unused = fread(&symtab->st_name, 4, 1, file);
-	// unused = fread(&symtab->st_value, 4, 1, file);
-	// unused = fread(&symtab->st_size, 4, 1, file);
-	// unused = fread(&symtab->st_info, 1, 1, file);
-	// unused = fread(&symtab->st_other, 1, 1, file);
-	// unused = fread(&symtab->st_shndx, 2, 1, file);
+	lecture(SectionContent+adrligne+0,  &symtab->st_name, 4);
+	lecture(SectionContent+adrligne+4, &symtab->st_value, 4);
+	lecture(SectionContent+adrligne+8, &symtab->st_size, 4);
+	lecture(SectionContent+adrligne+12, &symtab->st_info, 1);
+	lecture(SectionContent+adrligne+13, &symtab->st_other, 1);
+	lecture(SectionContent+adrligne+14, &symtab->st_shndx, 2);
 }
 
 void getAllTableSymb(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionContent, Elf32_Sym *AllSymbolTables, int nbTable){
 	for (int i = 0; i < nbTable ; i++)
-	{
+		{
 		GetTableSymbPart(SectionContent, AllSymbolTables+i, i*16);
-	}
+		}
 }
-	// ici ecrire les fonction de recuperation du tableSymbole entry
-
-// void symTabName(FILE *file, Elf32_Ehdr *Header, Elf32_Sym *symtab, char verbose)
-// {
-// 		// if (verbose)
-// 		// {
-// 		// 	char *mot = malloc(50);
-// 		// 	long position = ftell(file);
-// 		// 	getString(file, symtab->st_name, Header, mot);
-// 		// 	fseek(file, position, 0);
-// 		// 	printf("%s\t", mot);
-// 		// }
-// 	return;
-// }

@@ -42,7 +42,7 @@ fi
 #On vérifie aussi les codes d'erreurs
 readelf -S $1 &>readelfCommand.output
 errorReadelf=$?
-./readelf_section_table $1 &>MyReadelfCommand.output
+./readelf_all --file $1 --type S &>MyReadelfCommand.output
 errorMyReadelf=$?
 
 # readelf renvoie 1 si le fichier n'est pas un fichier ELF, même comportement pour notre programme
