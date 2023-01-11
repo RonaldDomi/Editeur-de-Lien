@@ -113,6 +113,12 @@ void dumpOctet(void *buffer, int length)
 void *readOctet(FILE *file, int nbOctet)
 {
 	void *buffer = malloc(sizeof(char) * nbOctet);
-	freadSwap(buffer, sizeof(char) * nbOctet, 1, file);
+
+    //little endian
+	(void) fread(buffer, sizeof(char) * nbOctet, 1, file);
+
+    //big endian
+	// freadSwap(buffer, sizeof(char) * nbOctet, 1, file);
+
 	return buffer;
 }

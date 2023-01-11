@@ -120,34 +120,21 @@ void printAllTableSymb(Elf32_Sym * AllSymbolTables, Elf32_AllSec * AllSectionsTa
 
 void GetTableSymbPart(Elf32_SecContent SectionContent, Elf32_Sym *symtab, int adrligne){
 
-/* TODO: 3 méthodes, en choisir une et supprimer les deux autres, fixer de préférence sscanf */
-		// dump content
-		// for(int i=adrligne; i<adrligne+16; i++)
-		//     printf("%02x", (unsigned char)SectionContent[i]);
-		// printf(" : ");
-
-		// read from sectionContent
-		// sscanf(SectionContent+adrligne+0, "%d", &symtab->st_name);
-		// sscanf(SectionContent+adrligne+4, "%d", &symtab->st_value);
-		// sscanf(SectionContent+adrligne+8, "%d", &symtab->st_size);
-		// sscanf(SectionContent+adrligne+12, "%c", &symtab->st_info);
-		// sscanf(SectionContent+adrligne+13, "%c", &symtab->st_other);
-		// sscanf(SectionContent+adrligne+14, "%hd", &symtab->st_shndx);
+        //little endian
+		lecture(SectionContent+adrligne+0,  &symtab->st_name, 4);
+		lecture(SectionContent+adrligne+4, &symtab->st_value, 4);
+		lecture(SectionContent+adrligne+8, &symtab->st_size, 4);
+		lecture(SectionContent+adrligne+12, &symtab->st_info, 1);
+		lecture(SectionContent+adrligne+13, &symtab->st_other, 1);
+		lecture(SectionContent+adrligne+14, &symtab->st_shndx, 2);
         
-		lectureRev(SectionContent+adrligne+0,  &symtab->st_name, 4);
-		lectureRev(SectionContent+adrligne+4, &symtab->st_value, 4);
-		lectureRev(SectionContent+adrligne+8, &symtab->st_size, 4);
-		lectureRev(SectionContent+adrligne+12, &symtab->st_info, 1);
-		lectureRev(SectionContent+adrligne+13, &symtab->st_other, 1);
-		lectureRev(SectionContent+adrligne+14, &symtab->st_shndx, 2);
-
-		// read from file
-	// unused = fread(&symtab->st_name, 4, 1, file);
-	// unused = fread(&symtab->st_value, 4, 1, file);
-	// unused = fread(&symtab->st_size, 4, 1, file);
-	// unused = fread(&symtab->st_info, 1, 1, file);
-	// unused = fread(&symtab->st_other, 1, 1, file);
-	// unused = fread(&symtab->st_shndx, 2, 1, file);
+        //big endian
+		// lectureRev(SectionContent+adrligne+0,  &symtab->st_name, 4);
+		// lectureRev(SectionContent+adrligne+4, &symtab->st_value, 4);
+		// lectureRev(SectionContent+adrligne+8, &symtab->st_size, 4);
+		// lectureRev(SectionContent+adrligne+12, &symtab->st_info, 1);
+		// lectureRev(SectionContent+adrligne+13, &symtab->st_other, 1);
+		// lectureRev(SectionContent+adrligne+14, &symtab->st_shndx, 2);
 }
 
 void getAllTableSymb(FILE *file, Elf32_Ehdr *Header, Elf32_SecContent SectionContent, Elf32_Sym *AllSymbolTables, int nbTable){

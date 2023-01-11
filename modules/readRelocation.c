@@ -48,21 +48,32 @@ void decodeRelType(Elf32_Word type){
 
 
 void GetRelocation_rel(Elf32_SecContent SectionContent, Elf32_Rel *Rel, int adrligne){
-	lectureRev(SectionContent+adrligne+0,  &Rel->r_offset, 4);
-	lectureRev(SectionContent+adrligne+4, &Rel->r_info, 4);
-	// unused = fread(&Rel->r_offset, 4, 1, file);
-	// unused = fread(&Rel->r_info, 4, 1, file);
+
+    //little endian
+	lecture(SectionContent+adrligne+0,  &Rel->r_offset, 4);
+	lecture(SectionContent+adrligne+4, &Rel->r_info, 4);
+
+    //big endian
+	// lectureRev(SectionContent+adrligne+0,  &Rel->r_offset, 4);
+	// lectureRev(SectionContent+adrligne+4, &Rel->r_info, 4);
 }
 
 
 void GetRelocation_rela(Elf32_SecContent SectionContent, Elf32_Rela *Rela, int adrligne){
-	lectureRev(SectionContent+adrligne+0,  &Rela->r_offset, 4);
-	lectureRev(SectionContent+adrligne+4, &Rela->r_info, 4);
-	lectureRev(SectionContent+adrligne+8, &Rela->r_offset, 4);
-	// unused = fread(&Rela->r_offset, 4, 1, file);
-	// unused = fread(&Rela->r_info, 4, 1, file);
-	// unused = fread(&Rela->r_offset, 4, 1, file);
+    
+    //little endian
+	lecture(SectionContent+adrligne+0,  &Rela->r_offset, 4);
+	lecture(SectionContent+adrligne+4, &Rela->r_info, 4);
+	lecture(SectionContent+adrligne+8, &Rela->r_offset, 4);
+
+
+    //big endian
+	// lectureRev(SectionContent+adrligne+0,  &Rela->r_offset, 4);
+	// lectureRev(SectionContent+adrligne+4, &Rela->r_info, 4);
+	// lectureRev(SectionContent+adrligne+8, &Rela->r_offset, 4);
 }
+    
+
 
 	// ici on parcours les section et l'orsque l'on arrive sur un type rel ou rela on l'affiche
 int GetRelocationPart(Elf32_Ehdr *Header, Elf32_AllSec * SectionsTables){

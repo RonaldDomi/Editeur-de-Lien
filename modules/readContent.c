@@ -21,7 +21,6 @@ void getAllSectionsContent(FILE* file, Elf32_AllSec * SectionsTables){
         currentSectionContent = malloc(currentSectionTable->sh_size);
         fseek(file, currentSectionTable->sh_offset, SEEK_SET);
         unused = fread(currentSectionContent, currentSectionTable->sh_size, 1, file);
-        // unused = fread(currentSectionContent, currentSectionTable->sh_size, 1, file);
         SectionsTables->TabAllSecContent[i] = currentSectionContent;
     }
 }
